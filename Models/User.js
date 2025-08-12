@@ -23,9 +23,9 @@ const userSchema = new mongoose.Schema(
       type: [String],
       default: [],
     },
-    isFilledaboutandskill:{
-      type:Boolean,
-      default:false
+    isFilledaboutandskill: {
+      type: Boolean,
+      default: false
     },
     descriptionAbout: {
       type: String,
@@ -36,18 +36,9 @@ const userSchema = new mongoose.Schema(
     },
     mockAttempts: [
       {
-        mock: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Mock",
-        },
-        score: Number,
-        totalQuestions: Number,
-        correctAnswers: Number,
-        attemptedAt: {
-          type: Date,
-          default: Date.now,
-        },
-      },
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Mock"
+      }
     ],
     followers: [
       {

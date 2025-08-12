@@ -1,74 +1,91 @@
 'use client'
+import { useWholeApp } from '@/components/AuthContextApi';
 import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
-import { GoogleGenerativeAI } from '@google/generative-ai';
-import React, { useEffect } from 'react'
-const genAI = new GoogleGenerativeAI('AIzaSyAzZRBu_05fGWtVnE3pJ7yXMt3mynIj5w4');
-const page = () => {
-const generateAImockQuest = async () => {
-  try {
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
 
-    const prompt = `
-You are an expert interview panel AI.  
-Your task is to generate exactly 10 multiple-choice interview questions based on the provided role, skills, and difficulty.
+const Page = () => {
+  const [role, setRole] = useState('');
+  const [skills, setSkills] = useState('');
+  const [difficulty, setDifficulty] = useState('easy');
+  const [mockQuestionId, setMockQuestionId] = useState('');
 
-User role: Data Analyst  
-Skills/Topics: Python,java 
-Difficulty: medium  
+  const { userId } = useWholeApp();
+  const router = useRouter();
 
-Rules:
-- Each question must have exactly 4 unique answer choices in an "options" array.
-- Only one option is correct, labeled in the "correct_answer" field.
-- The "explanation" must explain why that correct answer is right.
-- Do not ask ambiguous or opinion-based questions.
-- Keep answers concise but correct.
-- Avoid repetition.
+  // Redirect after mock test ID is generated
+  useEffect(() => {
+    if (mockQuestionId) {
+      router.push(
+        `/mock-test/${encodeURIComponent(userId)}/${encodeURIComponent(mockQuestionId)}`
+      );
+    }
+  }, [mockQuestionId, userId]);
 
-Return the output strictly in this JSON format:
-[
-  {
-    "id": 1,
-    "question": "Which of the following is the time complexity of binary search?",
-    "options": ["O(n)", "O(log n)", "O(n log n)", "O(1)"],
-    "correct_answer": "O(log n)",
-    "explanation": "Binary search halves the search space in each step, resulting in logarithmic time complexity."
-  }
-]
-Only return valid JSON without any extra text or formatting.
-    `;
+  const generateAImockQuest = async () => {
+    try {
+      if (userId && role && skills && difficulty) {
+        const repos = await axios.post('/api/mockgenerator', {
+          userid: userId,
+          role: role,
+          skill: skills,
+          difficulty: difficulty
+        });
 
-    const result = await model.generateContent(prompt);
-    let text = result.response.text();
-
-    // ✅ Remove Markdown code block wrappers if present
-    text = text.replace(/```json/g, "").replace(/```/g, "").trim();
-
-    // ✅ Parse safely
-    const data = JSON.parse(text);
-    console.log("Generated MCQs:", data);
-
-    return data;
-  } catch (err) {
-    console.error("Error generating questions:", err);
-    return [];
-  }
-};
-
-useEffect(() => {
-//   generateAImockQuest();
-}, []);
-
+        if (repos?.data?.mockTestId) {
+          setMockQuestionId(repos?.data?.mockTestId);
+        }
+      } 
+    } catch (error) {
+      console.error("Error generating mock questions:", error.message);
+    }
+  };
 
   return (
     <div>
-     <Navbar />
-  <Button >generate Quiz</Button>
-    </div>
-  )
-}
+      <Navbar />
+      <div className='text-white'>
+        <input
+          onChange={(e) => setRole(e.target.value)}
+          className='placeholder:font-bold w-[95%] outline-none focus-within:border border-zinc-700 border focus-within:shadow-sm shadow-sky-600 focus-within:border-sky-600 m-2 text-lg pl-2 p-1 rounded-sm'
+          type="text"
+          required
+          placeholder='Enter role'
+        />
+        <input
+          onChange={(e) => setSkills(e.target.value)}
+          className='placeholder:font-bold w-[95%] outline-none focus-within:border border-zinc-700 border focus-within:shadow-sm shadow-sky-600 focus-within:border-sky-600 m-2 text-lg pl-2 p-1 rounded-sm'
+          type="text"
+          required
+          placeholder='Enter Skills'
+        />
 
-export default page
+        <Select onValueChange={(value) => setDifficulty(value)} defaultValue="easy" className='dark'>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Difficulty" />
+          </SelectTrigger>
+          <SelectContent className='dark'>
+            <SelectItem value="hard">Hard</SelectItem>
+            <SelectItem value="medium">Medium</SelectItem>
+            <SelectItem value="easy">Easy</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      {role && skills && difficulty ? (
+        <Button onClick={generateAImockQuest} variant="secondary">Generate Quiz</Button>
+      ) : (
+        <Button disabled variant="secondary">Generate Quiz</Button>
+      )}
+    </div>
+  );
+};
+
+export default Page;
+
 
 
 //  User role: ${role}  

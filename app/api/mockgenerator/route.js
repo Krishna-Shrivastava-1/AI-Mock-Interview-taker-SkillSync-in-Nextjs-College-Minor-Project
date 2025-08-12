@@ -1,10 +1,11 @@
 import database from "@/Database/Database";
 import { mockModel } from "@/Models/Mock";
+import { userModel } from "@/Models/User";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextResponse } from "next/server";
 
 
-const genAI = new GoogleGenerativeAI(process.env.GeminiAPI);
+const genAI = new GoogleGenerativeAI('AIzaSyCOlI2oRIS9Evk_RSsr2HUWGOQDBUfKhI0');
 export async function POST(req, res) {
     try {
         const { skill, role, difficulty, userid } = await req.json()
@@ -44,7 +45,7 @@ Return ONLY valid JSON in this format with no extra text:
         const result = await model.generateContent(prompt);
         let text = result.response.text().replace(/```json/g, "").replace(/```/g, "").trim();
         const aiQuestions = JSON.parse(text);
-// console.log(aiQuestions)
+        // console.log(aiQuestions)
         const mockTest = await mockModel.create({
             user: userid,
 
@@ -54,19 +55,27 @@ Return ONLY valid JSON in this format with no extra text:
                 correctAnswer: q.correct_answer, // Gemini uses "correct_answer"
                 explanation: q.explanation,
                 difficulty: difficulty,
-                explaination:q.explanation
+                explaination: q.explanation
             }))
 
         })
-        // console.log(mockTest?.questions)
+        // console.log(mockTest)
         const safeQuestions = mockTest.questions.map(q => ({
             questionText: q.questionText,
             options: q.options,
-            difficulty: q.difficulty
-        }));
-        return NextResponse.json({
+            difficulty: q.difficulty,
 
-            questions: safeQuestions,
+
+        }));
+        const usermock = await userModel.findByIdAndUpdate(userid, {
+            $addToSet: { mockAttempts: mockTest?._id }
+        }, { new: true })
+        console.log("MockTest ID:", mockTest._id.toString());
+        console.log("User mockAttempts after update:", usermock.mockAttempts.map(id => id.toString()));
+
+        return NextResponse.json({
+            mockTestId: mockTest?._id,
+            // questions: safeQuestions,
             success: true
         });
     } catch (error) {
