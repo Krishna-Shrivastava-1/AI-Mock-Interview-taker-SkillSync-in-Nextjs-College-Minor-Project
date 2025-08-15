@@ -8,94 +8,74 @@ const { useEffect, useState } = require("react")
 
 
 const AuthGuard = () => {
-    const router = useRouter()
-    const pathname = usePathname()
-    const [token, settoken] = useState(null)
-    const { fetchedUserData } = useWholeApp()
-    useEffect(() => {
-        const fetchAuthorizeToken = async () => {
-            try {
-                const resp = await axios.get('/api/auth/user')
-                settoken(resp?.data?.user)
-            } catch (error) {
-                console.error('Token fetch error:', error)
-                settoken(null)
-            }
-        }
-        fetchAuthorizeToken()
-    }, [pathname])
-
-    // useEffect(() => {
-    //     if (token === null) return;
-
-    //     const isPublicPage = pathname === '/login' || pathname.startsWith('/community')
-
-    //     if (!token?.id && !isPublicPage) {
-    //         router.push('/');
-    //         return;
-    //     }
-
-    //     if (token?.id && pathname === '/login' && fetchedUserData?.user?.isFilledaboutandskill) {
-    //         router.push('/home');
-    //     } else {
-    //         if (token?.id && pathname === '/home' && !fetchedUserData?.user?.isFilledaboutandskill) {
-    //             router.push('/about-detail');
-    //         }
-    //         else if (token?.id && pathname === '/login' && !fetchedUserData?.user?.isFilledaboutandskill) {
-    //             router.push('/about-detail');
-    //         }
-    //         else if (token?.id && pathname === '/about-detail' && fetchedUserData?.user?.isFilledaboutandskill) {
-    //             window.location.href = "/home"
-    //         }
-    //         else {
-    //             if (token?.id && pathname === '/about-detail' && !fetchedUserData?.user?.isFilledaboutandskill) {
-    //                 router.push('/about-detail');
-    //             }
-    //         }
-    //     }
-
-
-
-    // }, [token, pathname, router])
-    useEffect(() => {
+  const router = useRouter()
+  const pathname = usePathname()
+  const [token, settoken] = useState(null)
+  const { fetchedUserData } = useWholeApp()
+  useEffect(() => {
+    const fetchAuthorizeToken = async () => {
+      try {
+        const resp = await axios.get('/api/auth/user')
+        settoken(resp?.data?.user)
+      } catch (error) {
+        console.error('Token fetch error:', error)
+        settoken(null)
+      }
+    }
+    fetchAuthorizeToken()
+  }, [pathname])
+useEffect(() => {
+  // 1. Still loading → do nothing
   if (token === null || fetchedUserData === null) return;
 
-  const isPublicPage = pathname === '/login' || pathname.startsWith('/community');
-  const isLoggedIn = !!token?.id;
-  const isProfileFilled = fetchedUserData?.user?.isFilledaboutandskill;
+  const isPublicPage = pathname === '/login' ||pathname === '/' || pathname.startsWith('/community');
+  const isLoggedIn = !!token?.id; // true if token exists
 
-  if (!isLoggedIn && !isPublicPage) {
-    router.push('/');
-    return;
-  }
-
-  // If logged in and trying to go to login page
-  if (isLoggedIn && pathname === '/login') {
-    if (isProfileFilled) {
-      router.push('/home');
-    } else {
-      router.push('/about-detail');
+  // 2. If NOT logged in
+  if (!isLoggedIn) {
+    if (!isPublicPage) {
+      router.push('/login'); // always go to login first
     }
     return;
   }
 
-  // If logged in and trying to access home but profile not filled
-  if (isLoggedIn && pathname === '/home' && !isProfileFilled) {
-    router.push('/login');
-    return;
-  }
-
-  // If logged in and trying to access about-detail but profile is already filled
-  if (isLoggedIn && pathname === '/about-detail' && isProfileFilled) {
+  // 3. If logged in but tries to visit login page → send to home
+  if (isLoggedIn && pathname === '/login') {
     router.push('/home');
-    return;
   }
+}, [token, fetchedUserData, pathname, router]);
 
-}, [token, pathname, router, fetchedUserData]);
+  // useEffect(() => {
+  //   if (token === null || fetchedUserData === null) return;
 
-    console.log(token)
-    console.log(fetchedUserData?.user)
-    return null
+  //   const isPublicPage = pathname === '/login' || pathname.startsWith('/community');
+  //   const isLoggedIn = !!token?.id;
+  //   if (!isLoggedIn && pathname === '/home') {
+  //     router.push('/login');
+  //   }
+
+  //   if (!isLoggedIn && !isPublicPage) {
+  //     router.push('/');
+  //     return;
+  //   }
+
+  //   // If logged in and trying to go to login page
+  //   if (isLoggedIn && pathname === '/login') {
+  //     if (isLoggedIn) {
+  //       router.push('/home');
+  //     }
+  //     return;
+  //   }
+
+
+
+
+
+  // }, [token, pathname, router, fetchedUserData, fetchedUserData?.user?._id]);
+
+  console.log(token)
+  console.log(fetchedUserData?.user)
+  return null
 
 }
 export default AuthGuard

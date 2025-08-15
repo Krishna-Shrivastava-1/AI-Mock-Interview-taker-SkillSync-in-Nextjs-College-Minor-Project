@@ -12,7 +12,7 @@ const page = () => {
   const [skills, setskills] = useState('')
   const [descbio, setdescbio] = useState('')
   const { userId } = useWholeApp()
-  const router = useRouter()
+
   const handlesubmit = async (e) => {
     try {
       e.preventDefault()
@@ -25,10 +25,7 @@ const page = () => {
         skills: cleanedSkills,
         description: descbio
       })
-      setTimeout(() => {
 
-        window.location.href = "/home"
-      }, 2000);
     } catch (error) {
       console.log(error.message)
     }

@@ -1,12 +1,14 @@
 'use client'
 
 import axios from "axios";
+import { usePathname } from "next/navigation";
 
 const { createContext, useState, useEffect, useContext } = require("react");
 
 const AuthContext = createContext()
 export const WholeAppProvider = ({ children }) => {
     const [userId, setuserId] = useState('')
+    const pathname = usePathname()
     const [fetchedUserData, setfetchedUserData] = useState([])
     useEffect(() => {
         const userId = async () => {
@@ -20,7 +22,7 @@ export const WholeAppProvider = ({ children }) => {
             }
         }
         userId()
-    }, [])
+    }, [pathname])
     useEffect(() => {
         const fetchUserDatafromId = async () => {
             try {
@@ -33,10 +35,10 @@ export const WholeAppProvider = ({ children }) => {
             }
         }
         fetchUserDatafromId()
-    }, [userId])
+    }, [userId,pathname])
     console.log(fetchedUserData?.user)
     return (
-        <AuthContext.Provider value={{ userId, fetchedUserData }}>
+        <AuthContext.Provider value={{ userId, fetchedUserData ,setfetchedUserData }}>
             {children}
         </AuthContext.Provider>
     )
