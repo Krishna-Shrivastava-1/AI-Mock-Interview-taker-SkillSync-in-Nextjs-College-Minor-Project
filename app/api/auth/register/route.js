@@ -3,7 +3,17 @@ import { userModel } from "@/Models/User";
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { Resend } from "resend";
-const resend = new Resend(process.env.RESEND_API_KEY);
+import nodemailer from "nodemailer";
+const resend = new Resend(process.env.RESEND_API_KEY || 're_iXEpkLkP_NJM51fXbr6pfLyUve53wZrTW');
+
+const transporter = nodemailer.createTransport({
+  host: 'smtp-relay.brevo.com',
+  port: 587,
+  auth: {
+    user: '834513002@smtp-brevo.com',
+    pass: 'GaJd5XcMxCkpn3WR',
+  }
+})
 export async function POST(req, res) {
   try {
     const { name, email, password } = await req.json();
@@ -37,8 +47,8 @@ export async function POST(req, res) {
       password: hashpassword,
     });
 
-    await resend.emails.send({
-      from: "Acme <onboarding@resend.dev>",
+    const mailOptions ={
+      from: 'per550017@gmail.com',
       to: email,
       subject: "Welcome to SkillSync – Let’s Begin Your Growth Journey 🚀",
       html: `<!DOCTYPE html>
@@ -118,7 +128,21 @@ export async function POST(req, res) {
   </body>
 </html>
 `,
-    });
+    };
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log('Error in Sending email ', error)
+        return res.status(500).json({
+          message: 'Account created, but failed to send welcome email.',
+          success: true,
+        });
+      }
+      console.log('Email sent:', info.response);
+      return res.status(201).json({
+        message: 'Account created successfully and welcome email sent.',
+        success: true,
+      });
+    })
 
     return NextResponse.json({
       message: "Account Created Successfully",
