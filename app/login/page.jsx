@@ -12,14 +12,14 @@ const page = () => {
     const [email, setemail] = useState('')
     const [password, setpassword] = useState('')
     const router = useRouter()
-    const {fetchedUserData} = useWholeApp()
+    const { fetchedUserData,setfetchedUserData } = useWholeApp()
     const handleSignup = async (name, email, password) => {
         try {
             const resp = await axios.post('/api/auth/register', {
                 name, email, password
             })
             if (resp) {
-                // console.log('registration successful')
+                console.log('registration successful')
             }
         } catch (error) {
             console.log(error.message)
@@ -31,12 +31,13 @@ const page = () => {
             const resp = await axios.post('/api/auth/login', {
                 email, password
             })
-            if(fetchedUserData?.user?.isFilledaboutandskill){
-                router.push('/home');
-            }else{
-                 router.push('/about-detail');
+
+            console.log(resp)
+            if (resp?.data?.success) {
+                router.push('/home')
+                // setfetchedUserData(resp?.data)
             }
-         
+
         } catch (error) {
             console.log(error.message)
         }
@@ -56,10 +57,10 @@ const page = () => {
         <div>
             <Navbar />
             <div className='w-full flex items-start justify-center'>
-                
+
                 <div className='mt-16 m-2  w-full border border-zinc-800 shadow-lg shadow-sky-800/30 p-2 rounded-xl max-w-sm text-white'>
                     <h1 className='font-extrabold text-center text-3xl mb-6'>{logorsign} to <span className='text-sky-600 underline'>SkillSync</span></h1>
-                    <form  onSubmit={handsubmit}>
+                    <form onSubmit={handsubmit}>
                         <div className='flex flex-col '>
                             {
                                 logorsign === 'Sign up' && <input onChange={(e) => setname(e.target.value)} className=' placeholder:font-bold w-[95%] outline-none  focus-within:border border-zinc-700 border focus-within:border-sky-600 focus-within:shadow-sm shadow-sky-600 text-lg m-2 pl-2 p-1 rounded-sm' type="text" placeholder='Username' />
