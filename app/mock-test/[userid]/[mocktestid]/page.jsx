@@ -90,6 +90,15 @@ const page = () => {
     })
  
 console.log(quest_id)
+let totalscore = 0
+mockQuesitonwithans?.[0]?.questions?.map((e)=>{
+    const userAns = optrespo[e._id]
+    const correctedAns = e?.correctAnswer
+    if(userAns === correctedAns){
+        totalscore++
+    }
+})
+console.log(totalscore)
     return (
         <div className='text-white'>
             <SidebarProvider className='dark'>
@@ -166,7 +175,7 @@ console.log(quest_id)
                         <AlertDialog open={isOpen} onOpenChange={setIsOpen} className='dark text-white'>
                             <AlertDialogContent className='dark text-white '>
                                 <AlertDialogHeader>
-                                    <AlertDialogTitle><div className='w-full flex justify-between items-center text-nowrap'><h1>Your Mock Summary </h1><h1>Your Score - {mockQuesitonwithans?.[0]?.score}/10</h1></div></AlertDialogTitle>
+                                    <AlertDialogTitle><div className='w-full flex justify-between items-center text-nowrap'><h1>Your Mock Summary </h1><h1>Your Score - {totalscore}/10</h1></div></AlertDialogTitle>
                                     <AlertDialogDescription asChild>
                                         <div className='w-[90%] p-2 overflow-y-auto noside h-[60vh]'>
                                             {
@@ -201,6 +210,7 @@ console.log(quest_id)
                     {/* Render the check icon for the correct answer */}
                     {isCorrectOption && (
                         <Check strokeWidth='2.5' className='text-green-500 text-lg font-bold' />
+                
                     )}
 
                     {/* Render the cross icon for a wrong user selection, but only if the option is not correct */}

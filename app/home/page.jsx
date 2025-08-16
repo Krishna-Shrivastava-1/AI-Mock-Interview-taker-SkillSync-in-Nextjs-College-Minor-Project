@@ -17,6 +17,7 @@ import MockDataCards from '@/components/MockDataCards'
 import { Separator } from "@/components/ui/separator";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import DiscoverSectionNews from '@/components/DiscoverSectionNews'
+import { Skeleton } from '@/components/ui/skeleton'
 
 
 const page = () => {
@@ -30,13 +31,13 @@ const page = () => {
     router.refresh()
   }
 
-  if (!fetchedUserData?.user) {
-    return (
-      <div className='flex items-center justify-center h-screen'>
-        <h1 className='text-2xl font-bold'></h1>
-      </div>
-    )
-  }
+  // if (!fetchedUserData?.user) {
+  //   return (
+  //     <div className='flex items-center justify-center h-screen bg-red-600'>
+  //       <h1 className='text-2xl font-bold text-white'>Loadin</h1>
+  //     </div>
+  //   )
+  // }
 
 
 
@@ -76,7 +77,7 @@ const page = () => {
               </Breadcrumb> */}
             </div>
           </header>
-          <div className="flex flex-1 flex-col gap-4 p-4">
+          {fetchedUserData?.user ? <div className="flex flex-1 flex-col gap-4 p-4">
             <div className='w-full text-white font-bold text-center text-4xl'>
               <h1>Hi, <span className='text-sky-500 textshad'>{fetchedUserData?.user?.name}</span>  </h1>
             </div>
@@ -92,6 +93,19 @@ const page = () => {
             <DiscoverSectionNews />
             <div className='h-screen'></div>
           </div>
+            :
+            <div className="flex flex-1 flex-col gap-4 p-4">
+              <div className='w-full text-white font-bold flex justify-center text-4xl'>
+                <Skeleton className="h-10 w-sm rounded-3xl" />
+              </div>
+              <div className='flex items-center justify-center flex-wrap  gap-4 mt-4'>
+                <Skeleton className="h-32 w-sm rounded-3xl" />
+                <Skeleton className="h-32 w-sm rounded-3xl" />
+                <Skeleton className="h-32 w-sm rounded-3xl" />
+              </div>
+            </div>
+
+          }
         </SidebarInset>
       </SidebarProvider>
 

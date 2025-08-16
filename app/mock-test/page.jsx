@@ -42,7 +42,9 @@ const Page = () => {
 
   const generateAImockQuest = async () => {
     try {
+      
       if (userId && role && skills && difficulty) {
+        setloading(true)
         const repos = await axios.post('/api/mockgenerator', {
           userid: userId,
           role: role,
@@ -59,13 +61,7 @@ const Page = () => {
       console.error("Error generating mock questions:", error.message);
     }
   };
-  if (loading) {
-    return (
-      <div className='w-full h-[60vh] bg-black/30 backdrop-blur-md flex items-center justify-center'>
-        <LoaderCircle className='animate-spin text-white' size={40} />
-      </div>
-    );
-  }
+
   const handleLogout = async () => {
     await axios.post('/api/auth/logout')
     router.push('/')
@@ -101,72 +97,81 @@ const Page = () => {
                     </Breadcrumb> */}
             </div>
           </header>
-          {loading && <div className='text-white'>Loading......</div>}
-          <div className='w-full flex items-center justify-center'>
-            <div className='text-white w-[90%] sm:w-[70%]'>
-              <h1 className='text-xl font-bold'>Guidelines:</h1>
+          {!loading ?
+            <div>
+              <div className='w-full flex items-center justify-center'>
+                <div className='text-white w-[90%] sm:w-[70%]'>
+                  <h1 className='text-xl font-bold'>Guidelines:</h1>
 
-              <span className='flex items-start justify-center'><Dot /><p> Please provide your role, skills, and difficulty level to generate a mock test. The AI will create questions based on the provided information.</p></span>
-              <span className='flex items-start justify-center text-red-500'><Dot /><p className='text-red-500'> Note: If you leave the quiz in middle after started you will not able to continue the quiz again and this affect your overall average and score.</p></span>
+                  <span className='flex items-start justify-center'><Dot size={50} /><p> Please provide your role, skills, and difficulty level to generate a mock test. The AI will create questions based on the provided information.</p></span>
+                  <span className='flex items-start justify-center text-red-500'><Dot size={50} /><p className='text-red-500'> Note: If you leave the quiz in middle after started you will not able to continue the quiz again and this affect your overall average and score.</p></span>
 
-
-            </div>
-          </div>
-          <div className='w-full flex items-start  justify-center text-white'>
-
-
-            <div className=' m-2  w-full border h-[325px]  border-zinc-800  p-2 rounded-xl max-w-md text-white'>
-
-              <div className='flex flex-col w-full justify-center  '>
-
-                <div className="flex flex-1 flex-col  gap-4 p-4 w-full">
-                  <div className='text-white w-full'>
-                    <Label htmlFor='role' className='text-lg font-semibold'>Role</Label>
-                    <input
-                      id='role'
-                      onChange={(e) => setRole(e.target.value)}
-                      className='placeholder:font-bold w-full outline-none focus-within:border border-zinc-700 border focus-within:shadow-sm shadow-sky-600 focus-within:border-sky-600 m-2 text-lg pl-2 p-1 rounded-sm'
-                      type="text"
-                      required
-                      placeholder='Enter role'
-                    />
-                    <Label htmlFor='skill' className='text-lg font-semibold'>Skill</Label>
-                    <input
-                      id='skill'
-                      value={skills}
-                      onChange={(e) => setSkills(e.target.value)}
-                      className='placeholder:font-bold w-full outline-none focus-within:border border-zinc-700 border focus-within:shadow-sm shadow-sky-600 focus-within:border-sky-600 m-2 text-lg pl-2 p-1 rounded-sm'
-                      type="text"
-                      required
-                      placeholder='Enter Skills'
-                    />
-                    <Label htmlFor='difficulty' className='text-lg font-semibold'>Difficulty</Label>
-                    <Select onValueChange={(value) => setDifficulty(value)} defaultValue="easy" className='dark'>
-                      <SelectTrigger id='difficulty' className="w-[180px]">
-                        <SelectValue placeholder="Difficulty" />
-                      </SelectTrigger>
-                      <SelectContent className='dark'>
-                        <SelectItem value="hard">Hard</SelectItem>
-                        <SelectItem value="medium">Medium</SelectItem>
-                        <SelectItem value="easy">Easy</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  {role && skills && difficulty ? (
-                    <Button className='hover:cursor-pointer' onClick={generateAImockQuest} variant="secondary">Generate Quiz</Button>
-                  ) : (
-                    <Button disabled className='hover:cursor-not-allowed select-none' variant="secondary">Generate Quiz</Button>
-                  )}
 
                 </div>
-
               </div>
+              <div className='w-full flex items-start  justify-center text-white'>
+
+
+                <div className=' m-2  w-full border h-[325px]  border-zinc-800  p-2 rounded-xl max-w-md text-white'>
+
+                  <div className='flex flex-col w-full justify-center  '>
+
+                    <div className="flex flex-1 flex-col  gap-4 p-4 w-full">
+                      <div className='text-white w-full'>
+                        <Label htmlFor='role' className='text-lg font-semibold'>Role</Label>
+                        <input
+                          id='role'
+                          onChange={(e) => setRole(e.target.value)}
+                          className='placeholder:font-bold w-full outline-none focus-within:border border-zinc-700 border focus-within:shadow-sm shadow-sky-600 focus-within:border-sky-600 m-2 text-lg pl-2 p-1 rounded-sm'
+                          type="text"
+                          required
+                          placeholder='Enter role'
+                        />
+                        <Label htmlFor='skill' className='text-lg font-semibold'>Skill</Label>
+                        <input
+                          id='skill'
+                          value={skills}
+                          onChange={(e) => setSkills(e.target.value)}
+                          className='placeholder:font-bold w-full outline-none focus-within:border border-zinc-700 border focus-within:shadow-sm shadow-sky-600 focus-within:border-sky-600 m-2 text-lg pl-2 p-1 rounded-sm'
+                          type="text"
+                          required
+                          placeholder='Enter Skills'
+                        />
+                        <Label htmlFor='difficulty' className='text-lg font-semibold'>Difficulty</Label>
+                        <Select onValueChange={(value) => setDifficulty(value)} defaultValue="easy" className='dark'>
+                          <SelectTrigger id='difficulty' className="w-[180px]">
+                            <SelectValue placeholder="Difficulty" />
+                          </SelectTrigger>
+                          <SelectContent className='dark'>
+                            <SelectItem value="hard">Hard</SelectItem>
+                            <SelectItem value="medium">Medium</SelectItem>
+                            <SelectItem value="easy">Easy</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      {role && skills && difficulty ? (
+                        <Button className='hover:cursor-pointer' onClick={generateAImockQuest} variant="secondary">Generate Quiz</Button>
+                      ) : (
+                        <Button disabled className='hover:cursor-not-allowed select-none' variant="secondary">Generate Quiz</Button>
+                      )}
+
+                    </div>
+
+                  </div>
 
 
 
+                </div>
+              </div>
             </div>
-          </div>
+            :
+            <div className='w-full text-white flex items-center justify-center h-[70vh]'>
+              <LoaderCircle size={45} className='animate-spin' />
+            </div>
+
+          }
+
         </SidebarInset>
       </SidebarProvider>
 
