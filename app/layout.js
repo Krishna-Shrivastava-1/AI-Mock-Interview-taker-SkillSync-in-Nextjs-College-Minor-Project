@@ -25,7 +25,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
        <head>
         <link rel="manifest" href="./manifest.json" />
-        <link rel="icon" href="/smallico.png" />
+        <link rel="icon" href="./smallico.png" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
