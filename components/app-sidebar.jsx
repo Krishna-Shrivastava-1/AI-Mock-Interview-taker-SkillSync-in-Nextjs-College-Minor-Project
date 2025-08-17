@@ -281,12 +281,12 @@ export function AppSidebar({fetchedUser,
   ],
 }
   return (
-    <Sidebar collapsible="offcanvas" {...props}>
-      <SidebarHeader>
+    <Sidebar className='dark' collapsible="offcanvas" {...props}>
+      <SidebarHeader className='dark'>
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:!p-1.5">
-              <a href="#">
+              <a href="/">
                 {/* <IconInnerShadowTop className="!size-5" /> */}
                 <span className="text-base font-semibold">SkillSync</span>
               </a>
@@ -299,7 +299,7 @@ export function AppSidebar({fetchedUser,
         {/* <NavDocuments items={data.documents} /> */}
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
-      <SidebarFooter>
+      <SidebarFooter className='dark'>
         <NavUser user={data.user} />
       </SidebarFooter>
     </Sidebar>
