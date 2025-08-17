@@ -113,7 +113,7 @@ export async function POST(req, res) {
         <li>📈 Get performance feedback & analytics</li>
         <li>🤝 Connect with peers via the community panel</li>
       </ul>
-      <a href="https://skillsync.in/dashboard" class="btn">Go to Dashboard</a>
+      <a href="https://skillsync-ebon.vercel.app/login" class="btn">Go to Dashboard</a>
       <p style="margin-top: 30px;">
         We’re here to support you every step of the way. If you have any questions, just hit reply!
       </p>
