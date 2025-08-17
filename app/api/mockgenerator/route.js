@@ -55,8 +55,10 @@ Return ONLY valid JSON in this format with no extra text:
                 correctAnswer: q.correct_answer, // Gemini uses "correct_answer"
                 explanation: q.explanation,
                 difficulty: difficulty,
-                explaination: q.explanation
-            }))
+                explaination: q.explanation,
+
+            })),
+            role: role
 
         })
         // console.log(mockTest)

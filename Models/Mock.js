@@ -7,7 +7,7 @@ const mockSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    
+
     questions: [
       {
         questionText: String,
@@ -15,10 +15,12 @@ const mockSchema = new mongoose.Schema(
         correctAnswer: String,
         isCorrect: Boolean,
         difficulty: String,
-        options:[String],
-        explaination:String
+        options: [String],
+        explaination: String
+
       },
     ],
+    role: String,
     score: Number,
     attemptedAt: {
       type: Date,

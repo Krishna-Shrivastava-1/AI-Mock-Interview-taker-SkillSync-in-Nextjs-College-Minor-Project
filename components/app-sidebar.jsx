@@ -32,7 +32,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { BookText, SquareCheck, SquarePen } from "lucide-react"
+import { BookText, SquareCheck, SquarePen,ClipboardList } from "lucide-react"
 
 // const data = {
 //   user: {
@@ -168,8 +168,8 @@ export function AppSidebar({fetchedUser,
     },
     {
       title: "Leader Board",
-      url: "#",
-      icon: BookText,
+      url: "/leaderboard",
+      icon: ClipboardList,
     },
     {
       title: "Analytics",

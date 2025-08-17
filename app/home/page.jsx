@@ -43,14 +43,7 @@ const page = () => {
 
   return (
     <div className=''>
-      {/* <Navbar /> */}
-
-      {/* <SidebarProvider className='dark md:dark'>
-      <AppSidebar  /> 
- 
-     <Button onClick={handleLogout} variant="secondary">Logout</Button>
-     <SidebarTrigger className='dark'/>
-    </SidebarProvider> */}
+     
       <SidebarProvider className='dark'>
         <AppSidebar fetchedUser={fetchedUserData} />
         <SidebarInset>

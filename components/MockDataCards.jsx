@@ -42,7 +42,7 @@ const MockDataCards = ({ fetchedUser }) => {
             </SpotlightCard>
             <SpotlightCard className="w-sm max-h-32 hover:shadow-md transition-all  duration-300 shadow-yellow-500 text-white" spotlightColor="#446102">
                 <div className='flex items-center justify-between'>
-                    <div className='flex flex-col items-center justify-between text-yellow-500'>  <h1 className='font-bold text-2xl'>Unfinished Mock Test</h1>
+                    <div className='flex flex-col items-center justify-between text-yellow-500'>  <h1 className='font-bold text-2xl'>Incomplete Mock Test</h1>
                         <p className='text-muted-foreground'>Total mock test that you you not submitted.</p></div>
 
                     <div>

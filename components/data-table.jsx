@@ -377,16 +377,16 @@ export function DataTable({
   }
 
   return (
-    <Tabs defaultValue="outline" className="w-full flex-col justify-start gap-6">
-      <div className="flex items-center justify-between px-4 lg:px-6">
-        <Label htmlFor="view-selector" className="sr-only">
+    <Tabs defaultValue="outline" className="w-full flex-col justify-start dark gap-6">
+      <div className="flex items-center dark justify-between px-4 dark lg:px-6">
+        <Label htmlFor="view-selector" className="sr-only dark">
           View
         </Label>
         <Select defaultValue="outline">
           <SelectTrigger className="flex w-fit @4xl/main:hidden" size="sm" id="view-selector">
             <SelectValue placeholder="Select a view" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className='dark'>
             <SelectItem value="outline">Outline</SelectItem>
             <SelectItem value="past-performance">Past Performance</SelectItem>
             <SelectItem value="key-personnel">Key Personnel</SelectItem>

@@ -97,7 +97,7 @@ userchartdata?.forEach(ele => {
                 type="natural"
                 stroke="#82ca9d" // A distinct green for easy
                 strokeWidth={2}
-                dot={false}
+                dot={true}
               />
               {/* Line for Medium scores */}
               <Line
@@ -106,7 +106,7 @@ userchartdata?.forEach(ele => {
                 type="natural"
                 stroke="#ffc658" // A distinct orange for medium
                 strokeWidth={2}
-                dot={false}
+                dot={true}
               />
               {/* Line for Hard scores */}
               <Line
@@ -115,7 +115,7 @@ userchartdata?.forEach(ele => {
                 type="natural"
                 stroke="#ff7300" // A distinct red/orange for hard
                 strokeWidth={2}
-                dot={false}
+                dot={true}
               />
             </LineChart>
           </ChartContainer>
