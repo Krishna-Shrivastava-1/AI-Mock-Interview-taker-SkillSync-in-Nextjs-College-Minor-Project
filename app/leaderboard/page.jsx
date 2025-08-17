@@ -178,7 +178,7 @@ const page = () => {
         if (alluserData.length > 0 && fetchedUserData?.user) {
             setLoading(false);
         }
-    }, [alluserData, fetchedUserData])
+    }, [alluserData, fetchedUserData,splicedSortedScore])
 
     return (
         <div>

@@ -15,7 +15,7 @@ import { usePathname } from "next/navigation";
 
 export function NavMain({ items }) {
   const pathname = usePathname();
-  console.log('pathname', pathname);
+  // console.log('pathname', pathname);
 
   return (
     <SidebarGroup className='dark'>
@@ -28,8 +28,8 @@ export function NavMain({ items }) {
                 className={`
                   min-w-8 duration-200 ease-linear cursor-pointer
                   ${pathname === '/home' 
-                    ? 'bg-primary text-primary-foreground'
-                    : ''
+                    ? 'bg-zinc-800 text---sidebar-primary-foreground'
+              : 'bg-transparent text-gray-300 hover:bg-zinc-800'
                   }
                 `}>
                 <House />
@@ -47,8 +47,8 @@ export function NavMain({ items }) {
                   className={`
                     min-w-8 duration-200 ease-linear cursor-pointer
                     ${pathname === item.url 
-                      ? 'bg-primary text-primary-foreground'
-                      : ''
+                      ? 'bg-zinc-800 text---sidebar-primary-foreground'
+              : 'bg-transparent text-gray-300 hover:bg-zinc-800'
                     }
                   `}>
                   {item.icon && <item.icon />}

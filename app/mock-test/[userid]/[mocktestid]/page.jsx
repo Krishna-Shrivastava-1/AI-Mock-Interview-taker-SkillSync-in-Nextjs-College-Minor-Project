@@ -149,8 +149,8 @@ const page = () => {
                                                     question?.options?.map((opt, ind) => (
                                                         <div className={`hover:bg-zinc-900 cursor-pointer '}`} key={ind}>
                                                             <div onClick={() => handleoptRespo(question._id, opt)} className='flex items-center gap-2 p-1'>
-                                                                <p ><span className="font-semibold">{String.fromCharCode(97 + ind)}.</span> {opt}</p>
-                                                                {optrespo[question?._id] === opt && <Check strokeWidth='2.5' className='text-green-500 text-lg font-bold' />}
+                                                                <p className='text-gray-300'><span className="font-semibold">{String.fromCharCode(97 + ind)}.</span> {opt}</p>
+                                                                {optrespo[question?._id] === opt && <Check strokeWidth='2.5' className='text-green-500 text-lg mx-2 font-bold' />}
                                                             </div>
 
                                                         </div>
@@ -175,9 +175,9 @@ const page = () => {
                         <AlertDialog open={isOpen} onOpenChange={setIsOpen} className='dark text-white'>
                             <AlertDialogContent className='dark text-white '>
                                 <AlertDialogHeader>
-                                    <AlertDialogTitle><div className='w-full flex justify-between items-center text-nowrap'><h1>Your Mock Summary </h1><h1>Your Score - {totalscore}/10</h1></div></AlertDialogTitle>
+                                    <AlertDialogTitle><div className='w-full flex-wrap flex justify-between items-center text-wrap'><h1>Your Mock Summary </h1><h1 className='text-nowrap'>Your Score - {totalscore}/10</h1></div></AlertDialogTitle>
                                     <AlertDialogDescription asChild>
-                                        <div className='w-[90%] p-2 overflow-y-auto noside h-[60vh]'>
+                                        <div className='w-[90%] p-1 overflow-y-auto noside h-[70vh]'>
                                             {
                                                 mockQuestion?.questions?.map((question, index) => (
 
@@ -209,7 +209,7 @@ const page = () => {
 
                                                                             {/* Render the check icon for the correct answer */}
                                                                             {isCorrectOption && (
-                                                                                <Check strokeWidth='2.5' className='text-green-500 text-lg font-bold' />
+                                                                                <Check strokeWidth='2.5' className='text-green-500 mx-2 text-lg font-bold' />
 
                                                                             )}
 
@@ -227,7 +227,7 @@ const page = () => {
                                                         }
                                                         {
 
-                                                           <p key={index} className='text-orange-400 text-lg'><span className='text-white font-semibold text-lg'>Explaination -</span> {question?.explaination}</p>
+                                                              <p><span className='text-white font-semibold text-lg'>Explaination -</span> {quest_id[index]}</p>
                                                         }
 
                                                     </div>
@@ -239,7 +239,9 @@ const page = () => {
                                     </AlertDialogDescription>
                                 </AlertDialogHeader>
                                 <AlertDialogFooter>
-                                    <AlertDialogAction variant='ghost' onClick={() => router.back()}>Continue</AlertDialogAction>
+                              <AlertDialogAction onClick={() => router.back()} variant='ghost'>
+    Continue
+  </AlertDialogAction>
                                 </AlertDialogFooter>
                             </AlertDialogContent>
                         </AlertDialog>
