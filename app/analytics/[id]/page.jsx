@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 import { Skeleton } from '@/components/ui/skeleton'
+import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
@@ -39,11 +40,11 @@ const page = () => {
   console.log('medium - ', countMedium)
   console.log('hard - ', countHard)
   useEffect(() => {
-    if (fetchedUserData && additionOfTotalScore) {
+    if (fetchedUserData && fetchedUserData?.user?.mockAttempts?.length > 0 && additionOfTotalScore) {
       setlaoding(false)
     }
-  }, [additionOfTotalScore])
-
+  }, [additionOfTotalScore, fetchedUserData?.user?.mockAttempts])
+  console.log(fetchedUserData?.user?.mockAttempts?.length)
   return (
     <div>
       <SidebarProvider className='dark'>
@@ -62,18 +63,29 @@ const page = () => {
           </header>
           {
             laoding ?
+              fetchedUserData?.user?.mockAttempts?.length === 0 ?
+                <div className='w-full flex items-center justify-center my-8 '>
+                  <div className='w-[90%] select-none p-1 text-center text-sky-600 text-lg font-semibold rounded-md'>
 
-              <div className="flex flex-1 flex-col gap-4 p-4">
+                    <p className='text-white'>There is no analytics to show <span>
+                      <Link className='text-sky-500 underline cursor-pointer ' href={'/mock-test'}>
+                      Give your First Mock Test
+                      </Link>
+                      </span></p>
+                  </div>
+                </div>
+                :
+                <div className="flex flex-1 flex-col gap-4 p-4">
 
-                <div className='flex items-center justify-center flex-wrap  gap-4 mt-4'>
-                  <Skeleton className="h-32 w-sm rounded-3xl" />
-                  <Skeleton className="h-32 w-sm rounded-3xl" />
-                  <Skeleton className="h-32 w-sm rounded-3xl" />
+                  <div className='flex items-center justify-center flex-wrap  gap-4 mt-4'>
+                    <Skeleton className="h-32 w-sm rounded-3xl" />
+                    <Skeleton className="h-32 w-sm rounded-3xl" />
+                    <Skeleton className="h-32 w-sm rounded-3xl" />
+                  </div>
+                  <div className='w-full text-white font-bold flex justify-center text-4xl'>
+                    <Skeleton className=" w-[95%] h-[500px] rounded-3xl" />
+                  </div>
                 </div>
-                <div className='w-full text-white font-bold flex justify-center text-4xl'>
-                  <Skeleton className=" w-[95%] h-[500px] rounded-3xl" />
-                </div>
-              </div>
               :
               <div>
                 <div className='flex items-center justify-center mx-3 flex-wrap gap-4 mt-4 mb-4'>
@@ -119,8 +131,10 @@ const page = () => {
               </div>
           }
 
-
-         <PreviousMockTable data={fetchedUserData?.user?.mockAttempts}/>
+{
+     fetchedUserData?.user?.mockAttempts?.length > 0 &&   <PreviousMockTable data={fetchedUserData?.user?.mockAttempts} />
+}
+       
         </SidebarInset>
       </SidebarProvider>
 

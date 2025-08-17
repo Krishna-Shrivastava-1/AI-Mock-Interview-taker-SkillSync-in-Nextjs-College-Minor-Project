@@ -5,7 +5,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextResponse } from "next/server";
 
 
-const genAI = new GoogleGenerativeAI('AIzaSyCOlI2oRIS9Evk_RSsr2HUWGOQDBUfKhI0');
+const genAI = new GoogleGenerativeAI(process.env.GeminiAPI3);
 export async function POST(req, res) {
     try {
         const { skill, role, difficulty, userid } = await req.json()

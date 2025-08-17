@@ -83,22 +83,22 @@ const page = () => {
     // console.log(optrespo['689d7cfbac4cf6a4ee833da3'])
     const emparr = Object.keys(optrespo)
     console.log(emparr)
-    const quest_id = mockQuestion?.questions?.map((e)=> {
-       return mockQuesitonwithans?.[0]?.questions?.find((q) => q._id === e._id).explaination
-        
-    
+    const quest_id = mockQuestion?.questions?.map((e) => {
+        return mockQuesitonwithans?.[0]?.questions?.find((q) => q._id === e._id).explaination
+
+
     })
- 
-console.log(quest_id)
-let totalscore = 0
-mockQuesitonwithans?.[0]?.questions?.map((e)=>{
-    const userAns = optrespo[e._id]
-    const correctedAns = e?.correctAnswer
-    if(userAns === correctedAns){
-        totalscore++
-    }
-})
-console.log(totalscore)
+
+    console.log(quest_id)
+    let totalscore = 0
+    mockQuesitonwithans?.[0]?.questions?.map((e) => {
+        const userAns = optrespo[e._id]
+        const correctedAns = e?.correctAnswer
+        if (userAns === correctedAns) {
+            totalscore++
+        }
+    })
+    console.log(totalscore)
     return (
         <div className='text-white'>
             <SidebarProvider className='dark'>
@@ -149,8 +149,8 @@ console.log(totalscore)
                                                     question?.options?.map((opt, ind) => (
                                                         <div className={`hover:bg-zinc-900 cursor-pointer '}`} key={ind}>
                                                             <div onClick={() => handleoptRespo(question._id, opt)} className='flex items-center gap-2 p-1'>
-                                                                <p >{opt}</p>
-                                                                {Object.values(optrespo).includes(opt) && <Check strokeWidth='2.5' className='text-green-500 text-lg font-bold' />}
+                                                                <p ><span className="font-semibold">{String.fromCharCode(97 + ind)}.</span> {opt}</p>
+                                                                {optrespo[question?._id] === opt && <Check strokeWidth='2.5' className='text-green-500 text-lg font-bold' />}
                                                             </div>
 
                                                         </div>
@@ -180,60 +180,60 @@ console.log(totalscore)
                                         <div className='w-[90%] p-2 overflow-y-auto noside h-[60vh]'>
                                             {
                                                 mockQuestion?.questions?.map((question, index) => (
-                                                    
+
                                                     <div key={index}>
                                                         <div className='text-xl text-white font-bold'>{index + 1}. {question.questionText}</div>
-                                                    {
-    // Map over each option for the current question
-    question?.options?.map((opt, ind) => {
-        // Find the correct answer for the current question
-        const correctAnswer = mockQuesitonwithans?.[0]?.questions?.find(q => q._id === question._id)?.correctAnswer;
-   
-        // Find the user's selected answer for the current question
-        const userAnswer = optrespo[question._id];
+                                                        {
+                                                            // Map over each option for the current question
+                                                            question?.options?.map((opt, ind) => {
+                                                                // Find the correct answer for the current question
+                                                                const correctAnswer = mockQuesitonwithans?.[0]?.questions?.find(q => q._id === question._id)?.correctAnswer;
 
-        // This boolean is used to decide which icon to render
-        const isUserAnswerCorrect = userAnswer === correctAnswer;
-        
-        // This boolean checks if the current option in the loop is the correct one
-        const isCorrectOption = opt === correctAnswer;
+                                                                // Find the user's selected answer for the current question
+                                                                const userAnswer = optrespo[question._id];
 
-        // This boolean checks if the current option in the loop is the one the user selected
-        const isUserSelectedOption = opt === userAnswer;
+                                                                // This boolean is used to decide which icon to render
+                                                                const isUserAnswerCorrect = userAnswer === correctAnswer;
 
-        return (
-           
-                   <div className={`hover:bg-zinc-900 cursor-pointer`}  key={ind}>
-                <div className='flex items-center gap-2 p-1'>
-                    <p className='text-zinc-300'>{opt}</p>
-                    
-                    {/* Render the check icon for the correct answer */}
-                    {isCorrectOption && (
-                        <Check strokeWidth='2.5' className='text-green-500 text-lg font-bold' />
-                
-                    )}
+                                                                // This boolean checks if the current option in the loop is the correct one
+                                                                const isCorrectOption = opt === correctAnswer;
 
-                    {/* Render the cross icon for a wrong user selection, but only if the option is not correct */}
-                    {!isCorrectOption && isUserSelectedOption && (
-                        <X strokeWidth='2.5' className='text-red-500 text-lg font-bold' />
-                    )}
-                </div>
-            </div> 
-            
-        
-        );
-    })
-  
-}
-{
-   
-      <p><span className='text-white font-semibold text-lg'>Explaination -</span> {quest_id[index]}</p>
-}
+                                                                // This boolean checks if the current option in the loop is the one the user selected
+                                                                const isUserSelectedOption = opt === userAnswer;
+
+                                                                return (
+
+                                                                    <div className={`hover:bg-zinc-900 cursor-pointer`} key={ind}>
+                                                                        <div className='flex items-center gap-2 p-1'>
+                                                                            <p className='text-zinc-300'>{opt}</p>
+
+                                                                            {/* Render the check icon for the correct answer */}
+                                                                            {isCorrectOption && (
+                                                                                <Check strokeWidth='2.5' className='text-green-500 text-lg font-bold' />
+
+                                                                            )}
+
+                                                                            {/* Render the cross icon for a wrong user selection, but only if the option is not correct */}
+                                                                            {!isCorrectOption && isUserSelectedOption && (
+                                                                                <X strokeWidth='2.5' className='text-red-500 text-lg font-bold' />
+                                                                            )}
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                );
+                                                            })
+
+                                                        }
+                                                        {
+
+                                                           <p key={index} className='text-orange-400 text-lg'><span className='text-white font-semibold text-lg'>Explaination -</span> {question?.explaination}</p>
+                                                        }
 
                                                     </div>
                                                 ))
 
-                                                
+
                                             }
                                         </div>
                                     </AlertDialogDescription>
