@@ -191,11 +191,11 @@ export function AppSidebar({fetchedUser,
       url: "/mock-test",
       icon: SquareCheck,
     },
-    {
-      title: "Following",
-      url: "/mock-test",
-      icon: SquareCheck,
-    },
+    // {
+    //   title: "Following",
+    //   url: "/mock-test",
+    //   icon: SquareCheck,
+    // },
   ],
   navClouds: [
     {
