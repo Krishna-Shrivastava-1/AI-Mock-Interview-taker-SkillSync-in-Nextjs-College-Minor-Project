@@ -8,14 +8,16 @@
   "description": "A Progressive Web App built with Next.js.",
   "icons": [
     {
-      "src": "/smallico.png",
+      "src": "/smallremovebg.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
-      "src": "/largic.png",
+      "src": "/largeremovebg.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }

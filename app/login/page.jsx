@@ -5,6 +5,7 @@ import axios from 'axios'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
+import { toast } from 'sonner'
 
 const page = () => {
     const [logorsign, setlogorsign] = useState('Sign up')
@@ -18,8 +19,12 @@ const page = () => {
             const resp = await axios.post('/api/auth/register', {
                 name, email, password
             })
-            if (resp) {
-                console.log('registration successful')
+            console.log('register - ',resp)
+            if(!resp?.data?.success){
+                toast.error(resp?.data?.message)
+            }
+            if (resp?.data?.success) {
+                   toast.success(resp?.data?.message)
             }
         } catch (error) {
             console.log(error.message)
@@ -32,8 +37,12 @@ const page = () => {
                 email, password
             })
 
-            console.log(resp)
+            console.log('login - ',resp?.data)
+           if(!resp?.data?.success){
+             toast.error(resp?.data?.message)
+           }
             if (resp?.data?.success) {
+                 toast.success(resp?.data?.message)
                 router.push('/home')
                 // setfetchedUserData(resp?.data)
             }
@@ -63,7 +72,7 @@ const page = () => {
                     <form onSubmit={handsubmit}>
                         <div className='flex flex-col '>
                             {
-                                logorsign === 'Sign up' && <input onChange={(e) => setname(e.target.value)} className=' placeholder:font-bold w-[95%] outline-none  focus-within:border border-zinc-700 border focus-within:border-sky-600 focus-within:shadow-sm shadow-sky-600 text-lg m-2 pl-2 p-1 rounded-sm' type="text" placeholder='Username' />
+                                logorsign === 'Sign up' && <input maxLength={50} onChange={(e) => setname(e.target.value)} className=' placeholder:font-bold w-[95%] outline-none  focus-within:border border-zinc-700 border focus-within:border-sky-600 focus-within:shadow-sm shadow-sky-600 text-lg m-2 pl-2 p-1 rounded-sm' type="text" placeholder='Username' />
                             }
                             <input onChange={(e) => setemail(e.target.value)} className=' placeholder:font-bold w-[95%] outline-none  focus-within:border border-zinc-700 border focus-within:shadow-sm shadow-sky-600 focus-within:border-sky-600  m-2 text-lg pl-2 p-1 rounded-sm' type="email" required placeholder='Email' />
                             <input onChange={(e) => setpassword(e.target.value)} className=' placeholder:font-bold w-[95%] outline-none  focus-within:border border-zinc-700 border focus-within:shadow-sm shadow-sky-600 focus-within:border-sky-600 m-2 text-lg pl-2 p-1 rounded-sm' type="password" required placeholder='Password' />

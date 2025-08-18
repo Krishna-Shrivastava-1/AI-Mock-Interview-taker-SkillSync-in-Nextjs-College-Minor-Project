@@ -28,6 +28,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import Link from "next/link"
 
 export function NavUser({
   user
@@ -76,10 +77,13 @@ export function NavUser({
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
+              <Link href={`/profile/${user?._id}`}>
+              
               <DropdownMenuItem>
                 <IconUserCircle />
-                Account
+                Profile
               </DropdownMenuItem>
+              </Link>
               <DropdownMenuItem>
                 <IconCreditCard />
                 Billing

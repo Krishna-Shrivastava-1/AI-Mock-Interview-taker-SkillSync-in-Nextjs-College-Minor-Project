@@ -30,6 +30,13 @@ const page = () => {
     const [loading, setloading] = useState(true)
     const router = useRouter()
     const [isOpen, setIsOpen] = useState(false);
+    // if(userid !== fetchedUserData?.user?._id){
+    //     return (
+    //         <div className='w-full flex items-center justify-center text-white '>
+    //             <h1>This Quiz is not Belongs to you...</h1>
+    //         </div>
+    //     )
+    // }
     const fetchMocktestById = async () => {
         try {
             const rep = await axios.get(`/api/mockgenerator/getmockbyid/${decodeURIComponent(mocktestid)}`)
@@ -47,7 +54,7 @@ const page = () => {
         if (decodeURIComponent(mocktestid)) {
             fetchMocktestById();
         }
-    }, [decodeURIComponent(mocktestid)]);
+    }, [decodeURIComponent(mocktestid),fetchedUserData]);
 
     // console.log(mockQuestion)
 
@@ -99,6 +106,15 @@ const page = () => {
         }
     })
     console.log(totalscore)
+
+    const isMockidExist = fetchedUserData?.user?.mockAttempts.some((e) => {
+        if(e._id === mocktestid){
+            return true
+        }else{
+           return false
+        }
+    })
+    console.log('huy',isMockidExist)
     return (
         <div className='text-white'>
             <SidebarProvider className='dark'>
@@ -137,39 +153,53 @@ const page = () => {
                   
                    </div>
                  </div> */}
+                
                     {
-                        !loading ?
-                            <div className='w-full flex justify-center items-center flex-col gap-3'>
-                                <div className='w-[90%] p-2'>
-                                    {
-                                        mockQuestion?.questions?.map((question, index) => (
-                                            <div key={index}>
-                                                <h1 className='text-xl font-bold'>{index + 1}. {question.questionText}</h1>
-                                                {
-                                                    question?.options?.map((opt, ind) => (
-                                                        <div className={`hover:bg-zinc-900 cursor-pointer '}`} key={ind}>
-                                                            <div onClick={() => handleoptRespo(question._id, opt)} className='flex items-center gap-2 p-1'>
-                                                                <p className='text-gray-300'><span className="font-semibold">{String.fromCharCode(97 + ind)}.</span> {opt}</p>
-                                                                {optrespo[question?._id] === opt && <Check strokeWidth='2.5' className='text-green-500 text-lg mx-2 font-bold' />}
+                           loading ? (
+        <div className='w-full flex items-center justify-center h-[70vh]'>
+            <LoaderCircle size={45} className='animate-spin' />
+        </div>
+    )
+    :
+     mockQuesitonwithans?.[0]?.score ? (
+        <div className='w-full flex items-center justify-center text-sky-500 text-lg font-semibold h-[60vh]'>
+            <h1>This Quiz has already been attempted.</h1>
+        </div>
+    ) :
+    userid !== fetchedUserData?.user?._id || !isMockidExist ? (
+        <div className='w-full flex items-center justify-center text-sky-500 text-lg font-semibold h-[60vh]'>
+            <h1>This Quiz does not belong to you.</h1>
+        </div>
+    ) :
+                    
+                                <div className='w-full flex justify-center items-center flex-col gap-3'>
+                                    <div className='w-[90%] p-2'>
+                                        {
+                                            mockQuestion?.questions?.map((question, index) => (
+                                                <div key={index}>
+                                                    <h1 className='text-xl font-bold'>{index + 1}. {question.questionText}</h1>
+                                                    {
+                                                        question?.options?.map((opt, ind) => (
+                                                            <div className={`hover:bg-zinc-900 cursor-pointer '}`} key={ind}>
+                                                                <div onClick={() => handleoptRespo(question._id, opt)} className='flex items-center gap-2 p-1'>
+                                                                    <p className='text-gray-300'><span className="font-semibold">{String.fromCharCode(97 + ind)}.</span> {opt}</p>
+                                                                    {optrespo[question?._id] === opt && <Check strokeWidth='2.5' className='text-green-500 text-lg mx-2 font-bold' />}
+                                                                </div>
+
                                                             </div>
+                                                        ))
+                                                    }
 
-                                                        </div>
-                                                    ))
-                                                }
+                                                </div>
+                                            ))
+                                        }
+                                    </div>
+                                    <div className='sticky bottom-0  z-40 mt-5 pb-6  w-full flex items-center justify-center bg-black/30 backdrop-blur-md'>
 
-                                            </div>
-                                        ))
-                                    }
+                                        <Button onClick={sentRespotobackend} className='text-white font-semibold text-md cursor-pointer select-none md:w-md w-[90%] hover:border-zinc-700 hover:border-[0.5px] transition-all duration-150 hover:bg-zinc-900' variant="secondary" type='submit'> Submit Quiz</Button>
+                                    </div>
                                 </div>
-                                <div className='sticky bottom-0  z-40 mt-5 pb-6  w-full flex items-center justify-center bg-black/30 backdrop-blur-md'>
-
-                                    <Button onClick={sentRespotobackend} className='text-white font-semibold text-md cursor-pointer select-none md:w-md w-[90%] hover:border-zinc-700 hover:border-[0.5px] transition-all duration-150 hover:bg-zinc-900' variant="secondary" type='submit'> Submit Quiz</Button>
-                                </div>
-                            </div>
-                            :
-                            <div className='w-full flex items-center justify-center h-[70vh]'>
-                                <LoaderCircle size={45} className='animate-spin' />
-                            </div>
+                               
                     }
                     <div>
                         <AlertDialog open={isOpen} onOpenChange={setIsOpen} className='dark text-white'>
@@ -205,7 +235,7 @@ const page = () => {
 
                                                                     <div className={`hover:bg-zinc-900 cursor-pointer`} key={ind}>
                                                                         <div className='flex items-center gap-2 p-1'>
-                                                                            <p className='text-zinc-300'>{opt}</p>
+                                                                            <p className='text-gray-300'><span className="font-semibold">{String.fromCharCode(97 + ind)}.</span> {opt}</p>
 
                                                                             {/* Render the check icon for the correct answer */}
                                                                             {isCorrectOption && (
@@ -227,7 +257,7 @@ const page = () => {
                                                         }
                                                         {
 
-                                                              <p><span className='text-white font-semibold text-lg'>Explaination -</span> {quest_id[index]}</p>
+                                                            <p><span className='text-white font-semibold text-lg'>Explaination -</span> {quest_id[index]}</p>
                                                         }
 
                                                     </div>
@@ -239,9 +269,9 @@ const page = () => {
                                     </AlertDialogDescription>
                                 </AlertDialogHeader>
                                 <AlertDialogFooter>
-                              <AlertDialogAction onClick={() => router.back()} variant='ghost'>
-    Continue
-  </AlertDialogAction>
+                                    <AlertDialogAction onClick={() => router.back()} variant='ghost'>
+                                        Continue
+                                    </AlertDialogAction>
                                 </AlertDialogFooter>
                             </AlertDialogContent>
                         </AlertDialog>

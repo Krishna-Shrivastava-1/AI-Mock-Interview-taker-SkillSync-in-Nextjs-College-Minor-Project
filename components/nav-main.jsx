@@ -28,8 +28,8 @@ export function NavMain({ items }) {
                 className={`
                   min-w-8 duration-200 ease-linear cursor-pointer
                   ${pathname === '/home' 
-                    ? 'bg-zinc-800 text---sidebar-primary-foreground'
-              : 'bg-transparent text-gray-300 hover:bg-zinc-800'
+                      ? 'bg-neutral-700 hover:bg-neutral-700 text---sidebar-primary-foreground'
+              : 'bg-transparent text-gray-300 hover:bg-neutral-800'
                   }
                 `}>
                 <House />
@@ -47,8 +47,8 @@ export function NavMain({ items }) {
                   className={`
                     min-w-8 duration-200 ease-linear cursor-pointer
                     ${pathname === item.url 
-                      ? 'bg-zinc-800 text---sidebar-primary-foreground'
-              : 'bg-transparent text-gray-300 hover:bg-zinc-800'
+                      ? 'bg-neutral-700 hover:bg-neutral-700 text---sidebar-primary-foreground'
+              : 'bg-transparent text-gray-300 hover:bg-neutral-800'
                     }
                   `}>
                   {item.icon && <item.icon />}

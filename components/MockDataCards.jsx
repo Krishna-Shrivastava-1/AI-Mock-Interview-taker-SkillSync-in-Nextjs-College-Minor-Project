@@ -26,7 +26,7 @@ const MockDataCards = ({ fetchedUser }) => {
                         <p className='text-muted-foreground'>Total mock test given by you.</p></div>
 
                     <div>
-                        <h1 className='font-bold text-2xl text-cyan-500'>{fetchedUser?.user?.mockAttempts.length}</h1>
+                        <h1 className='font-bold text-2xl text-cyan-500'>{fetchedUser?.user?.mockAttempts.length || 0}</h1>
                     </div>
                 </div>
             </SpotlightCard>
@@ -36,7 +36,7 @@ const MockDataCards = ({ fetchedUser }) => {
                         <p className='text-muted-foreground'>Total mock test score given by you.</p></div>
 
                     <div>
-                        <h1 className='font-bold text-2xl text-green-600'>{additionOfTotalScore}</h1>
+                        <h1 className='font-bold text-2xl text-green-600'>{additionOfTotalScore || 0}</h1>
                     </div>
                 </div>
             </SpotlightCard>
@@ -46,7 +46,7 @@ const MockDataCards = ({ fetchedUser }) => {
                         <p className='text-muted-foreground'>Total mock test that you you not submitted.</p></div>
 
                     <div>
-                        <h1 className='font-bold text-2xl text-yellow-500'>{allScores.length - validScores.length}</h1>
+                        <h1 className='font-bold text-2xl text-yellow-500'>{allScores.length - validScores.length || 0}</h1>
                     </div>
                 </div>
             </SpotlightCard>

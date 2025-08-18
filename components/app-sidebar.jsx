@@ -159,6 +159,7 @@ export function AppSidebar({fetchedUser,
     name: fetchedUser?.user?.name,
     email: fetchedUser?.user?.email,
     avatar: "https://github.com/shadcn.png",
+    _id:fetchedUser?.user?._id
   },
   navMain: [
     {

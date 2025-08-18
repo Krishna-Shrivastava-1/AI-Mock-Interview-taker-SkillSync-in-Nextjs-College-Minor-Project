@@ -41,9 +41,14 @@ const page = () => {
 
                         </div>
                     </header>
+                    
 
                     {
-                        loading ?
+                       loading && userid !== fetchedUserData?.user?._id ?
+                            <div className='w-full flex items-center justify-center text-sky-500 text-lg font-semibold h-[60vh] '>
+                                <h1>This Quiz result is not Belongs to you...</h1>
+                            </div>
+                            : loading ?
                             <div className='w-full flex justify-center items-center flex-col gap-3 text-white'>
                                 <div className='w-[90%] p-2'>
 
@@ -53,11 +58,11 @@ const page = () => {
                                             findQuestionObjectfromId?.[0]?.score ?
                                                 <p className='text-lg'>In this mocktest your score is - {findQuestionObjectfromId?.[0]?.score}</p>
                                                 :
-                                                <p className='text-lg'>You have not submitted this mock test so there is not score.</p>
+                                                <p className='text-lg'>You have not submitted this mock test so there is no score.</p>
                                         }
 
                                     </div>
-                                    {
+                                    {findQuestionObjectfromId?.[0] ?
                                         findQuestionObjectfromId?.[0]?.questions?.map((question, index) => (
                                             <div key={index}>
                                                 <h1 className='text-xl font-bold'>{index + 1}. {question.questionText}</h1>
@@ -65,7 +70,7 @@ const page = () => {
                                                     question?.options?.map((opt, ind) => (
                                                         <div className={`hover:bg-zinc-900 cursor-pointer '}`} key={ind}>
                                                             <div className='flex items-center gap-2 p-1'>
-                                                                <p >{opt}</p>
+                                                               <p className='text-gray-300'><span className="font-semibold">{String.fromCharCode(97 + ind)}.</span> {opt}</p>
                                                                 {opt === question?.correctAnswer ? <Check strokeWidth='2.5' className='text-green-500 text-lg font-bold' />
                                                                     :
                                                                     question?.userAnswer === opt !== !question?.correctAnswer &&
@@ -80,6 +85,10 @@ const page = () => {
 
                                             </div>
                                         ))
+                                        :
+                                           <div className='w-full flex items-center justify-center text-sky-500 text-lg font-semibold h-[60vh] '>
+                                <h1>This is not your mocktest Result.</h1>
+                            </div>
                                     }
                                 </div>
 

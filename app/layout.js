@@ -4,6 +4,7 @@ import AuthGuard from "@/components/Authguard";
 import { WholeAppProvider } from "@/components/AuthContextApi";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,6 +34,7 @@ export default function RootLayout({ children }) {
        
           <main>
             <WholeAppProvider>
+                <Toaster richColors position="top-center" />
               <AuthGuard />
               {children}
             </WholeAppProvider>

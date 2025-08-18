@@ -130,6 +130,7 @@ import { Separator } from '@/components/ui/separator'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 import { Skeleton } from '@/components/ui/skeleton'
 import axios from 'axios'
+import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 
 const page = () => {
@@ -223,7 +224,10 @@ const page = () => {
                                                 <h1 className='text-lg font-semibold'>
                                                     {index === 0 ? '1st' : index === 1 ? '2nd' : index === 2 ? '3rd' : `${index + 1}.`}
                                                 </h1>
+                                                <Link href={`/profile/${e?.user?._id}`}>
+                                                
                                                 <h1 className='text-lg font-semibold'> {e?.user?.name}</h1>
+                                                </Link>
                                                 <h1> {e?.totalscore}</h1>
                                             </div>
                                         </div>

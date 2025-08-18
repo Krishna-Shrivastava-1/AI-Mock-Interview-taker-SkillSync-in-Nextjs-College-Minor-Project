@@ -44,7 +44,8 @@ export async function POST(req, res) {
     });
     return NextResponse.json({
       token: token,
-      message: `Logged in Successfully User - ${user.name}`,
+      message: `Logged in Successfully`,
+      // message: `Logged in Successfully User - ${user.name}`,
       success: true,
       owner: false,
     });

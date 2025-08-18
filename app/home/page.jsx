@@ -18,6 +18,7 @@ import { Separator } from "@/components/ui/separator";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import DiscoverSectionNews from '@/components/DiscoverSectionNews'
 import { Skeleton } from '@/components/ui/skeleton'
+import { toast } from 'sonner'
 
 
 const page = () => {
@@ -43,7 +44,7 @@ const page = () => {
 
   return (
     <div className=''>
-     
+
       <SidebarProvider className='dark'>
         <AppSidebar fetchedUser={fetchedUserData} />
         <SidebarInset>
@@ -78,12 +79,10 @@ const page = () => {
             <div>
               <MockDataCards fetchedUser={fetchedUserData} />
             </div>
+          
 
-            <Link href={`/mock-test`}>
-
-              <Button variant="destructive">Mock Test</Button>
-            </Link>
             <DiscoverSectionNews />
+
             <div className='h-screen'></div>
           </div>
             :

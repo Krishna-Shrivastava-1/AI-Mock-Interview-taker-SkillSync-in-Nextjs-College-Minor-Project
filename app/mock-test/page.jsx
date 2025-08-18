@@ -42,7 +42,7 @@ const Page = () => {
 
   const generateAImockQuest = async () => {
     try {
-      
+
       if (userId && role && skills && difficulty) {
         setloading(true)
         const repos = await axios.post('/api/mockgenerator', {
