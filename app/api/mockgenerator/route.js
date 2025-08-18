@@ -58,7 +58,8 @@ Return ONLY valid JSON in this format with no extra text:
                 explaination: q.explanation,
 
             })),
-            role: role
+            role: role,
+            difficulty:difficulty
 
         })
         // console.log(mockTest)

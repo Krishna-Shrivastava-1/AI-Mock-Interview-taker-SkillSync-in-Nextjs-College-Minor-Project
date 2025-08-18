@@ -71,7 +71,7 @@ const page = () => {
                                                         <div className={`hover:bg-zinc-900 cursor-pointer '}`} key={ind}>
                                                             <div className='flex items-center gap-2 p-1'>
                                                                <p className='text-gray-300'><span className="font-semibold">{String.fromCharCode(97 + ind)}.</span> {opt}</p>
-                                                                {opt === question?.correctAnswer ? <Check strokeWidth='2.5' className='text-green-500 text-lg font-bold' />
+                                                                {opt === question?.correctAnswer.trim() ? <Check strokeWidth='2.5' className='text-green-500 text-lg font-bold' />
                                                                     :
                                                                     question?.userAnswer === opt !== !question?.correctAnswer &&
                                                                     <X strokeWidth='2.5' className='text-red-500 text-lg font-bold' />

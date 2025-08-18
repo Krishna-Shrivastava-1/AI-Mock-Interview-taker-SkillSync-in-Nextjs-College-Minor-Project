@@ -22,7 +22,7 @@ export const WholeAppProvider = ({ children }) => {
             }
         }
         userId()
-    }, [pathname])
+    }, [pathname,userId])
     useEffect(() => {
         const fetchUserDatafromId = async () => {
             try {

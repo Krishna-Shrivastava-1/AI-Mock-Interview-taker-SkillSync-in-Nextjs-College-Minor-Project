@@ -21,6 +21,7 @@ const mockSchema = new mongoose.Schema(
       },
     ],
     role: String,
+     difficulty: String,
     score: Number,
     attemptedAt: {
       type: Date,
