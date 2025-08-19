@@ -35,7 +35,7 @@ export const WholeAppProvider = ({ children }) => {
             }
         }
         fetchUserDatafromId()
-    }, [userId,pathname])
+    }, [userId])
     console.log(fetchedUserData?.user)
     return (
         <AuthContext.Provider value={{ userId, fetchedUserData ,setfetchedUserData }}>

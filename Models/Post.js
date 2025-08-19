@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const postSchema = new mongoose.Schema(
   {
     message: {
-      type: [String],
+      type: String,
       required: true,
     },
     likes: [
@@ -16,6 +16,7 @@ const postSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
+    views:Number,
     comments: [
       {
         user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },

@@ -157,7 +157,7 @@ const page = () => {
                                   <Textarea value={newBio} onChange={(e) => setnewBio(e.target.value)} required className='text-lg font-semibold my-3 whitespace-pre resize-none min-h-32' placeholder="Tell us a little bit about yourself" id="message-3" />
 
                                 </div>
-                                <Button type='submit' variant="secondary" className="w-full sticky bottom-0 z-30 cursor-pointer font-bold">Save</Button>
+                                <Button type='submit'  className="w-full  sticky bottom-0 z-30 cursor-pointer font-bold">Save</Button>
                               </form>
 
 

@@ -164,7 +164,7 @@ export function AppSidebar({fetchedUser,
   navMain: [
     {
       title: "Resume Analysis",
-      url: "/dashboard",
+      url: "#",
       icon: IconDashboard,
     },
     {
@@ -178,9 +178,9 @@ export function AppSidebar({fetchedUser,
       icon: IconChartBar,
     },
     {
-      title: "Communities",
-      url: "#",
-      icon: IconUsers,
+      title: "Explore",
+      url: "/explore",
+      icon: IconSearch,
     },
     {
       title: "Post",
