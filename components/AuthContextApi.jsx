@@ -22,7 +22,7 @@ export const WholeAppProvider = ({ children }) => {
             }
         }
         userId()
-    }, [pathname,userId])
+    }, [pathname, userId])
     useEffect(() => {
         const fetchUserDatafromId = async () => {
             try {
@@ -36,9 +36,43 @@ export const WholeAppProvider = ({ children }) => {
         }
         fetchUserDatafromId()
     }, [userId])
+
+
+    const [page, setpage] = useState(1)
+    const [postData, setpostData] = useState([])
+    const [hasMore, setHasMore] = useState(true);
+    const fetchpostData = async () => {
+        if (!hasMore) return;
+
+        try {
+            const respo = await axios.get(`/api/post/getallpost?page=${page}&limit=10`);
+            const newPosts = respo?.data?.posts || [];
+
+            // console.log('psot, -', newPosts);
+
+            if (newPosts.length === 0) {
+
+                setHasMore(false);
+            } else {
+                setpostData(prevpost => [...prevpost, ...newPosts]);
+            }
+        } catch (error) {
+            console.error('Failed to fetch posts:', error);
+            setHasMore(false);
+        }
+    };
+    const handleLoadMore = () => {
+        setpage(prevPage => prevPage + 1);
+    };
+
+
+    useEffect(() => {
+        fetchpostData()
+    }, [page])
+
     console.log(fetchedUserData?.user)
     return (
-        <AuthContext.Provider value={{ userId, fetchedUserData ,setfetchedUserData }}>
+        <AuthContext.Provider value={{ userId, fetchedUserData, setfetchedUserData ,postData ,handleLoadMore ,fetchpostData,hasMore, setpostData}}>
             {children}
         </AuthContext.Provider>
     )

@@ -7,13 +7,14 @@ import { toast } from 'sonner'
 
 const PostareOnExploreRoute = () => {
     const [text, settext] = useState('')
-    const { fetchedUserData } = useWholeApp()
+    const { fetchedUserData ,fetchpostData } = useWholeApp()
     const createPost = async () => {
         try {
             await axios.post('/api/post/postcreation', {
                 post: text,
                 userId: fetchedUserData?.user?._id
             })
+           
             settext('')
             toast.success("Posted Successfully")
         } catch (e) {
