@@ -35,7 +35,7 @@ export const WholeAppProvider = ({ children }) => {
             }
         }
         fetchUserDatafromId()
-    }, [userId])
+    }, [userId,pathname])
 
 
     const [page, setpage] = useState(1)

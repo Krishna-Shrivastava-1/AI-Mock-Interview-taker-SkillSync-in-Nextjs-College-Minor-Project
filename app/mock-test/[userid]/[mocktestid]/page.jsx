@@ -166,11 +166,11 @@ const page = () => {
             <h1>This Quiz has already been attempted.</h1>
         </div>
     ) :
-    userid !== fetchedUserData?.user?._id || !isMockidExist ? (
-        <div className='w-full flex items-center justify-center text-sky-500 text-lg font-semibold h-[60vh]'>
-            <h1>This Quiz does not belong to you.</h1>
-        </div>
-    ) :
+    // userid !== fetchedUserData?.user?._id || !isMockidExist ? (
+    //     <div className='w-full flex items-center justify-center text-sky-500 text-lg font-semibold h-[60vh]'>
+    //         <h1>This Quiz does not belong to you.</h1>
+    //     </div>
+    // ) :
                     
                                 <div className='w-full flex justify-center items-center flex-col gap-3'>
                                     <div className='w-[90%] p-2'>
