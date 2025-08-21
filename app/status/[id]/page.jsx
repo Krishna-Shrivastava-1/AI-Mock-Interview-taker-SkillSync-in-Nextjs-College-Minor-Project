@@ -51,7 +51,7 @@ const page = () => {
         };
     }, []);
     const handleLike = (id, userid) => {
-        socket.emit("likePost", { postId: id, userId: fetchedUserData?.user?._id });
+        socket.emit("likePost", { postId: id, userId: userid });
     };
 
     console.log(postDataById)
@@ -74,7 +74,7 @@ const page = () => {
                             <div className='flex w-full items-start justify-center '>
                                 <div className='flex flex-col items-start justify-center w-full md:w-[80%]'>
                                     <div className='w-full '>
-                                  
+                                   
                                         {
                                             postDataById?.map((e, index) => (
                                                 <div className='text-white border border-t-0 p-2 w-full hover:bg-neutral-900' key={index}>
