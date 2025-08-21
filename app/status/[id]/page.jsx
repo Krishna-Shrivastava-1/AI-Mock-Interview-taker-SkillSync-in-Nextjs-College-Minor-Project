@@ -9,25 +9,55 @@ import PostareOnExploreRoute from '@/components/PostareOnExploreRoute'
 import { ChartColumn, Heart, MessageCircle, Search, Share } from 'lucide-react'
 import { useWholeApp } from '@/components/AuthContextApi'
 import axios from 'axios'
+import Link from 'next/link'
+import { io } from 'socket.io-client'
+const socket = io("https://ai-mock-interview-minor-project-socket.onrender.com");
 const page = () => {
-    const {id} = useParams()
+    const { id } = useParams()
     const [postDataById, setpostDataById] = useState([])
-const {fetchedUserData} = useWholeApp()
-const handleFetchPostbyId = async () => {
-   try {
-     const repos = await axios.get(`/api/post/getpostbyid/${id}`)
-    setpostDataById(repos?.data?.post)
-   } catch (error) {
-    console.log(error)
-   }
-}
-useEffect(() => {
- handleFetchPostbyId()
-}, [id])
-console.log(postDataById)
-  return (
-    <div>
-        <SidebarProvider className='dark'>
+    const { fetchedUserData, setpostData } = useWholeApp()
+    const handleFetchPostbyId = async () => {
+        try {
+            const repos = await axios.get(`/api/post/getpostbyid/${id}`)
+            setpostDataById([repos?.data?.post])
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    useEffect(() => {
+        handleFetchPostbyId()
+    }, [id])
+
+
+
+    useEffect(() => {
+        // listen for updates
+        socket.on("postLiked", (data) => {
+            console.log("Live update:", data);
+            const updatedPost = data;
+
+            if (updatedPost) {
+                // Find the post in the current state and replace it with the updated version
+                setpostDataById([updatedPost?.updatedPost])
+                setpostData(prev =>
+                    prev.map(p => p._id === data.updatedPost._id ? data.updatedPost : p)
+                );
+            }
+
+        });
+
+        return () => {
+            socket.off("postLiked");
+        };
+    }, []);
+    const handleLike = (id, userid) => {
+        socket.emit("likePost", { postId: id, userId: fetchedUserData?.user?._id });
+    };
+
+    console.log(postDataById)
+    return (
+        <div>
+            <SidebarProvider className='dark'>
                 <AppSidebar fetchedUser={fetchedUserData} />
                 <SidebarInset>
                     <header className="flex h-16 shrink-0 items-center gap-2 border-b backdrop-blur-lg bg-background/30 sticky top-0 z-40">
@@ -43,9 +73,59 @@ console.log(postDataById)
                         <div className='w-[90%]  flex items-center justify-center p-1 '>
                             <div className='flex w-full items-start justify-center '>
                                 <div className='flex flex-col items-start justify-center w-full md:w-[80%]'>
-
+                                    <div className='w-full '>
                                   
-                                    
+                                        {
+                                            postDataById?.map((e, index) => (
+                                                <div className='text-white border border-t-0 p-2 w-full hover:bg-neutral-900' key={index}>
+                                                    <div className='flex group cursor-pointer select-none items-center w-fit justify-start'>
+                                                        <div className='rounded-full font-semibold text-center text-xl m-2 px-4 p-2 bg-neutral-800'>{e?.user?.name?.[0]} </div>
+
+                                                        <h1 className='text-lg group-hover:underline font-semibold'>{e?.user?.name}</h1>
+                                                        <span className='text-sm text-neutral-500 mx-2'>{new Date(e?.createdAt).toDateString()}</span>
+                                                    </div>
+
+                                                    <p className='whitespace-pre-wrap line-clamp-5 sm:pl-16'>{e?.message}</p>
+
+
+                                                    <div className='flex justify-around w-full mt-5'>
+                                                        <div>
+                                                            <MessageCircle className='text-neutral-600' />
+                                                        </div>
+                                                        <div onClick={() => handleLike(e._id, fetchedUserData?.user?._id)} className='flex items-center justify-center group cursor-pointer select-none relative'>
+                                                            <div className='p-2 rounded-full group-hover:bg-pink-800/20  transition-all duration-150 flex items-center text-sm'>
+                                                                {
+                                                                    e?.likes?.includes(fetchedUserData?.user?._id) ?
+                                                                        <Heart className=' group-hover:text-pink-700 text-pink-700 ' fill='currentColor' />
+                                                                        :
+                                                                        <Heart className='text-neutral-600 group-hover:text-pink-700' />
+                                                                }
+                                                            </div>
+                                                            {e?.likes?.length > 0 && <p className={`group-hover:text-pink-600 text-neutral-600 absolute left-[35px] `}>{e?.likes.length}</p>}
+                                                        </div>
+
+                                                        <div className='flex items-center justify-center group cursor-pointer select-none relative'>
+                                                            <div className='p-2 rounded-full group-hover:bg-sky-800/20  transition-all duration-150 flex items-center text-sm'>
+                                                                <ChartColumn className=' group-hover:text-sky-700 text-neutral-700 ' />
+                                                            </div>
+                                                            <p className={`group-hover:text-sky-600 text-neutral-600 absolute left-[35px] `}>{e?.views}</p>
+                                                        </div>
+                                                        <div className='flex items-center justify-center group cursor-pointer select-none relative'>
+                                                            <div className='p-2 rounded-full group-hover:bg-sky-800/20  transition-all duration-150 flex items-center text-sm'>
+                                                                <Share className=' group-hover:text-sky-700 text-neutral-700 ' />
+                                                            </div>
+
+                                                        </div>
+                                                        {/* <div>
+                                                            <Share className='text-neutral-600' />
+                                                        </div> */}
+                                                    </div>
+                                                </div>
+                                            ))
+                                        }
+
+                                    </div>
+
                                 </div>
                                 <div className=' sticky top-[70px] hidden  md:block border w-[40%]' >
                                     <div className=' sticky top-0  z-30 p-2 px-2 w-full  ' >
@@ -62,8 +142,8 @@ console.log(postDataById)
                     </div>
                 </SidebarInset>
             </SidebarProvider>
-    </div>
-  )
+        </div>
+    )
 }
 
 export default page

@@ -1,3 +1,4 @@
+import { broadcastUpdate } from "@/app/api/events/route"
 import database from "@/Database/Database"
 import { postModel } from "@/Models/Post"
 import { userModel } from "@/Models/User"
@@ -11,7 +12,7 @@ export async function GET(req, { params }) {
             id,
             { $inc: { views: 1 } },
             { new: true }
-        );
+        ).populate('user');
         if (!post) {
             return NextResponse.json({
                 message: 'This Post is not Exist',

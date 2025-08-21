@@ -9,7 +9,8 @@ import PostareOnExploreRoute from '@/components/PostareOnExploreRoute'
 import { ChartColumn, Heart, MessageCircle, Search, Share } from 'lucide-react'
 import axios from 'axios'
 import Link from 'next/link'
-
+import { io } from 'socket.io-client'
+const socket = io("https://ai-mock-interview-minor-project-socket.onrender.com");
 const page = () => {
     const { fetchedUserData, postData, handleLoadMore, hasMore, setpostData } = useWholeApp()
     useEffect(() => {
@@ -29,30 +30,26 @@ const page = () => {
 
     console.log(postData)
 
-    const handleLikeandDislike = async (postid, userid) => {
-        try {
-            const response = await axios.put('/api/post/addlikeanddislike', {
-                userId: userid,
-                postId: postid
-            });
 
-            const updatedPost = response?.data?.updatedPost;
-
-            if (updatedPost) {
-                // Find the post in the current state and replace it with the updated version
-                setpostData(prevPosts =>
-                    prevPosts.map(post =>
-                        post._id === updatedPost._id ? updatedPost : post
-                    )
-                );
+    useEffect(() => {
+        // listen for updates
+        socket.on("postLiked", (data) => {
+            console.log("Live update:", data);
+            if (data) {
+                setpostData(prevpost => prevpost.map(e => e?._id === data?.updatedPost?._id ? data?.updatedPost : e))
             }
+        });
 
-            console.log('liked and disliked');
-
-        } catch (error) {
-            console.log(error);
-        }
+        return () => {
+            socket.off("postLiked");
+        };
+    }, []);
+    const handleLike = (id,userid) => {
+        socket.emit("likePost", { postId: id, userId: userid });
     };
+  
+
+
 
     return (
         <div>
@@ -85,14 +82,14 @@ const page = () => {
                                                         <span className='text-sm text-neutral-500 mx-2'>{new Date(e?.createdAt).toDateString()}</span>
                                                     </div>
                                                     <Link href={`/status/${e?._id}`}>
-                                                      <p className='whitespace-pre-wrap line-clamp-5 sm:pl-16'>{e?.message}</p>
+                                                        <p className='whitespace-pre-wrap line-clamp-5 sm:pl-16'>{e?.message}</p>
                                                     </Link>
-                                                  
+
                                                     <div className='flex justify-around w-full mt-5'>
                                                         <div>
                                                             <MessageCircle className='text-neutral-600' />
                                                         </div>
-                                                        <div onClick={() => handleLikeandDislike(e._id, fetchedUserData?.user?._id)} className='flex items-center justify-center group cursor-pointer select-none relative'>
+                                                        <div onClick={() => handleLike(e._id, fetchedUserData?.user?._id)} className='flex items-center justify-center group cursor-pointer select-none relative'>
                                                             <div className='p-2 rounded-full group-hover:bg-pink-800/20  transition-all duration-150 flex items-center text-sm'>
                                                                 {
                                                                     e?.likes.includes(fetchedUserData?.user?._id) ?
@@ -108,7 +105,7 @@ const page = () => {
                                                             <div className='p-2 rounded-full group-hover:bg-sky-800/20  transition-all duration-150 flex items-center text-sm'>
                                                                 <ChartColumn className=' group-hover:text-sky-700 text-neutral-700 ' />
                                                             </div>
-                                                           <p className={`group-hover:text-sky-600 text-neutral-600 absolute left-[35px] `}>{e?.views}</p>
+                                                            <p className={`group-hover:text-sky-600 text-neutral-600 absolute left-[35px] `}>{e?.views}</p>
                                                         </div>
                                                         <div className='flex items-center justify-center group cursor-pointer select-none relative'>
                                                             <div className='p-2 rounded-full group-hover:bg-sky-800/20  transition-all duration-150 flex items-center text-sm'>
