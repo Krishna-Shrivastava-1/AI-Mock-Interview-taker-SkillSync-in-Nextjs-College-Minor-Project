@@ -32,8 +32,7 @@ export async function PUT(req) {
       ).populate("user");
     }
 
-    // Broadcast to all SSE clients (only the updated post, not all posts)
-    // broadcastUpdate({ type: "likeUpdate", updatedPost });
+
 
     return NextResponse.json({
       message: "Like/dislike updated",

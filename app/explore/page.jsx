@@ -10,6 +10,7 @@ import { ChartColumn, Heart, MessageCircle, Search, Share } from 'lucide-react'
 import axios from 'axios'
 import Link from 'next/link'
 import { io } from 'socket.io-client'
+import { Skeleton } from '@/components/ui/skeleton'
 const socket = io("https://ai-mock-interview-minor-project-socket.onrender.com");
 const page = () => {
     const { fetchedUserData, postData, handleLoadMore, hasMore, setpostData } = useWholeApp()
@@ -72,15 +73,18 @@ const page = () => {
 
                                     <PostareOnExploreRoute />
                                     <div className='w-full '>
-                                        {
+                                        {postData?.length >0?
                                             postData?.map((e, index) => (
                                                 <div className='text-white border border-t-0 p-2 w-full hover:bg-neutral-900' key={index}>
+                                                    <Link href={`/profile/${e?.user?._id}`}>
+                                                    
                                                     <div className='flex group cursor-pointer select-none items-center w-fit justify-start'>
                                                         <div className='rounded-full font-semibold text-center text-xl m-2 px-4 p-2 bg-neutral-800'>{e?.user?.name?.[0]} </div>
 
                                                         <h1 className='text-lg group-hover:underline font-semibold'>{e?.user?.name}</h1>
                                                         <span className='text-sm text-neutral-500 mx-2'>{new Date(e?.createdAt).toDateString()}</span>
                                                     </div>
+                                                    </Link>
                                                     <Link href={`/status/${e?._id}`}>
                                                         <p className='whitespace-pre-wrap line-clamp-5 sm:pl-16'>{e?.message}</p>
                                                     </Link>
@@ -119,10 +123,17 @@ const page = () => {
                                                     </div>
                                                 </div>
                                             ))
+                                            :
+                                            Array(10).fill(null).map((_,ind)=>(
+                                                 <div className='text-white border border-t-0 p-2 w-full hover:bg-neutral-900' key={ind} > 
+                                                <Skeleton className="h-32 w-full" />
+                                             </div>
+                                            ))
+
                                         }
-                                        <button className='text-white' onClick={handleLoadMore} >
+                                        {/* <button className='text-white' onClick={handleLoadMore} >
                                             load more
-                                        </button>
+                                        </button> */}
                                     </div>
                                 </div>
                                 <div className=' sticky top-[70px] hidden  md:block border w-[40%]' >

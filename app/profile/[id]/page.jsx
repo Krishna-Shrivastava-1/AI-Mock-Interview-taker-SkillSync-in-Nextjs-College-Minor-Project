@@ -15,7 +15,10 @@ import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { toast } from 'sonner'
+import { io } from 'socket.io-client'
 
+// const socket = io("http://localhost:5500");
+const socket = io("https://ai-mock-interview-minor-project-socket.onrender.com");
 const page = () => {
   const { id } = useParams()
   const { fetchedUserData } = useWholeApp()
@@ -35,10 +38,7 @@ const page = () => {
 
     }
   }
-  useEffect(() => {
 
-    fetchUserDatafromId()
-  }, [id])
   useEffect(() => {
     if (userDatafromparam?.user) {
       setloading(false)
@@ -71,8 +71,7 @@ const page = () => {
         toast.success(respo?.data?.message)
       }
 
-      // Optional: Add a success message or re-fetch user data
-      // console.log('Profile updated successfully!');
+
 
     } catch (error) {
       console.log(error.message)
@@ -105,6 +104,41 @@ const page = () => {
     return total + (quiz.score ?? 0);
   }, 0);
   // console.log('Total score for medium quizzes:', totalHardScore);
+
+
+
+  useEffect(() => {
+    // listen for updates
+    socket.on("userProfilesUpdated", (data) => {
+      console.log("Live update:", data);
+       setuserDatafromparam(prev => {
+      if (!prev?.user) return data; 
+      return {
+        ...prev,
+        user: {
+          ...prev.user,
+          followers: data?.user?.followers ?? prev.user.followers,
+          following: data?.user?.following ?? prev.user.following,
+        }
+      };
+    });
+
+    });
+
+    return () => {
+      socket.off("userProfilesUpdated");
+    };
+  }, []);
+  const handlefollowandunfollow = (followerid, followingId) => {
+    socket.emit("followUser", { followerId: followerid, followingId: followingId });
+  };
+
+  useEffect(() => {
+
+    fetchUserDatafromId()
+  }, [id])
+  // console.log(userDatafromparam)
+
   return (
     <div>
       <SidebarProvider className='dark'>
@@ -157,7 +191,7 @@ const page = () => {
                                   <Textarea value={newBio} onChange={(e) => setnewBio(e.target.value)} required className='text-lg font-semibold my-3 whitespace-pre resize-none min-h-32' placeholder="Tell us a little bit about yourself" id="message-3" />
 
                                 </div>
-                                <Button type='submit'  className="w-full  sticky bottom-0 z-30 cursor-pointer font-bold">Save</Button>
+                                <Button type='submit' className="w-full  sticky bottom-0 z-30 cursor-pointer font-bold">Save</Button>
                               </form>
 
 
@@ -181,10 +215,27 @@ const page = () => {
                           </div>
                           <h1 className='font-semibold text-2xl text-center'> {userDatafromparam?.user?.name}</h1>
                         </div>
-                        {
-                          fetchedUserData?.user?._id === id && <div className='flex items-center justify-start'><h1 className='font-semibold'>Email: {userDatafromparam?.user?.email}</h1>
-                          </div>
-                        }
+                        <div className='flex items-center flex-wrap justify-between'>
+                          {
+                            fetchedUserData?.user?._id === id && <div className='flex items-center justify-start'><h1 className='font-semibold'>Email: {userDatafromparam?.user?.email}</h1>
+                            </div>
+                          }
+                          {
+                            fetchedUserData?.user?._id !== id ?
+                              <div className='flex items-center justify-around flex-wrap w-full'>
+                                {
+                                  userDatafromparam?.user?.followers?.includes(fetchedUserData?.user?._id) ?
+                                    <Button style={{ 'backgroundColor': '#038391', 'color': 'white' }} onClick={() => handlefollowandunfollow(fetchedUserData?.user?._id, id)} className='font-semibold rounded-full md:w-sm w-full cursor-pointer select-none text-white text-lg'>Following</Button>
+                                    :
+
+                                    <Button onClick={() => handlefollowandunfollow(fetchedUserData?.user?._id, id)} className='font-semibold md:w-sm w-full text-lg rounded-full cursor-pointer select-none'>Follow</Button>
+                                }
+                                <p>Followers: {userDatafromparam?.user?.followers?.length}</p>
+                              </div>
+                              :
+                              <div ><p >Followers: {userDatafromparam?.user?.followers?.length}</p></div>
+                          }
+                        </div>
 
                         <div className='flex items-center justify-start'><h1 className='font-semibold flex items-center flex-wrap justify-start text-center w-full'>Skills: {userDatafromparam?.user?.skills?.map((e, index) => (
                           <div key={index} className='bg-neutral-900 px-3 p-1 rounded-lg gap-2 m-2 '>{e}</div>
@@ -200,10 +251,10 @@ const page = () => {
                             </div>
                           </h1>
                         </div>
-                       <div className='w-full'>
-                         <h2 className='my-4 mb-8 text-xl font-bold'>Number of Problems Count as per Difficulty</h2>
-                        <ChartBarStacked userData={userDatafromparam} />
-                       </div>
+                        <div className='w-full'>
+                          <h2 className='my-4 mb-8 text-xl font-bold'>Number of Problems Count as per Difficulty</h2>
+                          <ChartBarStacked userData={userDatafromparam} />
+                        </div>
                         <div className='flex items-center justify-start'>
                           {/* <h1 className='font-semibold flex items-start gap-x-4'>
                            Medium:

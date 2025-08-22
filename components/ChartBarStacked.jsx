@@ -24,7 +24,7 @@ export const description = "A stacked bar chart with a legend"
 
 
 export function ChartBarStacked({userData}) {
-
+// console.log(userData)
       // Medium questions total score
     const mediumMockQuesitonsArr = userData?.user?.mockAttempts?.filter((e) => e?.difficulty === 'medium' || e?.questions?.[0]?.difficulty === 'medium')
     const totalMediumScore = mediumMockQuesitonsArr?.reduce((total, quiz) => {

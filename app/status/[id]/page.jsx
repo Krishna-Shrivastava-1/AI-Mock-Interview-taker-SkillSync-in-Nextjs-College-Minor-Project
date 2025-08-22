@@ -11,6 +11,7 @@ import { useWholeApp } from '@/components/AuthContextApi'
 import axios from 'axios'
 import Link from 'next/link'
 import { io } from 'socket.io-client'
+import { Skeleton } from '@/components/ui/skeleton'
 const socket = io("https://ai-mock-interview-minor-project-socket.onrender.com");
 const page = () => {
     const { id } = useParams()
@@ -75,7 +76,7 @@ const page = () => {
                                 <div className='flex flex-col items-start justify-center w-full md:w-[80%]'>
                                     <div className='w-full '>
                                    
-                                        {
+                                        {postDataById?.length !== 0 ?
                                             postDataById?.map((e, index) => (
                                                 <div className='text-white border border-t-0 p-2 w-full hover:bg-neutral-900' key={index}>
                                                     <div className='flex group cursor-pointer select-none items-center w-fit justify-start'>
@@ -122,6 +123,10 @@ const page = () => {
                                                     </div>
                                                 </div>
                                             ))
+                                            :
+                                                <div className='text-white border border-t-0 p-2 w-full hover:bg-neutral-900'  > 
+                                                <Skeleton className="h-32 w-full" />
+                                             </div>
                                         }
 
                                     </div>
