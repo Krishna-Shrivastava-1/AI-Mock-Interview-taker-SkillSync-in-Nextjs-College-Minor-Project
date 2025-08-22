@@ -68,7 +68,7 @@ export const WholeAppProvider = ({ children }) => {
 
     useEffect(() => {
         fetchpostData()
-    }, [page,pathname])
+    }, [page])
 
     console.log(fetchedUserData?.user)
     return (
