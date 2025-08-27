@@ -137,7 +137,7 @@ const page = () => {
                   </div>
                    :
                <div className='w-full text-white flex items-center justify-center h-[70vh]'>
-                    <LoaderCircle size={45} className='animate-spin' />
+                    <p>Analysis is not Belongs to you.</p>
                   </div>
            
               }
