@@ -47,6 +47,7 @@ const page = () => {
     }, []);
     const handleLike = (id,userid) => {
         socket.emit("likePost", { postId: id, userId: userid });
+        
     };
   
 

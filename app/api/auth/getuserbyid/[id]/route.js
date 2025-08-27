@@ -1,6 +1,7 @@
 import database from "@/Database/Database"
 import { mockModel } from "@/Models/Mock";
 import { postModel } from "@/Models/Post";
+import { resumeModel } from "@/Models/Resume";
 import { userModel } from "@/Models/User";
 import { NextResponse } from "next/server"
 
@@ -9,7 +10,7 @@ export async function GET(req, {params}) {
         const { id } = await params  // Getting user id
         await database();
         
-        const userById = await userModel.findById( id ).select('-password').populate('mockAttempts posts')
+        const userById = await userModel.findById( id ).select('-password').populate('mockAttempts posts analyzedResume')
         
         if (!userById) {
             return NextResponse.json({

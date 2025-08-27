@@ -1,6 +1,7 @@
 'use client'
 import { AppSidebar } from '@/components/app-sidebar';
 import { useWholeApp } from '@/components/AuthContextApi';
+import Comboselector from '@/components/Comboselector';
 import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -68,6 +69,7 @@ const Page = () => {
     setfetchedUserData([])
     router.refresh()
   }
+  console.log('api role to send', role)
   return (
     <div>
       {/* <Navbar /> */}
@@ -118,15 +120,17 @@ const Page = () => {
 
                     <div className="flex flex-1 flex-col  gap-4 p-4 w-full">
                       <div className='text-white w-full'>
+                      
                         <Label htmlFor='role' className='text-lg font-semibold'>Role</Label>
-                        <input
+                          <Comboselector id='role' parentSelectedRole={setRole} />
+                        {/* <input
                           id='role'
                           onChange={(e) => setRole(e.target.value)}
                           className='placeholder:font-bold w-full outline-none focus-within:border border-zinc-700 border focus-within:shadow-sm shadow-sky-600 focus-within:border-sky-600 m-2 text-lg pl-2 p-1 rounded-sm'
                           type="text"
                           required
                           placeholder='Enter role'
-                        />
+                        /> */}
                         <Label htmlFor='skill' className='text-lg font-semibold'>Skill</Label>
                         <input
                           id='skill'

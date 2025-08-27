@@ -58,9 +58,9 @@ red ${progress}%,
                                     >
                                         <div className='absolute bg-zinc-900 w-8 h-8 rounded-full flex items-center justify-center'>
                                             {
-                                                text.length >= 275 ? <p className='text-red-600 text-[15px] text-center'>{text.length} </p> :
-                                                    text.length >= 270 ? <p className='text-yellow-600'>{text.length} </p> : <p className='text-white'>{text.length} </p>
-                                            }
+                                                    text.length >= 275 ? <p className='text-red-600'>{text.length} </p> :
+                                                        text.length >= 260 ? <p className='text-yellow-600 text-[15px] text-center'>{text.length} </p> : <p className='text-sky-600'>{text.length} </p>
+                                                }
                                         </div>
                                     </div>
                                 )
@@ -75,15 +75,15 @@ red ${progress}%,
                                             }}
                                         >
                                             <div className='absolute bg-zinc-900 w-8 h-8 rounded-full flex items-center justify-center'>
-                                                {
+                                                 {
                                                     text.length >= 275 ? <p className='text-red-600'>{text.length} </p> :
-                                                        text.length >= 260 ? <p className='text-zinc-600 text-[15px] text-center'>{text.length} </p> : <p className='text-white'>{text.length} </p>
+                                                        text.length >= 260 ? <p className='text-yellow-600 text-[15px] text-center'>{text.length} </p> : <p className='text-sky-600'>{text.length} </p>
                                                 }
                                             </div>
                                         </div>
                                     ) :
                                         <div
-                                            className='relative flex items-center justify-center w-8 h-8 rounded-full bg-zinc-600 transition-all duration-300'
+                                            className='relative flex items-center justify-center w-10 h-10 rounded-full bg-zinc-600 transition-all duration-300'
                                             style={{
                                                 background: `conic-gradient(
  #0485D5 ${progress}%, 
@@ -91,7 +91,12 @@ red ${progress}%,
 )`
                                             }}
                                         >
-
+  <div className='absolute bg-zinc-900 w-8 h-8 rounded-full flex items-center justify-center'>
+                                                {
+                                                    text.length >= 275 ? <p className='text-red-600'>{text.length} </p> :
+                                                        text.length >= 260 ? <p className='text-yellow-600 text-[15px] text-center'>{text.length} </p> : <p className='text-sky-600'>{text.length} </p>
+                                                }
+                                            </div>
                                         </div>
 
                             }

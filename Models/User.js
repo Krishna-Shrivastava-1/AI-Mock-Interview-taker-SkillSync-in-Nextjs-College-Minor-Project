@@ -30,10 +30,10 @@ const userSchema = new mongoose.Schema(
     descriptionAbout: {
       type: String,
     },
-    uploadedResume: {
-      type: String,
-      default: "",
-    },
+    analyzedResume: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Resume",
+    }],
     mockAttempts: [
       {
         type: mongoose.Schema.Types.ObjectId,

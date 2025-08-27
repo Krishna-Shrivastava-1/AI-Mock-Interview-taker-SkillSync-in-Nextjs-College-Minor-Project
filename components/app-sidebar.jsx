@@ -164,8 +164,13 @@ export function AppSidebar({fetchedUser,
   navMain: [
     {
       title: "Resume Analysis",
-      url: "#",
+      url: "/resume-analysis",
       icon: IconDashboard,
+    },
+        {
+      title: "Analyzed Resume",
+      url: "/analyzed-resume",
+      icon: SquarePen,
     },
     {
       title: "Leader Board",
@@ -182,11 +187,7 @@ export function AppSidebar({fetchedUser,
       url: "/explore",
       icon: IconSearch,
     },
-    {
-      title: "Post",
-      url: "#",
-      icon: SquarePen,
-    },
+
     {
       title: "Mock Test",
       url: "/mock-test",

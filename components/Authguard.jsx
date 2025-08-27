@@ -73,8 +73,8 @@ useEffect(() => {
 
   // }, [token, pathname, router, fetchedUserData, fetchedUserData?.user?._id]);
 
-  console.log(token)
-  console.log(fetchedUserData?.user)
+  // console.log(token)
+  // console.log(fetchedUserData?.user)
   return null
 
 }

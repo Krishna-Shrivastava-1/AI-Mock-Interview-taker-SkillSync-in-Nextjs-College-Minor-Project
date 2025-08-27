@@ -8,6 +8,7 @@ const { createContext, useState, useEffect, useContext } = require("react");
 const AuthContext = createContext()
 export const WholeAppProvider = ({ children }) => {
     const [userId, setuserId] = useState('')
+    const [jobDescriptionText, setjobDescriptionText] = useState('')
     const pathname = usePathname()
     const [fetchedUserData, setfetchedUserData] = useState([])
     useEffect(() => {
@@ -70,9 +71,9 @@ export const WholeAppProvider = ({ children }) => {
         fetchpostData()
     }, [page])
 
-    console.log(fetchedUserData?.user)
+    // console.log(fetchedUserData?.user)
     return (
-        <AuthContext.Provider value={{ userId, fetchedUserData, setfetchedUserData ,postData ,handleLoadMore ,fetchpostData,hasMore, setpostData}}>
+        <AuthContext.Provider value={{ userId, fetchedUserData, setfetchedUserData ,postData ,handleLoadMore ,fetchpostData,hasMore, setpostData,setjobDescriptionText,jobDescriptionText}}>
             {children}
         </AuthContext.Provider>
     )
