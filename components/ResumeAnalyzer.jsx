@@ -53,8 +53,10 @@ export default function ResumeAnalyzer() {
     const data = await res.json();
     setResult(data);
     setjobDescriptionText('')
+if(data){
 
-    router.push(`/analyzed-resume/${result?.analyzedResume?._id}`)
+  router.push(`/analyzed-resume/${data?.analyzedResume?._id}`)
+}
   };
   useEffect(() => {
     if (file) {
