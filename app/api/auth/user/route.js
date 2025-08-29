@@ -16,7 +16,8 @@ export async function GET(res) {
             return NextResponse.json({
                 message: 'Authorized',
                 user: decode,
-                status: 200
+                status: 200,
+                // token:token
             })
         } catch (error) {
             return NextResponse.json({ error: 'Forbidden: Invalid or expired token', status: 403 });

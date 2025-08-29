@@ -10,7 +10,7 @@ const { useEffect, useState } = require("react")
 const AuthGuard = () => {
   const router = useRouter()
   const pathname = usePathname()
-  const [token, settoken] = useState(null)
+     const [token, settoken] = useState(null)
   const { fetchedUserData } = useWholeApp()
   useEffect(() => {
     const fetchAuthorizeToken = async () => {

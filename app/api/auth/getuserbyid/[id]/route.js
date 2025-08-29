@@ -4,31 +4,63 @@ import { postModel } from "@/Models/Post";
 import { resumeModel } from "@/Models/Resume";
 import { userModel } from "@/Models/User";
 import { NextResponse } from "next/server"
-
-export async function GET(req, {params}) {
-    try {
-        const { id } = await params  // Getting user id
-        await database();
-        
-        const userById = await userModel.findById( id ).select('-password').populate('mockAttempts posts analyzedResume')
-        
-        if (!userById) {
-            return NextResponse.json({
-                message: 'No user Found please Login',
-                status: 401,
-                success: false
-            })
-        }
-        return NextResponse.json({
-            message: 'User found',
-            user: userById,
-            status: 201,
-            success: true
-        })
-    } catch (error) {
-        console.log(error.message)
-        return NextResponse.json({
-            message: 'Server Error'
-        })
+import jwt from 'jsonwebtoken'
+import { cookies } from "next/headers";
+const secretKey = process.env.Secretkey
+export async function GET(req, { params }) {
+  try {
+    const { id } = await params; // Getting user id
+    await database();
+const authHeader = req.headers.get('authorization')
+const idHeaderofUser = authHeader?.split(' ')[1]
+if(!authHeader || id !== idHeaderofUser){
+    return NextResponse.json({
+        messaage:'Unauthorized User',
+        success:false,
+    })
+}
+// console.log(authHeader)
+    const token = (await cookies()).get("authtoken")?.value;
+    if (!token) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
+
+    let decoded;
+    try {
+      decoded = jwt.verify(token, process.env.Secretkey);
+    } catch (err) {
+      return NextResponse.json({ message: "Invalid token" }, { status: 403 });
+    }
+
+    // Prevent users from fetching others' data
+    if (decoded?.id !== id) {
+      return NextResponse.json({ message: "Unauthorized user" }, { status: 403 });
+    }
+
+    const userById = await userModel
+      .findById(id)
+      .select("-password")
+      .populate("mockAttempts posts analyzedResume");
+
+    if (!userById) {
+      return NextResponse.json({
+        message: "No user Found please Login",
+        status: 404,
+        success: false,
+      });
+    }
+
+    return NextResponse.json({
+      message: "User found",
+      user: userById,
+      status: 200,
+      success: true,
+    });
+  } catch (error) {
+    console.log(error.message);
+    return NextResponse.json(
+      { message: "Server Error" },
+      { status: 500 }
+    );
+  }
 }

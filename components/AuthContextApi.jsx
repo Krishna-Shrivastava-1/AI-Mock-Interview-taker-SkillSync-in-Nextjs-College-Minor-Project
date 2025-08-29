@@ -10,12 +10,13 @@ export const WholeAppProvider = ({ children }) => {
     const [userId, setuserId] = useState('')
     const [jobDescriptionText, setjobDescriptionText] = useState('')
     const pathname = usePathname()
+    // const [token, settoken] = useState(null)
     const [fetchedUserData, setfetchedUserData] = useState([])
     useEffect(() => {
         const userId = async () => {
             try {
                 const respo = await axios.get('/api/auth/user')
-
+// settoken(respo?.data?.token)
                 setuserId(respo?.data?.user?.id)
             } catch (error) {
                 console.log(error.message)
@@ -25,18 +26,26 @@ export const WholeAppProvider = ({ children }) => {
         userId()
     }, [pathname, userId])
     useEffect(() => {
+     if ( !userId) return;
         const fetchUserDatafromId = async () => {
             try {
-                const respo = await axios.get(`/api/auth/getuserbyid/${userId}`)
+                if (userId) {
+                    const respo = await axios.get(`/api/auth/getuserbyid/${userId}`, {
+                       withCredentials: true,
+                       headers:{
+                        Authorization:`UserId ${userId}`
+                       }
+                    })
+                    setfetchedUserData(respo?.data)
+                }
 
-                setfetchedUserData(respo?.data)
             } catch (error) {
                 console.log(error.message)
 
             }
         }
         fetchUserDatafromId()
-    }, [userId,pathname])
+    }, [userId, pathname])
 
 
     const [page, setpage] = useState(1)
@@ -73,7 +82,7 @@ export const WholeAppProvider = ({ children }) => {
 
     // console.log(fetchedUserData?.user)
     return (
-        <AuthContext.Provider value={{ userId, fetchedUserData, setfetchedUserData ,postData ,handleLoadMore ,fetchpostData,hasMore, setpostData,setjobDescriptionText,jobDescriptionText}}>
+        <AuthContext.Provider value={{ userId, fetchedUserData, setfetchedUserData, postData, handleLoadMore, fetchpostData, hasMore, setpostData, setjobDescriptionText, jobDescriptionText }}>
             {children}
         </AuthContext.Provider>
     )
