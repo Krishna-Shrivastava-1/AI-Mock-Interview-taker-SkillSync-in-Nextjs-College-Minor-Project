@@ -33,16 +33,38 @@ export default function ResumeAnalyzer() {
   const [previewUrl, setpreviewUrl] = useState(null)
   const [loading, setloading] = useState(false)
   const router = useRouter()
+  const [timer, settimer] = useState(1)
+  const [mint, setmint] = useState(0)
+
+   const timerfunc =() => {
+ let tim
+     
+    if (timer < 60) {
+      tim = setInterval(() => {
+        settimer((e) => e + 1)
+      }, 1000);
+    }
+    if(timer === 60){
+      settimer(0)
+      setmint(prev => prev+1)
+    }
+    if(mint === 110){
+      return  null
+    }
+ 
+    return ()=> clearInterval(tim)
+  }
   const handleUpload = async () => {
     if (!file) {
-      
-      return  toast.warning('Please Select the Resume pdf')
-      
+
+      return toast.warning('Please Select the Resume pdf')
+
     }
+    timerfunc()
     setloading(true)
     const formData = new FormData();
     if (file) formData.append("resume", file);
-    formData.append("jd", jd);
+    formData.append("jd", jobDescriptionText);
     formData.append("userID", fetchedUserData?.user?._id)
 
     const res = await fetch("/api/resumeanalysis", {
@@ -53,10 +75,10 @@ export default function ResumeAnalyzer() {
     const data = await res.json();
     setResult(data);
     setjobDescriptionText('')
-if(data){
+    if (data) {
 
-  router.push(`/analyzed-resume/${data?.analyzedResume?._id}`)
-}
+      router.push(`/analyzed-resume/${data?.analyzedResume?._id}`)
+    }
   };
   useEffect(() => {
     if (file) {
@@ -66,6 +88,10 @@ if(data){
   }, [file])
 
   console.log(result)
+
+ 
+  console.log(timer)
+  console.log(mint)
 
 
   console.log(jobDescriptionText)
@@ -131,19 +157,49 @@ if(data){
 
                 </div>
 
-
+                {/* <div className='w-full  flex items-center justify-center h-[70vh]'>
+                  {
+                    timer < 60 && mint===0?
+                      <ShinyText
+                    text={`Analyzing Your Resume ${Math.floor(timer)}s`}
+                    disabled={false}
+                    speed={1.8}
+                    className='custom-class'
+                  />:
+                
+                    <ShinyText
+                    text={`Analyzing Your Resume ${mint}m ${timer}s`}
+                    disabled={false}
+                    speed={1.8}
+                    className='custom-class'
+                  />
+                  
+                  }
+               
+                </div> */}
 
 
               </div>
               :
               <div className='w-full  flex items-center justify-center h-[70vh]'>
-                <ShinyText 
-  text="Analyzing Your Resume" 
-  disabled={false} 
-  speed={1.8} 
-  className='custom-class' 
-/>
-                </div>}
+             {
+                    timer < 60 && mint===0?
+                      <ShinyText
+                    text={`Analyzing Your Resume ${Math.floor(timer)}s`}
+                    disabled={false}
+                    speed={1.8}
+                    className='custom-class'
+                  />:
+                
+                    <ShinyText
+                    text={`Analyzing Your Resume ${mint}m ${timer}s`}
+                    disabled={false}
+                    speed={1.8}
+                    className='custom-class'
+                  />
+                  
+                  }
+              </div>}
 
 
           </div>

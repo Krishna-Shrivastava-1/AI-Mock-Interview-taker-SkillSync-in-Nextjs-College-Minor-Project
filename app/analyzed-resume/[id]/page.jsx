@@ -75,7 +75,7 @@ const page = () => {
 
                             <h2 className='text-xl font-semibold'>Your Job Description</h2>
                             <div className='overflow-y-auto max-h-56 noside'>
-                              <p className=' whitespace-pre-wrap'>{e?.jobDescription ? e?.jobDescription : 'No Job Description Provided'}</p>
+                              <p className=' whitespace-pre-wrap' dangerouslySetInnerHTML={{ __html: e?.jobDescription || 'No Job Description Provided' }} />
                             </div>
 
                           </div>
