@@ -116,23 +116,53 @@ Analyze the resume and fill out the JSON object. For "jd_match_percentage", prov
 
     // console.log(uploadedResumeURL)
    const fetchUser = await userModel.findById(userId)
-    const strengthsList = aiAnalysisofResume?.future_guidance?.strength_guide
-      ?.map(item => `<li>${item}</li>`)
-      .join("");
+   const strengthsList = Array.isArray(aiAnalysisofResume?.future_guidance?.strength_guide)
+  ? aiAnalysisofResume.future_guidance.strength_guide.map(item => `<li>${item}</li>`).join("")
+  : `<li>${aiAnalysisofResume?.future_guidance?.strength_guide || "N/A"}</li>`;
 
-    const improvementsList = aiAnalysisofResume?.improvement_tips
-      ?.map(item => `<li>${item}</li>`)
-      .join("");
+const improvementsList = Array.isArray(aiAnalysisofResume?.improvement_tips)
+  ? aiAnalysisofResume.improvement_tips.map(item => `<li>${item}</li>`).join("")
+  : `<li>${aiAnalysisofResume?.improvement_tips || "N/A"}</li>`;
 
-    const relevantSkillsList = aiAnalysisofResume?.skill_relevance_and_match?.skill_relevance
-      ?.map(skill => `<li>${skill}</li>`)
-      .join("");
+const relevantSkillsList = Array.isArray(aiAnalysisofResume?.skill_relevance_and_match?.skill_relevance)
+  ? aiAnalysisofResume.skill_relevance_and_match.skill_relevance.map(skill => `<li>${skill}</li>`).join("")
+  : `<li>${aiAnalysisofResume?.skill_relevance_and_match?.skill_relevance || "N/A"}</li>`;
 
-    const skillAcquisitionList = aiAnalysisofResume?.future_guidance?.skill_acquisition
-      ?.map(item => `<li>${item}</li>`)
-      .join("");
+const skillAcquisitionList = Array.isArray(aiAnalysisofResume?.future_guidance?.skill_acquisition)
+  ? aiAnalysisofResume.future_guidance.skill_acquisition.map(item => `<li>${item}</li>`).join("")
+  : `<li>${aiAnalysisofResume?.future_guidance?.skill_acquisition || "N/A"}</li>`;
 
-    const mailOptions = {
+// console.log(aiAnalysisofResume)
+ 
+
+
+
+
+    const resumeAnalyze = await resumeModel.create({
+      user: userId,
+      future_guidance: {
+        skill_acquisition: aiAnalysisofResume?.future_guidance?.skill_acquisition,
+        strength_guide: aiAnalysisofResume?.future_guidance?.strength_guide,
+      },
+      improvement_tips: aiAnalysisofResume?.improvement_tips,
+      interview_questions: aiAnalysisofResume?.interview_questions,
+      overall_assessment: aiAnalysisofResume?.overall_assessment,
+      skill_relevance_and_match: {
+        jd_match_percentage: aiAnalysisofResume?.skill_relevance_and_match?.jd_match_percentage,
+        skill_relevance: aiAnalysisofResume?.skill_relevance_and_match?.skill_relevance,
+
+      },
+      uploadedResumeUrl: uploadedResumeURL,
+      jobDescription: jd.trim(),
+
+    });
+
+ const user = await userModel.findByIdAndUpdate(userId, {
+      $addToSet: { analyzedResume: resumeAnalyze?._id }
+    }, { new: true })
+
+
+   const mailOptions = {
       from: 'per550017@gmail.com',
       to: fetchUser?.email,
       subject: "Welcome to SkillSync – Let’s Begin Your Growth Journey 🚀",
@@ -240,7 +270,7 @@ Analyze the resume and fill out the JSON object. For "jd_match_percentage", prov
         
       </ul>
 
-      <a href="https://skillsync-ebon.vercel.app/analyzed-resume/${aiAnalysisofResume?._id}" class="btn">View Full Report</a>
+      <a href="https://skillsync-ebon.vercel.app/analyzed-resume/${resumeAnalyze?._id }" class="btn">View Full Report</a>
 
       <p>
         Keep improving and refining your profile — every step takes you closer to your dream career!
@@ -266,38 +296,13 @@ Analyze the resume and fill out the JSON object. For "jd_match_percentage", prov
           success: true,
         });
       }
-      console.log('Email sent:', info.response);
+      // console.log('Email sent:', info.response);
       return res.status(201).json({
         message: 'Account created successfully and welcome email sent.',
         success: true,
       });
     })
 
-
-
-
-    const resumeAnalyze = await resumeModel.create({
-      user: userId,
-      future_guidance: {
-        skill_acquisition: aiAnalysisofResume?.future_guidance?.skill_acquisition,
-        strength_guide: aiAnalysisofResume?.future_guidance?.strength_guide,
-      },
-      improvement_tips: aiAnalysisofResume?.improvement_tips,
-      interview_questions: aiAnalysisofResume?.interview_questions,
-      overall_assessment: aiAnalysisofResume?.overall_assessment,
-      skill_relevance_and_match: {
-        jd_match_percentage: aiAnalysisofResume?.skill_relevance_and_match?.jd_match_percentage,
-        skill_relevance: aiAnalysisofResume?.skill_relevance_and_match?.skill_relevance,
-
-      },
-      uploadedResumeUrl: uploadedResumeURL,
-      jobDescription: jd.trim(),
-
-    });
-
- const user = await userModel.findByIdAndUpdate(userId, {
-      $addToSet: { analyzedResume: resumeAnalyze?._id }
-    }, { new: true })
 
     return NextResponse.json({
       analyzedResume: resumeAnalyze,
