@@ -17,13 +17,20 @@ const DiscoverSectionNews = () => {
   const {setsideBarOpen,sideBarOpen}= useWholeApp()
 const {open} = useSidebar()
   const fecthNews = async () => {
-    const resp = await axios.get(`/api/news`)
+     const timestamp = Math.floor(Date.now() / 1000) // seconds
+  const clientKey = process.env.NEXT_PUBLIC_CLIENT_KEY // public part
+
+    const resp = await axios.get(`/api/news?ts=${timestamp}`,{
+       headers: {
+      "x-client-key": clientKey,
+    },
+    })
     setnewsData(resp?.data?.data)
   }
   useEffect(() => {
     fecthNews()
   }, [])
-  console.log(newsData?.data)
+  // console.log(process.env.NEXT_PUBLIC_CLIENT_SECRET)
   useEffect(() => {
     
     setsideBarOpen(open)

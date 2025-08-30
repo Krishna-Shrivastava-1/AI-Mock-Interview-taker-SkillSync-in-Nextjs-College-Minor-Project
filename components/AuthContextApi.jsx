@@ -17,7 +17,7 @@ export const WholeAppProvider = ({ children }) => {
         const userId = async () => {
             try {
                 const respo = await axios.get('/api/auth/user')
-// settoken(respo?.data?.token)
+                // settoken(respo?.data?.token)
                 setuserId(respo?.data?.user?.id)
             } catch (error) {
                 console.log(error.message)
@@ -27,15 +27,18 @@ export const WholeAppProvider = ({ children }) => {
         userId()
     }, [pathname, userId])
     useEffect(() => {
-     if ( !userId) return;
+        if (!userId) return;
         const fetchUserDatafromId = async () => {
             try {
                 if (userId) {
-                    const respo = await axios.get(`/api/auth/getuserbyid/${userId}`, {
-                       withCredentials: true,
-                       headers:{
-                        Authorization:`UserId ${userId}`
-                       }
+                    const timestamp = Math.floor(Date.now() / 1000) // seconds
+                    const clientKey = process.env.NEXT_PUBLIC_CLIENT_KEY // public part
+                    const respo = await axios.get(`/api/auth/getuserbyid/${userId}?ts=${timestamp}`, {
+                        withCredentials: true,
+                        headers: {
+                            Authorization: `UserId ${userId}`,
+                            "x-client-key": clientKey,
+                        }
                     })
                     setfetchedUserData(respo?.data)
                 }
@@ -56,12 +59,15 @@ export const WholeAppProvider = ({ children }) => {
         if (!hasMore) return;
 
         try {
-            const respo = await axios.get(`/api/post/getallpost?page=${page}&limit=10`, {
-                       withCredentials: true,
-                       headers:{
-                        Authorization:`UserId ${userId}`
-                       }
-                    });
+            const timestamp = Math.floor(Date.now() / 1000) // seconds
+            const clientKey = process.env.NEXT_PUBLIC_CLIENT_KEY // public part
+            const respo = await axios.get(`/api/post/getallpost?page=${page}&limit=10&ts=${timestamp}`, {
+                withCredentials: true,
+                headers: {
+                    Authorization: `UserId ${userId}`,
+                    "x-client-key": clientKey,
+                }
+            });
             const newPosts = respo?.data?.posts || [];
 
             // console.log('psot, -', newPosts);

@@ -32,10 +32,13 @@ const page = () => {
   const [userDatafromparam, setuserDatafromparam] = useState([])
   const fetchUserDatafromId = async () => {
     try {
-      const respo = await axios.get(`/api/auth/getuserbyid/${id}`, {
+       const timestamp = Math.floor(Date.now() / 1000) // seconds
+            const clientKey = process.env.NEXT_PUBLIC_CLIENT_KEY // public part
+      const respo = await axios.get(`/api/auth/getuserbyid/${id}?ts=${timestamp}`, {
         withCredentials: true,
         headers: {
-          Authorization: `UserId ${id}`
+          Authorization: `UserId ${id}`,
+           "x-client-key": clientKey,
         }
       })
 

@@ -18,7 +18,15 @@ const page = () => {
   const { fetchedUserData,sideBarOpen } = useWholeApp()
   const fetchResumeAnalysisbyId = async () => {
     try {
-      const respo = await axios.get(`/api/resumeanalysis/getanlyzedresumebyid/${id}`)
+       const timestamp = Math.floor(Date.now() / 1000) // seconds
+            const clientKey = process.env.NEXT_PUBLIC_CLIENT_KEY // public part
+      const respo = await axios.get(`/api/resumeanalysis/getanlyzedresumebyid/${id}?ts=${timestamp}`,{
+         withCredentials: true,
+        headers: {
+          Authorization: `UserId ${fetchedUserData?.user?._id}`,
+           "x-client-key": clientKey,
+        }
+      })
       setresumeData(respo?.data?.getanalysisbyid)
 
     } catch (error) {
@@ -70,7 +78,7 @@ const page = () => {
                   :
                   fetchedUserData?.user?._id === resumeData?.user ?
                   <div>
-                    <h1 className='text-2xl font-semibold'>Detaled Resume Analysis Report</h1>
+                    <h1 className='text-2xl font-semibold'>Detailed Resume Analysis Report</h1>
                     {
                       [resumeData]?.map((e, index) => (
                         <div key={index}>

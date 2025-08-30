@@ -19,6 +19,17 @@ if(!idHeaderofUser ){
         success:false,
     })
 }
+  const { searchParams } = new URL(req.url)
+  const ts = parseInt(searchParams.get("ts"))
+    const clientKey = req.headers.get("x-client-key")
+
+if (clientKey !== process.env.NEXT_PUBLIC_CLIENT_KEY) {
+  return NextResponse.json({ message: "Unauthorized" }, { status: 401 })
+}
+ const now = Math.floor(Date.now() / 1000)
+  if (!ts || Math.abs(now - ts) > 300) {
+    return NextResponse.json({ message: "Invalid timestamp" }, { status: 401 })
+  }
 // console.log(authHeader)
     const token = (await cookies()).get("authtoken")?.value;
     if (!token) {

@@ -17,7 +17,15 @@ const page = () => {
 
     const fetchAllUser = async () => {
         try {
-            const repo = await axios.get('/api/auth/getalluser')
+               const timestamp = Math.floor(Date.now() / 1000) // seconds
+            const clientKey = process.env.NEXT_PUBLIC_CLIENT_KEY // public part
+            const repo = await axios.get(`/api/auth/getalluser?ts=${timestamp}`,{
+                  withCredentials: true,
+                headers: {
+                    Authorization: `UserId ${fetchedUserData?.user?._id}`,
+                    "x-client-key": clientKey,
+                }
+            })
             if (repo?.data?.user) {
                 setAllUserData(repo.data.user)
             }

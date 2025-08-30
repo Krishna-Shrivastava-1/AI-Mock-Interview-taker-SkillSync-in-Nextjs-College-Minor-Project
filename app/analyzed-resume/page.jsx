@@ -18,7 +18,7 @@ import GetisOpenOrNot from "@/components/GetisOpenOrNot";
 const page = () => {
     const { fetchedUserData,sideBarOpen } = useWholeApp()
     const [loading, setloading] = useState(true)
-    console.log(fetchedUserData)
+    // console.log(fetchedUserData)
     useEffect(() => {
         if (fetchedUserData) {
             setloading(false)
@@ -71,7 +71,7 @@ const page = () => {
                                 // )
                                 :
                                 <div className="w-full">
-                                    <h1 className="text-xl mb-6 font-semibold">Your Anayzed Resumes</h1>
+                                    <h1 className="text-xl mb-6 font-semibold">Your Analyzed Resumes</h1>
                                     {fetchedUserData?.user?.analyzedResume ?
                                         <div className="flex items-center justify-around flex-wrap w-full">
                                             {

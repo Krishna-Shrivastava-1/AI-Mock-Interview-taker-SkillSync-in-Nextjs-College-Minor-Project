@@ -9,7 +9,17 @@ export async function GET(req, res) {
         await database()
         // const posts = await postModel.find()
 
+        const { searchParams } = new URL(req.url)
+        const ts = parseInt(searchParams.get("ts"))
+        const clientKey = req.headers.get("x-client-key")
 
+        if (clientKey !== process.env.NEXT_PUBLIC_CLIENT_KEY) {
+            return NextResponse.json({ message: "Unauthorized" }, { status: 401 })
+        }
+        const now = Math.floor(Date.now() / 1000)
+        if (!ts || Math.abs(now - ts) > 300) {
+            return NextResponse.json({ message: "Invalid timestamp" }, { status: 401 })
+        }
         const token = (await cookies()).get("authtoken")?.value;
         if (!token) {
             return NextResponse.json({ message: "Unauthorized" }, { status: 401 });

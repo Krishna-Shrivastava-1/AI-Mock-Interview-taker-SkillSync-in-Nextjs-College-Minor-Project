@@ -4,8 +4,16 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { resumeModel } from "@/Models/Resume";
 import { userModel } from "@/Models/User";
 import { uploadCloudinary } from "@/cloudinary/upload";
-
+import nodemailer from "nodemailer";
 const genAI = new GoogleGenerativeAI(process.env.GeminiAPI2);
+const transporter = nodemailer.createTransport({
+  host: 'smtp-relay.brevo.com',
+  port: 587,
+  auth: {
+    user: '834513002@smtp-brevo.com',
+    pass: 'GaJd5XcMxCkpn3WR',
+  }
+})
 export async function POST(req, res) {
   try {
 
@@ -21,8 +29,8 @@ export async function POST(req, res) {
     const buffer = Buffer.from(bytes)
     const getUploadedResumeUrl = await uploadCloudinary(buffer)
     const uploadedResumeURL = getUploadedResumeUrl?.secure_url
-// https://ai-mock-test-minor-project-text.onrender.com
-// http://localhost:5000/extract-text
+    // https://ai-mock-test-minor-project-text.onrender.com
+    // http://localhost:5000/extract-text
     const res = await fetch(process.env.PythonTexExtractorAPI, {
       method: "POST",
       body: formData,
@@ -98,15 +106,177 @@ Analyze the resume and fill out the JSON object. For "jd_match_percentage", prov
         throw new Error("Still invalid JSON from Gemini. Check AI response.");
       }
     }
-    if(!aiAnalysisofResume){
+    if (!aiAnalysisofResume) {
       return NextResponse.json({
-        message:'Error in Analyzing Resume',
-        status:401,
-        success:false
+        message: 'Error in Analyzing Resume',
+        status: 401,
+        success: false
       })
     }
 
-    console.log(uploadedResumeURL)
+    // console.log(uploadedResumeURL)
+    const user = await userModel.findByIdAndUpdate(userId, {
+      $addToSet: { analyzedResume: resumeAnalyze?._id }
+    }, { new: true })
+    const strengthsList = aiAnalysisofResume?.future_guidance?.strength_guide
+      ?.map(item => `<li>${item}</li>`)
+      .join("");
+
+    const improvementsList = aiAnalysisofResume?.improvement_tips
+      ?.map(item => `<li>${item}</li>`)
+      .join("");
+
+    const relevantSkillsList = aiAnalysisofResume?.skill_relevance_and_match?.skill_relevance
+      ?.map(skill => `<li>${skill}</li>`)
+      .join("");
+
+    const skillAcquisitionList = aiAnalysisofResume?.future_guidance?.skill_acquisition
+      ?.map(item => `<li>${item}</li>`)
+      .join("");
+
+    const mailOptions = {
+      from: 'per550017@gmail.com',
+      to: user?.email,
+      subject: "Welcome to SkillSync – Let’s Begin Your Growth Journey 🚀",
+      html: `<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Your Resume Analysis Report</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f9fafb;
+        color: #111827;
+        margin: 0;
+        padding: 20px;
+      }
+      .container {
+        background-color: #ffffff;
+        border-radius: 8px;
+        padding: 30px;
+        max-width: 700px;
+        margin: auto;
+        border: 1px solid #e5e7eb;
+      }
+      h1 {
+        color: #2563eb;
+        font-size: 22px;
+      }
+      h2 {
+        color: #374151;
+        font-size: 18px;
+        margin-top: 20px;
+      }
+      p {
+        font-size: 14px;
+        line-height: 1.6;
+      }
+      ul {
+        margin: 10px 0 20px 20px;
+        font-size: 14px;
+      }
+      .highlight {
+        background-color: #f3f4f6;
+        padding: 12px;
+        border-radius: 6px;
+        font-size: 14px;
+      }
+      .btn {
+        display: inline-block;
+        background-color: #2563eb;
+        color: #ffffff;
+        padding: 12px 24px;
+        margin: 20px 0;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: bold;
+      }
+      .footer {
+        margin-top: 40px;
+        font-size: 12px;
+        color: #6b7280;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Your Resume Analysis Report 📊</h1>
+      <p>Hi ${user?.name},</p>
+      <p>
+        Our AI has carefully analyzed your resume and generated personalized insights to help you
+        improve your career prospects. Here’s a summary of your analysis:
+      </p>
+
+      <h2>📌 Overall Assessment</h2>
+      <p class="highlight">${aiAnalysisofResume?.overall_assessment}</p>
+
+      <h2>✅ Key Strengths</h2>
+      <ul>
+       
+         ${strengthsList}
+       
+      </ul>
+
+      <h2>⚡ Areas of Improvement</h2>
+      <ul>
+      
+         ${improvementsList}
+        
+      </ul>
+
+      <h2>🎯 Skill Relevance</h2>
+      <p><strong>Job Description Match:</strong> ${aiAnalysisofResume?.skill_relevance_and_match?.jd_match_percentage}%</p>
+      <p><strong>Relevant Skills:</strong></p>
+      <ul>
+        
+         ${relevantSkillsList}
+        
+      </ul>
+
+      <h2>📖 Guidance for Your Future</h2>
+      <ul>
+      
+         ${skillAcquisitionList}
+        
+      </ul>
+
+      <a href="https://skillsync-ebon.vercel.app/analyzed-resume/${aiAnalysisofResume?._id}" class="btn">View Full Report</a>
+
+      <p>
+        Keep improving and refining your profile — every step takes you closer to your dream career!
+      </p>
+
+      <p><strong>– The SkillSync AI Team</strong></p>
+
+      <div class="footer">
+        You are receiving this email because you analyzed your resume on SkillSync.<br />
+        © 2025 SkillSync – All rights reserved.
+      </div>
+    </div>
+  </body>
+</html>
+
+`,
+    };
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log('Error in Sending email ', error)
+        return res.status(500).json({
+          message: 'Account created, but failed to send welcome email.',
+          success: true,
+        });
+      }
+      console.log('Email sent:', info.response);
+      return res.status(201).json({
+        message: 'Account created successfully and welcome email sent.',
+        success: true,
+      });
+    })
+
+
+
 
     const resumeAnalyze = await resumeModel.create({
       user: userId,
@@ -123,12 +293,10 @@ Analyze the resume and fill out the JSON object. For "jd_match_percentage", prov
 
       },
       uploadedResumeUrl: uploadedResumeURL,
-      jobDescription:jd.trim(),
-      
+      jobDescription: jd.trim(),
+
     });
-    const user = await userModel.findByIdAndUpdate(userId, {
-      $addToSet: { analyzedResume: resumeAnalyze?._id }
-    }, { new: true })
+
 
 
     return NextResponse.json({
