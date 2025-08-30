@@ -1,6 +1,7 @@
 'use client'
 import { AppSidebar } from '@/components/app-sidebar'
 import { useWholeApp } from '@/components/AuthContextApi'
+import GetisOpenOrNot from '@/components/GetisOpenOrNot'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
@@ -10,7 +11,7 @@ import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 
 const page = () => {
-    const { fetchedUserData } = useWholeApp()
+    const { fetchedUserData,sideBarOpen } = useWholeApp()
     const [alluserData, setAllUserData] = useState([])
     const [loading, setLoading] = useState(true)
 
@@ -67,10 +68,18 @@ const page = () => {
                             <SidebarTrigger />
                             <Separator orientation="vertical" className="mr-2 h-4" />
                             <div className='w-full flex items-center justify-end'>
+                                 {
+                                                  !sideBarOpen &&
+                                                  <Link href={'/'}>
+                                                  
+                                <h1 className='text-white font-semibold cursor-pointer select-none text-xl'>SkillSync</h1>
+                                                  </Link>
+                                                }
                                 <Button className='text-muted-foreground font-semibold text-md cursor-pointer select-none hover:border-zinc-700 hover:border-[0.5px] transition-all duration-150 ' variant="ghost">Logout</Button>
                             </div>
                         </div>
                     </header>
+                        <GetisOpenOrNot />
                     <div className='w-full flex items-center justify-center my-8 '>
                         <div className='w-[90%] p-1 '>
                             {loading ? (

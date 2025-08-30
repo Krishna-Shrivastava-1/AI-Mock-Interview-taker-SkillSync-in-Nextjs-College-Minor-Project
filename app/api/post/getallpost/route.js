@@ -2,12 +2,27 @@ import database from "@/Database/Database"
 import { postModel } from "@/Models/Post"
 import { userModel } from "@/Models/User"
 import { NextResponse } from "next/server"
-
+import jwt from 'jsonwebtoken'
+import { cookies } from "next/headers";
 export async function GET(req, res) {
     try {
         await database()
         // const posts = await postModel.find()
-          const url = new URL(req.url);
+
+
+        const token = (await cookies()).get("authtoken")?.value;
+        if (!token) {
+            return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+        }
+
+        let decoded;
+        try {
+            decoded = jwt.verify(token, process.env.Secretkey);
+        } catch (err) {
+            return NextResponse.json({ message: "Invalid token" }, { status: 403 });
+        }
+
+        const url = new URL(req.url);
         const page = parseInt(url.searchParams.get('page') || '1', 10);
         const limit = parseInt(url.searchParams.get('limit') || '10', 10);
 
@@ -19,7 +34,7 @@ export async function GET(req, res) {
         const posts = await postModel.find()
             .sort({ createdAt: -1 })
             .skip(skip)
-            .limit(limit).populate({path:"user",  select: '-password -mockAttempts -isFilledaboutandskill -descriptionAbout -skills -uploadedResume -email' });
+            .limit(limit).populate({ path: "user", select: '-password -mockAttempts -isFilledaboutandskill -descriptionAbout -skills -uploadedResume -email' });
 
         return NextResponse.json({
             message: 'Posts fetched successfully',

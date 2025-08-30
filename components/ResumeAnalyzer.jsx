@@ -18,6 +18,7 @@ import QuillEditor from "./QuillEditor";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import ShinyText from "./ShinyText";
+import GetisOpenOrNot from "./GetisOpenOrNot";
 
 
 
@@ -27,32 +28,31 @@ import ShinyText from "./ShinyText";
 
 export default function ResumeAnalyzer() {
   const [file, setFile] = useState(null);
-  const [jd, setJd] = useState("");
   const [result, setResult] = useState(null);
-  const { fetchedUserData, jobDescriptionText, setjobDescriptionText } = useWholeApp()
+  const { fetchedUserData, jobDescriptionText, setjobDescriptionText,sideBarOpen } = useWholeApp()
   const [previewUrl, setpreviewUrl] = useState(null)
   const [loading, setloading] = useState(false)
   const router = useRouter()
   const [timer, settimer] = useState(1)
   const [mint, setmint] = useState(0)
 
-   const timerfunc =() => {
- let tim
-     
+  const timerfunc = () => {
+    let tim
+
     if (timer < 60) {
       tim = setInterval(() => {
         settimer((e) => e + 1)
       }, 1000);
     }
-    if(timer === 60){
+    if (timer === 60) {
       settimer(0)
-      setmint(prev => prev+1)
+      setmint(prev => prev + 1)
     }
-    if(mint === 110){
-      return  null
+    if (mint === 110) {
+      return null
     }
- 
-    return ()=> clearInterval(tim)
+
+    return () => clearInterval(tim)
   }
   const handleUpload = async () => {
     if (!file) {
@@ -87,11 +87,11 @@ export default function ResumeAnalyzer() {
     }
   }, [file])
 
-  console.log(result)
+  // console.log(result)
 
- 
-  console.log(timer)
-  console.log(mint)
+
+  // console.log(timer)
+  // console.log(mint)
 
 
   console.log(jobDescriptionText)
@@ -105,13 +105,19 @@ export default function ResumeAnalyzer() {
               <SidebarTrigger />
               <Separator orientation="vertical" className="mr-2 h-4" />
               <div className='w-full flex items-center  justify-end'>
-
+ {
+                  !sideBarOpen &&
+                  <Link href={'/'}>
+                  
+<h1 className='text-white font-semibold cursor-pointer select-none text-xl'>SkillSync</h1>
+                  </Link>
+                }
                 <Button className='text-muted-foreground font-semibold text-md cursor-pointer select-none hover:border-zinc-700 hover:border-[0.5px] transition-all duration-150 ' variant="ghost">Logout</Button>
               </div>
 
             </div>
           </header>
-
+    <GetisOpenOrNot />
           <div className='w-full flex justify-center items-center flex-col gap-3 text-white'>
             {!loading ?
               <div className='w-[90%] p-2'>
@@ -153,63 +159,32 @@ export default function ResumeAnalyzer() {
                     <Button variant='secondary' className='cursor-pointer select-none font-semibold w-full' onClick={handleUpload}>Analyze</Button>
                   </div>
 
-
-
                 </div>
-
-                {/* <div className='w-full  flex items-center justify-center h-[70vh]'>
-                  {
-                    timer < 60 && mint===0?
-                      <ShinyText
-                    text={`Analyzing Your Resume ${Math.floor(timer)}s`}
-                    disabled={false}
-                    speed={1.8}
-                    className='custom-class'
-                  />:
-                
-                    <ShinyText
-                    text={`Analyzing Your Resume ${mint}m ${timer}s`}
-                    disabled={false}
-                    speed={1.8}
-                    className='custom-class'
-                  />
-                  
-                  }
-               
-                </div> */}
-
 
               </div>
               :
               <div className='w-full  flex items-center justify-center h-[70vh]'>
-             {
-                    timer < 60 && mint===0?
-                      <ShinyText
-                    text={`Analyzing Your Resume ${Math.floor(timer)}s`}
-                    disabled={false}
-                    speed={1.8}
-                    className='custom-class'
-                  />:
-                
+                {
+                  timer < 60 && mint === 0 ?
                     <ShinyText
-                    text={`Analyzing Your Resume ${mint}m ${timer}s`}
-                    disabled={false}
-                    speed={1.8}
-                    className='custom-class'
-                  />
-                  
-                  }
+                      text={`Analyzing Your Resume ${Math.floor(timer)}s`}
+                      disabled={false}
+                      speed={1.8}
+                      className='custom-class'
+                    /> :
+
+                    <ShinyText
+                      text={`Analyzing Your Resume ${mint}m ${timer}s`}
+                      disabled={false}
+                      speed={1.8}
+                      className='custom-class'
+                    />
+
+                }
               </div>}
 
 
           </div>
-
-
-
-
-
-
-
 
         </SidebarInset>
       </SidebarProvider>

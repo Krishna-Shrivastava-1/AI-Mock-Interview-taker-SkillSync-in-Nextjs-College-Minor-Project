@@ -22,7 +22,7 @@ import { toast } from 'sonner'
 
 
 const page = () => {
-  const { fetchedUserData, userId, setfetchedUserData } = useWholeApp()
+  const { fetchedUserData, userId, setfetchedUserData ,sideBarOpen} = useWholeApp()
 
   const router = useRouter()
   const handleLogout = async () => {
@@ -53,7 +53,13 @@ const page = () => {
               <SidebarTrigger />
               <Separator orientation="vertical" className="mr-2 h-4" />
               <div className='w-full flex items-center  justify-end'>
-
+                {
+                  !sideBarOpen &&
+                  <Link href={'/'}>
+                  
+<h1 className='text-white font-semibold cursor-pointer select-none text-xl'>SkillSync</h1>
+                  </Link>
+                }
                 <Button onClick={handleLogout} className='text-muted-foreground font-semibold text-md cursor-pointer select-none hover:border-zinc-700 hover:border-[0.5px] transition-all duration-150 ' variant="ghost">Logout</Button>
               </div>
               {/* <Breadcrumb>
@@ -83,7 +89,7 @@ const page = () => {
 
             <DiscoverSectionNews />
 
-            <div className='h-screen'></div>
+            {/* <div className='h-screen'></div> */}
           </div>
             :
             <div className="flex flex-1 flex-col gap-4 p-4">

@@ -9,11 +9,12 @@ import { Separator } from '@/components/ui/separator'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 import axios from 'axios';
 import { LoaderCircle } from 'lucide-react';
+import GetisOpenOrNot from '@/components/GetisOpenOrNot';
 const page = () => {
   const { id } = useParams()
   const [resumeData, setresumeData] = useState([])
   const [loading, setloading] = useState(true)
-  const { fetchedUserData } = useWholeApp()
+  const { fetchedUserData,sideBarOpen } = useWholeApp()
   const fetchResumeAnalysisbyId = async () => {
     try {
       const respo = await axios.get(`/api/resumeanalysis/getanlyzedresumebyid/${id}`)
@@ -45,13 +46,19 @@ const page = () => {
               <SidebarTrigger />
               <Separator orientation="vertical" className="mr-2 h-4" />
               <div className='w-full flex items-center  justify-end'>
-
+ {
+                  !sideBarOpen &&
+                  <Link href={'/'}>
+                  
+<h1 className='text-white font-semibold cursor-pointer select-none text-xl'>SkillSync</h1>
+                  </Link>
+                }
                 <Button className='text-muted-foreground font-semibold text-md cursor-pointer select-none hover:border-zinc-700 hover:border-[0.5px] transition-all duration-150 ' variant="ghost">Logout</Button>
               </div>
 
             </div>
           </header>
-
+    <GetisOpenOrNot />
           <div className='w-full flex justify-center items-center flex-col gap-3 text-white'>
             <div className='sm:w-[90%] w-full p-2'>
               { loading ?

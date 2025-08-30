@@ -1,6 +1,7 @@
 'use client'
 import { AppSidebar } from '@/components/app-sidebar'
 import { useWholeApp } from '@/components/AuthContextApi'
+import GetisOpenOrNot from '@/components/GetisOpenOrNot'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
@@ -13,7 +14,7 @@ import React, { useEffect, useState } from 'react'
 const page = () => {
     const { userid, testid } = useParams()
     const [loading, setloading] = useState(false)
-    const { fetchedUserData } = useWholeApp()
+    const { fetchedUserData ,sideBarOpen} = useWholeApp()
     // console.log(userid)
     // console.log(testid)
     console.log(fetchedUserData?.user?.mockAttempts)
@@ -35,14 +36,20 @@ const page = () => {
                             <SidebarTrigger />
                             <Separator orientation="vertical" className="mr-2 h-4" />
                             <div className='w-full flex items-center  justify-end'>
-
+ {
+                  !sideBarOpen &&
+                  <Link href={'/'}>
+                  
+<h1 className='text-white font-semibold cursor-pointer select-none text-xl'>SkillSync</h1>
+                  </Link>
+                }
                                 <Button className='text-muted-foreground font-semibold text-md cursor-pointer select-none hover:border-zinc-700 hover:border-[0.5px] transition-all duration-150 ' variant="ghost">Logout</Button>
                             </div>
 
                         </div>
                     </header>
                     
-
+    <GetisOpenOrNot />
                     {
                        loading && userid !== fetchedUserData?.user?._id ?
                             <div className='w-full flex items-center justify-center text-sky-500 text-lg font-semibold h-[60vh] '>

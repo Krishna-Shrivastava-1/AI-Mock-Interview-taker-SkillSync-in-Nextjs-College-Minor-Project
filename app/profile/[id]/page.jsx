@@ -16,12 +16,14 @@ import { useParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { io } from 'socket.io-client'
+import GetisOpenOrNot from '@/components/GetisOpenOrNot'
+import Link from 'next/link'
 
 // const socket = io("http://localhost:5500");
 const socket = io("https://ai-mock-interview-minor-project-socket.onrender.com");
 const page = () => {
   const { id } = useParams()
-  const { fetchedUserData } = useWholeApp()
+  const { fetchedUserData ,sideBarOpen} = useWholeApp()
   const [loading, setloading] = useState(true)
   const [newName, setnewName] = useState('')
   const [newSkill, setnewSkill] = useState('')
@@ -154,12 +156,19 @@ const page = () => {
               <SidebarTrigger />
               <Separator orientation="vertical" className="mr-2 h-4" />
               <div className='w-full flex items-center  justify-end'>
-
+ {
+                  !sideBarOpen &&
+                  <Link href={'/'}>
+                  
+<h1 className='text-white font-semibold cursor-pointer select-none text-xl'>SkillSync</h1>
+                  </Link>
+                }
                 <Button className='text-muted-foreground font-semibold text-md cursor-pointer select-none hover:border-zinc-700 hover:border-[0.5px] transition-all duration-150 ' variant="ghost">Logout</Button>
               </div>
 
             </div>
           </header>
+              <GetisOpenOrNot />
           {
             loading ?
               <div className='w-full text-white flex items-center justify-center h-[70vh]'>

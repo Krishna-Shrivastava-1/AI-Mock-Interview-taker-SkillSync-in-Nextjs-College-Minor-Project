@@ -21,9 +21,10 @@ import { Separator } from '@/components/ui/separator';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/app-sidebar'
 import { useWholeApp } from '@/components/AuthContextApi'
+import GetisOpenOrNot from '@/components/GetisOpenOrNot'
 const page = () => {
     const param = useParams()
-    const { fetchedUserData } = useWholeApp()
+    const { fetchedUserData,sideBarOpen } = useWholeApp()
     const { userid, mocktestid } = param
     const [mockQuestion, setmockQuestion] = useState([])
     const [optrespo, setoptrespo] = useState({})
@@ -84,12 +85,12 @@ const page = () => {
     }
 
     const mockQuesitonwithans = fetchedUserData?.user?.mockAttempts.filter((e) => e._id === mocktestid)
-    console.log(mockQuesitonwithans?.[0])
+    // console.log(mockQuesitonwithans?.[0])
     // console.log(mockQuesitonwithans?.[0]?.questions)
-    console.log(optrespo)
+    // console.log(optrespo)
     // console.log(optrespo['689d7cfbac4cf6a4ee833da3'])
     const emparr = Object.keys(optrespo)
-    console.log(emparr)
+    // console.log(emparr)
     const quest_id = mockQuestion?.questions?.map((e) => {
         return mockQuesitonwithans?.[0]?.questions?.find((q) => q._id === e._id).explaination
 
@@ -105,7 +106,7 @@ const page = () => {
             totalscore++
         }
     })
-    console.log(totalscore)
+    // console.log(totalscore)
 
     const isMockidExist = fetchedUserData?.user?.mockAttempts.some((e) => {
         if(e._id === mocktestid){
@@ -114,7 +115,7 @@ const page = () => {
            return false
         }
     })
-    console.log('huy',isMockidExist)
+    // console.log('huy',isMockidExist)
     return (
         <div className='text-white'>
             <SidebarProvider className='dark'>
@@ -125,7 +126,13 @@ const page = () => {
                             <SidebarTrigger />
                             <Separator orientation="vertical" className="mr-2 h-4" />
                             <div className='w-full flex items-center  justify-end'>
-
+ {
+                  !sideBarOpen &&
+                  <Link href={'/'}>
+                  
+<h1 className='text-white font-semibold cursor-pointer select-none text-xl'>SkillSync</h1>
+                  </Link>
+                }
                                 <Button className='text-muted-foreground font-semibold text-md cursor-pointer select-none hover:border-zinc-700 hover:border-[0.5px] transition-all duration-150 ' variant="ghost">Logout</Button>
                             </div>
                             {/* <Breadcrumb>
@@ -153,7 +160,7 @@ const page = () => {
                   
                    </div>
                  </div> */}
-                
+                    <GetisOpenOrNot />
                     {
                            loading ? (
         <div className='w-full flex items-center justify-center h-[70vh]'>

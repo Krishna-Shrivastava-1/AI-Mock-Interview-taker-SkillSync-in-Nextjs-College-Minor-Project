@@ -2,6 +2,7 @@
 import AnalysticsChart from '@/components/AnalysticsChart'
 import { AppSidebar } from '@/components/app-sidebar'
 import { useWholeApp } from '@/components/AuthContextApi'
+import GetisOpenOrNot from '@/components/GetisOpenOrNot'
 import PreviousMockTable from '@/components/PreviousMockTable'
 import SpotlightCard from '@/components/SpotlightCard'
 import { Button } from '@/components/ui/button'
@@ -13,7 +14,7 @@ import { useParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
 const page = () => {
-  const { fetchedUserData } = useWholeApp()
+  const { fetchedUserData,sideBarOpen } = useWholeApp()
   const param = useParams()
   const [laoding, setlaoding] = useState(true)
   const allScores = fetchedUserData?.user?.mockAttempts.map((e) => e.score)
@@ -36,15 +37,16 @@ const page = () => {
       countHard++
     }
   })
-  console.log('easy - ', countEasy)
-  console.log('medium - ', countMedium)
-  console.log('hard - ', countHard)
+  // console.log('easy - ', countEasy)
+  // console.log('medium - ', countMedium)
+  // console.log('hard - ', countHard)
   useEffect(() => {
     if (fetchedUserData && fetchedUserData?.user?.mockAttempts?.length > 0 && additionOfTotalScore) {
       setlaoding(false)
     }
   }, [additionOfTotalScore, fetchedUserData?.user?.mockAttempts])
-  console.log(fetchedUserData?.user?.mockAttempts?.length)
+  // console.log(fetchedUserData?.user?.mockAttempts?.length)
+  console.log(sideBarOpen)
   return (
     <div>
       <SidebarProvider className='dark'>
@@ -55,12 +57,19 @@ const page = () => {
               <SidebarTrigger />
               <Separator orientation="vertical" className="mr-2 h-4" />
               <div className='w-full flex items-center  justify-end'>
-
+ {
+                  !sideBarOpen &&
+                  <Link href={'/'}>
+                  
+<h1 className='text-white font-semibold cursor-pointer select-none text-xl'>SkillSync</h1>
+                  </Link>
+                }
                 <Button className='text-muted-foreground font-semibold text-md cursor-pointer select-none hover:border-zinc-700 hover:border-[0.5px] transition-all duration-150 ' variant="ghost">Logout</Button>
               </div>
 
             </div>
           </header>
+          <GetisOpenOrNot />
           {
             laoding ?
               fetchedUserData?.user?.mockAttempts?.length === 0 ?

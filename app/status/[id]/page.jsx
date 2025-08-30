@@ -12,14 +12,20 @@ import axios from 'axios'
 import Link from 'next/link'
 import { io } from 'socket.io-client'
 import { Skeleton } from '@/components/ui/skeleton'
+import GetisOpenOrNot from '@/components/GetisOpenOrNot'
 const socket = io("https://ai-mock-interview-minor-project-socket.onrender.com");
 const page = () => {
     const { id } = useParams()
     const [postDataById, setpostDataById] = useState([])
-    const { fetchedUserData, setpostData } = useWholeApp()
+    const { fetchedUserData, setpostData,sideBarOpen } = useWholeApp()
     const handleFetchPostbyId = async () => {
         try {
-            const repos = await axios.get(`/api/post/getpostbyid/${id}`)
+            const repos = await axios.get(`/api/post/getpostbyid/${id}`, {
+                       withCredentials: true,
+                       headers:{
+                        Authorization:`UserId ${fetchedUserData?.user?._id}`
+                       }
+                    })
             setpostDataById([repos?.data?.post])
         } catch (error) {
             console.log(error)
@@ -66,10 +72,18 @@ const page = () => {
                             <SidebarTrigger />
                             <Separator orientation="vertical" className="mr-2 h-4" />
                             <div className='w-full flex items-center justify-end'>
+                                 {
+                                                  !sideBarOpen &&
+                                                  <Link href={'/'}>
+                                                  
+                                <h1 className='text-white font-semibold cursor-pointer select-none text-xl'>SkillSync</h1>
+                                                  </Link>
+                                                }
                                 <Button className='text-muted-foreground font-semibold text-md cursor-pointer select-none hover:border-zinc-700 hover:border-[0.5px] transition-all duration-150 ' variant="ghost">Logout</Button>
                             </div>
                         </div>
                     </header>
+                        <GetisOpenOrNot />
                     <div className='w-full flex items-center justify-center my-8 mt-0'>
                         <div className='w-[90%]  flex items-center justify-center p-1 '>
                             <div className='flex w-full items-start justify-center '>

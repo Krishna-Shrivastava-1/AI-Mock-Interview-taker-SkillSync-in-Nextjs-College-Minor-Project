@@ -2,6 +2,7 @@
 import { AppSidebar } from '@/components/app-sidebar';
 import { useWholeApp } from '@/components/AuthContextApi';
 import Comboselector from '@/components/Comboselector';
+import GetisOpenOrNot from '@/components/GetisOpenOrNot';
 import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -10,11 +11,12 @@ import { Separator } from '@/components/ui/separator';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import axios from 'axios';
 import { Dot, LoaderCircle } from 'lucide-react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 const Page = () => {
-  const { fetchedUserData, userId, setfetchedUserData } = useWholeApp();
+  const { fetchedUserData, userId, setfetchedUserData,sideBarOpen } = useWholeApp();
   const [role, setRole] = useState('');
   const [skills, setSkills] = useState('');
   const [difficulty, setDifficulty] = useState('easy');
@@ -81,7 +83,13 @@ const Page = () => {
               <SidebarTrigger />
               <Separator orientation="vertical" className="mr-2 h-4" />
               <div className='w-full flex items-center  justify-end'>
-
+ {
+                  !sideBarOpen &&
+                  <Link href={'/'}>
+                  
+<h1 className='text-white font-semibold cursor-pointer select-none text-xl'>SkillSync</h1>
+                  </Link>
+                }
                 <Button onClick={handleLogout} className='text-muted-foreground font-semibold text-md cursor-pointer select-none hover:border-zinc-700 hover:border-[0.5px] transition-all duration-150 ' variant="ghost">Logout</Button>
               </div>
               {/* <Breadcrumb>
@@ -99,6 +107,7 @@ const Page = () => {
                     </Breadcrumb> */}
             </div>
           </header>
+              <GetisOpenOrNot />
           {!loading ?
             <div>
               <div className='w-full flex items-center justify-center'>

@@ -9,6 +9,7 @@ const AuthContext = createContext()
 export const WholeAppProvider = ({ children }) => {
     const [userId, setuserId] = useState('')
     const [jobDescriptionText, setjobDescriptionText] = useState('')
+    const [sideBarOpen, setsideBarOpen] = useState(true)
     const pathname = usePathname()
     // const [token, settoken] = useState(null)
     const [fetchedUserData, setfetchedUserData] = useState([])
@@ -55,7 +56,12 @@ export const WholeAppProvider = ({ children }) => {
         if (!hasMore) return;
 
         try {
-            const respo = await axios.get(`/api/post/getallpost?page=${page}&limit=10`);
+            const respo = await axios.get(`/api/post/getallpost?page=${page}&limit=10`, {
+                       withCredentials: true,
+                       headers:{
+                        Authorization:`UserId ${userId}`
+                       }
+                    });
             const newPosts = respo?.data?.posts || [];
 
             // console.log('psot, -', newPosts);
@@ -81,8 +87,9 @@ export const WholeAppProvider = ({ children }) => {
     }, [page])
 
     // console.log(fetchedUserData?.user)
+    console.log(sideBarOpen)
     return (
-        <AuthContext.Provider value={{ userId, fetchedUserData, setfetchedUserData, postData, handleLoadMore, fetchpostData, hasMore, setpostData, setjobDescriptionText, jobDescriptionText }}>
+        <AuthContext.Provider value={{ userId, fetchedUserData, setfetchedUserData, postData, handleLoadMore, fetchpostData, hasMore, setpostData, setjobDescriptionText, jobDescriptionText, sideBarOpen, setsideBarOpen }}>
             {children}
         </AuthContext.Provider>
     )
