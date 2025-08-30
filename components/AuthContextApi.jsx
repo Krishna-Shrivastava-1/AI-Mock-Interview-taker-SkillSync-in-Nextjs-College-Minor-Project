@@ -87,7 +87,7 @@ export const WholeAppProvider = ({ children }) => {
     }, [page])
 
     // console.log(fetchedUserData?.user)
-    console.log(sideBarOpen)
+    // console.log(sideBarOpen)
     return (
         <AuthContext.Provider value={{ userId, fetchedUserData, setfetchedUserData, postData, handleLoadMore, fetchpostData, hasMore, setpostData, setjobDescriptionText, jobDescriptionText, sideBarOpen, setsideBarOpen }}>
             {children}

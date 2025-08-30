@@ -10,6 +10,7 @@ import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/s
 import axios from 'axios';
 import { LoaderCircle } from 'lucide-react';
 import GetisOpenOrNot from '@/components/GetisOpenOrNot';
+import Link from 'next/link';
 const page = () => {
   const { id } = useParams()
   const [resumeData, setresumeData] = useState([])

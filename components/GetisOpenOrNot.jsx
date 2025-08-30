@@ -5,7 +5,7 @@ import { useWholeApp } from './AuthContextApi'
 const GetisOpenOrNot = () => {
     const {open} = useSidebar()
     const {setsideBarOpen} = useWholeApp()
-    console.log(open)
+    // console.log(open)
     useEffect(() => {
      setsideBarOpen(open)
     }, [open])
