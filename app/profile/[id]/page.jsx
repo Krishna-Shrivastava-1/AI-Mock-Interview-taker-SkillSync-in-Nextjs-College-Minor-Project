@@ -30,7 +30,12 @@ const page = () => {
   const [userDatafromparam, setuserDatafromparam] = useState([])
   const fetchUserDatafromId = async () => {
     try {
-      const respo = await axios.get(`/api/auth/getuserbyid/${id}`)
+      const respo = await axios.get(`/api/auth/getuserbyid/${id}`, {
+        withCredentials: true,
+        headers: {
+          Authorization: `UserId ${id}`
+        }
+      })
 
       setuserDatafromparam(respo?.data)
     } catch (error) {
@@ -111,17 +116,17 @@ const page = () => {
     // listen for updates
     socket.on("userProfilesUpdated", (data) => {
       console.log("Live update:", data);
-       setuserDatafromparam(prev => {
-      if (!prev?.user) return data; 
-      return {
-        ...prev,
-        user: {
-          ...prev.user,
-          followers: data?.user?.followers ?? prev.user.followers,
-          following: data?.user?.following ?? prev.user.following,
-        }
-      };
-    });
+      setuserDatafromparam(prev => {
+        if (!prev?.user) return data;
+        return {
+          ...prev,
+          user: {
+            ...prev.user,
+            followers: data?.user?.followers ?? prev.user.followers,
+            following: data?.user?.following ?? prev.user.following,
+          }
+        };
+      });
 
     });
 

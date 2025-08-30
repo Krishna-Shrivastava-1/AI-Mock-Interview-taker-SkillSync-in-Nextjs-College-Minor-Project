@@ -11,14 +11,14 @@ export async function GET(req, { params }) {
   try {
     const { id } = await params; // Getting user id
     await database();
-// const authHeader = req.headers.get('authorization')
-// const idHeaderofUser = authHeader?.split(' ')[1]
-// if(!authHeader || id !== idHeaderofUser){
-//     return NextResponse.json({
-//         messaage:'Unauthorized User',
-//         success:false,
-//     })
-// }
+const authHeader = req.headers.get('authorization')
+const idHeaderofUser = authHeader?.split(' ')[1]
+if(!idHeaderofUser ){
+    return NextResponse.json({
+        messaage:'Unauthorized User',
+        success:false,
+    })
+}
 // console.log(authHeader)
     const token = (await cookies()).get("authtoken")?.value;
     if (!token) {
