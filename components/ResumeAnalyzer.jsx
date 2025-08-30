@@ -88,7 +88,7 @@ export default function ResumeAnalyzer() {
     }
   }, [file])
 
-  // console.log(result)
+  console.log(result)
 
 
   // console.log(timer)

@@ -115,9 +115,7 @@ Analyze the resume and fill out the JSON object. For "jd_match_percentage", prov
     }
 
     // console.log(uploadedResumeURL)
-    const user = await userModel.findByIdAndUpdate(userId, {
-      $addToSet: { analyzedResume: resumeAnalyze?._id }
-    }, { new: true })
+   const fetchUser = await userModel.findById(userId)
     const strengthsList = aiAnalysisofResume?.future_guidance?.strength_guide
       ?.map(item => `<li>${item}</li>`)
       .join("");
@@ -136,7 +134,7 @@ Analyze the resume and fill out the JSON object. For "jd_match_percentage", prov
 
     const mailOptions = {
       from: 'per550017@gmail.com',
-      to: user?.email,
+      to: fetchUser?.email,
       subject: "Welcome to SkillSync – Let’s Begin Your Growth Journey 🚀",
       html: `<!DOCTYPE html>
 <html>
@@ -203,7 +201,7 @@ Analyze the resume and fill out the JSON object. For "jd_match_percentage", prov
   <body>
     <div class="container">
       <h1>Your Resume Analysis Report 📊</h1>
-      <p>Hi ${user?.name},</p>
+      <p>Hi ${fetchUser?.name},</p>
       <p>
         Our AI has carefully analyzed your resume and generated personalized insights to help you
         improve your career prospects. Here’s a summary of your analysis:
@@ -297,7 +295,9 @@ Analyze the resume and fill out the JSON object. For "jd_match_percentage", prov
 
     });
 
-
+ const user = await userModel.findByIdAndUpdate(userId, {
+      $addToSet: { analyzedResume: resumeAnalyze?._id }
+    }, { new: true })
 
     return NextResponse.json({
       analyzedResume: resumeAnalyze,
