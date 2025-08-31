@@ -19,10 +19,11 @@ import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/s
 import DiscoverSectionNews from '@/components/DiscoverSectionNews'
 import { Skeleton } from '@/components/ui/skeleton'
 import { toast } from 'sonner'
+import NewsCard from '@/components/NewsCard'
 
 
 const page = () => {
-  const { fetchedUserData, userId, setfetchedUserData ,sideBarOpen} = useWholeApp()
+  const { fetchedUserData, userId, setfetchedUserData, sideBarOpen } = useWholeApp()
 
   const router = useRouter()
   const handleLogout = async () => {
@@ -56,14 +57,14 @@ const page = () => {
                 {
                   !sideBarOpen &&
                   <Link href={'/'}>
-                  
-<h1 className='text-white font-semibold cursor-pointer select-none text-xl'>SkillSync</h1>
+
+                    <h1 className='text-white font-semibold cursor-pointer select-none text-xl'>SkillSync</h1>
                   </Link>
                 }
-                 <Link href={'/'}>
-                                  
-                <h1 className='text-white md:hidden block font-semibold cursor-pointer select-none text-xl'>SkillSync</h1>
-                                  </Link>
+                <Link href={'/'}>
+
+                  <h1 className='text-white md:hidden block font-semibold cursor-pointer select-none text-xl'>SkillSync</h1>
+                </Link>
                 {/* <Button onClick={handleLogout} className='text-muted-foreground font-semibold text-md cursor-pointer select-none hover:border-zinc-700 hover:border-[0.5px] transition-all duration-150 ' variant="ghost">Logout</Button> */}
               </div>
               {/* <Breadcrumb>
@@ -89,9 +90,16 @@ const page = () => {
             <div>
               <MockDataCards fetchedUser={fetchedUserData} />
             </div>
-          
 
-            <DiscoverSectionNews />
+
+            <div className='w-full p-4 flex items-center justify-center'>
+
+
+             <div className=''>
+               <DiscoverSectionNews />
+              <NewsCard />
+             </div>
+            </div>
 
             {/* <div className='h-screen'></div> */}
           </div>
