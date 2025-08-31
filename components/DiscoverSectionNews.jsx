@@ -13,9 +13,10 @@ import { formatDistanceToNow } from 'date-fns'
 
 
 
-const DiscoverSectionNews = () => {
+const DiscoverSectionNews = ({setMore}) => {
   const [newsData, setnewsData] = useState([])
   const {setsideBarOpen,sideBarOpen}= useWholeApp()
+
 const {open} = useSidebar()
   const fecthNews = async () => {
      const timestamp = Math.floor(Date.now() / 1000) // seconds
@@ -53,7 +54,10 @@ const {open} = useSidebar()
    };
   return (
     <div className='text-white '>
+      <div className='w-full flex items-center justify-between'>
       <h1 className='text-2xl font-semibold my-2 mb-5'>Discover</h1>
+<Button onClick={()=>setMore(true)} className='text-muted-foreground font-semibold text-sm cursor-pointer select-none hover:border-zinc-700 hover:border-[0.5px] transition-all duration-150 ' variant="ghost">Show More</Button>
+      </div>
       <div className='w-full flex items-center justify-around gap-2  flex-wrap'>
         {
           newsData?.results ?

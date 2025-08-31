@@ -24,7 +24,7 @@ import NewsCard from '@/components/NewsCard'
 
 const page = () => {
   const { fetchedUserData, userId, setfetchedUserData, sideBarOpen } = useWholeApp()
-
+const [seeshow, setseeshow] = useState(false)
   const router = useRouter()
   const handleLogout = async () => {
     await axios.post('/api/auth/logout')
@@ -96,8 +96,13 @@ const page = () => {
 
 
              <div className=''>
-               <DiscoverSectionNews />
+              
+               <DiscoverSectionNews setMore={setseeshow} />
+               {
+                seeshow &&
+
               <NewsCard />
+               }
              </div>
             </div>
 
