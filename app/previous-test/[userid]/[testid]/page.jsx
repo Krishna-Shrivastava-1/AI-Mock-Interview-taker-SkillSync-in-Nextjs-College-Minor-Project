@@ -31,11 +31,11 @@ const page = () => {
             <SidebarProvider className='dark'>
                 <AppSidebar fetchedUser={fetchedUserData} />
                 <SidebarInset>
-                    <header className="flex h-16 shrink-0 items-center gap-2 border-b backdrop-blur-lg bg-background/30 sticky top-0 z-40">
-                        <div className="flex items-center gap-2 px-3">
+                    <header className="flex h-16 shrink-0 items-center  gap-2 border-b backdrop-blur-lg bg-background/30 sticky top-0 z-40">
+                        <div className="flex items-center gap-2 px-3 w-full">
                             <SidebarTrigger />
                             <Separator orientation="vertical" className="mr-2 h-4" />
-                            <div className='w-full flex items-center  justify-end'>
+                            <div className='w-full flex items-center  justify-between'>
  {
                   !sideBarOpen &&
                   <Link href={'/'}>
@@ -43,7 +43,11 @@ const page = () => {
 <h1 className='text-white font-semibold cursor-pointer select-none text-xl'>SkillSync</h1>
                   </Link>
                 }
-                                <Button className='text-muted-foreground font-semibold text-md cursor-pointer select-none hover:border-zinc-700 hover:border-[0.5px] transition-all duration-150 ' variant="ghost">Logout</Button>
+                 <Link href={'/'}>
+                                  
+                <h1 className='text-white md:hidden block font-semibold cursor-pointer select-none text-xl'>SkillSync</h1>
+                                  </Link>
+                                {/* <Button className='text-muted-foreground font-semibold text-md cursor-pointer select-none hover:border-zinc-700 hover:border-[0.5px] transition-all duration-150 ' variant="ghost">Logout</Button> */}
                             </div>
 
                         </div>

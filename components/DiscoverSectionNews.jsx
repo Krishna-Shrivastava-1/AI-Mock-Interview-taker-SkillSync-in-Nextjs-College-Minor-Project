@@ -78,7 +78,7 @@ const {open} = useSidebar()
             <div className='w-full flex items-center justify-around flex-wrap gap-4'>
               {
                 Array(6).fill(null)?.map((_, index) => (
-                  <Skeleton key={index} className="h-72 w-md rounded-3xl" />
+                  <Skeleton key={index} className="h-72 w-sm rounded-3xl" />
                 ))
               }
             </div>

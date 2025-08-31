@@ -29,11 +29,25 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { Button } from "./ui/button"
+import axios from "axios"
+import { useWholeApp } from "./AuthContextApi"
 
 export function NavUser({
   user
 }) {
   const { isMobile } = useSidebar()
+
+
+    const router = useRouter()
+    const {setfetchedUserData} = useWholeApp()
+  const handleLogout = async () => {
+    await axios.post('/api/auth/logout')
+    setfetchedUserData([])
+    router.push('/')
+    router.refresh()
+  }
 
   return (
     <SidebarMenu className='dark'>
@@ -94,7 +108,8 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem variant="destructive" className='font-semibold' onClick={handleLogout} >
+          
               <IconLogout />
               Log out
             </DropdownMenuItem>
