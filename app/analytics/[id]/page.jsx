@@ -46,7 +46,7 @@ const page = () => {
     }
   }, [additionOfTotalScore, fetchedUserData?.user?.mockAttempts])
   // console.log(fetchedUserData?.user?.mockAttempts?.length)
-  console.log(sideBarOpen)
+  // console.log(sideBarOpen)
   return (
     <div>
       <SidebarProvider className='dark'>

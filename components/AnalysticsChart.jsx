@@ -22,7 +22,7 @@ const AnalysticsChart = () => {
         }
       }
     });
-  console.log(userchartdata)
+  // console.log(userchartdata)
   const formattedData = {};
 userchartdata?.forEach(ele => {
   const { difficulty, score, createdAt } = ele;
@@ -47,7 +47,7 @@ userchartdata?.forEach(ele => {
   }
 });
   const formattedChartData = Object.values(formattedData);
-  console.log(formattedChartData)
+  // console.log(formattedChartData)
   const chartData = [
     { month: "January", desktop: 186 },
     { month: "February", desktop: 305 },

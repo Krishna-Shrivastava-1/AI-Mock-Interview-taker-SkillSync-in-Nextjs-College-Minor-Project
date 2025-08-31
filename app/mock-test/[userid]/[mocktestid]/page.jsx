@@ -68,7 +68,7 @@ const page = () => {
         })
     }
     const objLength = Object.keys(optrespo).length
-    console.log('eln =', objLength)
+    // console.log('eln =', objLength)
     const sentRespotobackend = async () => {
         if (objLength === 10) {
             await axios.put('/api/mockgenerator/usernassub', {
@@ -97,7 +97,7 @@ const page = () => {
 
     })
 
-    console.log(quest_id)
+    // console.log(quest_id)
     let totalscore = 0
     mockQuesitonwithans?.[0]?.questions?.map((e) => {
         const userAns = optrespo[e._id]

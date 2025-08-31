@@ -40,7 +40,7 @@ const page = () => {
     useEffect(() => {
         // listen for updates
         socket.on("postLiked", (data) => {
-            console.log("Live update:", data);
+            // console.log("Live update:", data);
             const updatedPost = data;
 
             if (updatedPost) {
@@ -61,7 +61,7 @@ const page = () => {
         socket.emit("likePost", { postId: id, userId: userid });
     };
 
-    console.log(postDataById)
+    // console.log(postDataById)
     return (
         <div>
             <SidebarProvider className='dark'>

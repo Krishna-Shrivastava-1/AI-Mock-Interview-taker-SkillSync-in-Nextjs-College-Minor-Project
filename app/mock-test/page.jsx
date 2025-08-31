@@ -71,7 +71,7 @@ const Page = () => {
     setfetchedUserData([])
     router.refresh()
   }
-  console.log('api role to send', role)
+  // console.log('api role to send', role)
   return (
     <div>
       {/* <Navbar /> */}

@@ -31,11 +31,11 @@ const PreviousMockTable = ({ data }) => {
     const indexOfLastRow = currentPage * rowsPerPage;
     const indexOfFirstRow = indexOfLastRow - rowsPerPage;
     const reverData = [...data]?.reverse()
-    console.log(reverData)
+    // console.log(reverData)
     const currentRows = reverData?.slice(indexOfFirstRow, indexOfLastRow)
-    console.log(currentRows)
+    // console.log(currentRows)
     const totalPages = Math.ceil(data.length / rowsPerPage)
-    console.log(totalPages)
+    // console.log(totalPages)
     return (
         <div className='w-full flex items-center justify-center my-8 '>
             <div className='w-[90%]  p-1 border-[0.5px] border-zinc-800 rounded-md'>

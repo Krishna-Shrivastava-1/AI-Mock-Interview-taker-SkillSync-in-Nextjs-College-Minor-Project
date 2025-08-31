@@ -71,7 +71,7 @@ const page = () => {
         description: newBio,
         name: newName.trim()
       })
-      console.log(respo)
+      // console.log(respo)
       setopen(false)
       if (!respo?.data?.success) {
         toast.warning(respo?.data?.message)
@@ -120,7 +120,7 @@ const page = () => {
   useEffect(() => {
     // listen for updates
     socket.on("userProfilesUpdated", (data) => {
-      console.log("Live update:", data);
+      // console.log("Live update:", data);
       setuserDatafromparam(prev => {
         if (!prev?.user) return data;
         return {

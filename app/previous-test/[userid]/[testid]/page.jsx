@@ -8,6 +8,7 @@ import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/s
 import { Skeleton } from '@/components/ui/skeleton'
 import axios from 'axios'
 import { Check, LoaderCircle, X } from 'lucide-react'
+import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
@@ -17,9 +18,9 @@ const page = () => {
     const { fetchedUserData ,sideBarOpen} = useWholeApp()
     // console.log(userid)
     // console.log(testid)
-    console.log(fetchedUserData?.user?.mockAttempts)
+    // console.log(fetchedUserData?.user?.mockAttempts)
     const findQuestionObjectfromId = fetchedUserData?.user?.mockAttempts?.filter((e) => e._id === testid)
-    console.log('find some - ', findQuestionObjectfromId?.[0])
+    // console.log('find some - ', findQuestionObjectfromId?.[0])
     useEffect(() => {
         if (findQuestionObjectfromId) {
             setloading(true)
