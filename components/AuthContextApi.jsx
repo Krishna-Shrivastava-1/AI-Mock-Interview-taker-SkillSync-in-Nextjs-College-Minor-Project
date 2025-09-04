@@ -61,13 +61,15 @@ export const WholeAppProvider = ({ children }) => {
         try {
             const timestamp = Math.floor(Date.now() / 1000) // seconds
             const clientKey = process.env.NEXT_PUBLIC_CLIENT_KEY // public part
-            const respo = await axios.get(`/api/post/getallpost?page=${page}&limit=10&ts=${timestamp}`, {
+          if(userId){
+              const respo = await axios.get(`/api/post/getallpost?page=${page}&limit=10&ts=${timestamp}`, {
                 withCredentials: true,
                 headers: {
                     Authorization: `UserId ${userId}`,
                     "x-client-key": clientKey,
                 }
             });
+          
             const newPosts = respo?.data?.posts || [];
 
             // console.log('psot, -', newPosts);
@@ -78,6 +80,7 @@ export const WholeAppProvider = ({ children }) => {
             } else {
                 setpostData(prevpost => [...prevpost, ...newPosts]);
             }
+        }
         } catch (error) {
             console.error('Failed to fetch posts:', error);
             setHasMore(false);
@@ -90,9 +93,9 @@ export const WholeAppProvider = ({ children }) => {
 
     useEffect(() => {
         fetchpostData()
-    }, [page])
+    }, [page,pathname])
 
-    // console.log(fetchedUserData?.user)
+    console.log(fetchedUserData?.user)
     // console.log(sideBarOpen)
     return (
         <AuthContext.Provider value={{ userId, fetchedUserData, setfetchedUserData, postData, handleLoadMore, fetchpostData, hasMore, setpostData, setjobDescriptionText, jobDescriptionText, sideBarOpen, setsideBarOpen }}>

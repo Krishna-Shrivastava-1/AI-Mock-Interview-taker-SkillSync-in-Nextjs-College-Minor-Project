@@ -7,11 +7,16 @@ export async function PUT(req, res) {
         const { followerId, followingId } = await req.json()  // followerId - matlab jo follow kar rha hai uski Id following id - matlab jisse follow karna hai uski Id
         await database()
         const followingUser = await userModel.findById(followingId);
+        const followerUser = await userModel.findById(followerId);
         if (!followingUser) {
+            return NextResponse.json({ message: "No user Found", success: false });
+        }
+        if (!followerUser) {
             return NextResponse.json({ message: "No user Found", success: false });
         }
 
         let user;
+        let user2;
         let message;
 
         if (followingUser.followers.includes(followerId)) {
@@ -21,6 +26,11 @@ export async function PUT(req, res) {
                 { $pull: { followers: followerId } },
                 { new: true }
             );
+           user2= await userModel.findByIdAndUpdate(
+                followerId,
+                {$pull:{following:followingId}},
+                {new:true}
+            )
             message = 'Unfollowed';
         } else {
 
@@ -29,13 +39,19 @@ export async function PUT(req, res) {
                 { $addToSet: { followers: followerId } },
                 { new: true }
             );
+          user2 =   await userModel.findByIdAndUpdate(
+                followerId,
+                {$addToSet:{following:followingId}},
+                {new:true}
+            )
             message = 'Followed';
         }
 
         return NextResponse.json({
             message,
             success: true,
-            user
+            user,
+            user2
         });
     } catch (error) {
         console.log(error.message)

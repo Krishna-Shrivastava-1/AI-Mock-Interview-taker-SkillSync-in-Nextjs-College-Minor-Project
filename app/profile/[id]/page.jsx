@@ -120,7 +120,7 @@ const page = () => {
   useEffect(() => {
     // listen for updates
     socket.on("userProfilesUpdated", (data) => {
-      // console.log("Live update:", data);
+      console.log("Live update:", data);
       setuserDatafromparam(prev => {
         if (!prev?.user) return data;
         return {
@@ -147,7 +147,7 @@ const page = () => {
 
     fetchUserDatafromId()
   }, [id])
-  // console.log(userDatafromparam)
+  console.log(userDatafromparam)
 
   return (
     <div>
