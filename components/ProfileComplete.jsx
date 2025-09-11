@@ -37,11 +37,13 @@ const ProfileComplete = () => {
         .split(',')
         .map(skill => skill.trim().charAt(0).toUpperCase() + skill.slice(1))
         .filter(skill => skill.length > 0)
-      await axios.put('/api/auth/descandskill', {
+   const rep =   await axios.put('/api/auth/descandskill', {
         userId: userId,
         skills: cleanedSkills,
         description: descbio
       })
+      console.log(cleanedSkills)
+      console.log(rep)
       setIsOpen(false)
     } catch (error) {
       console.log(error.message)

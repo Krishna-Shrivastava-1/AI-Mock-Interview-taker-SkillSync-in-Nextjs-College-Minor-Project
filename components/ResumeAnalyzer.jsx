@@ -35,7 +35,7 @@ export default function ResumeAnalyzer() {
   const [loading, setloading] = useState(false)
   const router = useRouter()
   const [timer, settimer] = useState(1)
-  const [mint, setmint] = useState(0)
+  const [mint, setmint] = useState(1)
 
   const timerfunc = () => {
     let tim
@@ -45,16 +45,25 @@ export default function ResumeAnalyzer() {
         settimer((e) => e + 1)
       }, 1000);
     }
-    if (timer === 60) {
+   else if(timer > 60){
+    
       settimer(0)
+       tim = setInterval(() => {
+        settimer((e) => e + 1)
+      }, 1000);
       setmint(prev => prev + 1)
-    }
+    
+   }
     if (mint === 110) {
       return null
     }
 
     return () => clearInterval(tim)
   }
+useEffect(() => {
+  timerfunc()
+}, [])
+
   const handleUpload = async () => {
     if (!file) {
 
@@ -165,7 +174,23 @@ export default function ResumeAnalyzer() {
                   </div>
 
                 </div>
+{
+                  timer < 60 && mint === 1 ?
+                    <ShinyText
+                      text={`Analyzing Your Resume ${Math.floor(timer)}s`}
+                      disabled={false}
+                      speed={1.8}
+                      className='custom-class'
+                    /> :
 
+                    <ShinyText
+                      text={`Analyzing Your Resume ${mint}m ${timer}s`}
+                      disabled={false}
+                      speed={1.8}
+                      className='custom-class'
+                    />
+
+                }
               </div>
               :
               <div className='w-full  flex items-center justify-center h-[70vh]'>

@@ -51,7 +51,7 @@ if (clientKey !== process.env.NEXT_PUBLIC_CLIENT_KEY) {
     const userById = await userModel
       .findById(id)
       .select("-password")
-      .populate("mockAttempts posts analyzedResume");
+      .populate("mockAttempts posts analyzedResume following");
 
     if (!userById) {
       return NextResponse.json({

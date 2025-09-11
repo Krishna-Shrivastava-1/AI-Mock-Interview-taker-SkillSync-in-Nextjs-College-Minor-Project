@@ -147,7 +147,7 @@ const page = () => {
 
     fetchUserDatafromId()
   }, [id])
-  console.log(userDatafromparam)
+  // console.log(userDatafromparam)
 
   return (
     <div>

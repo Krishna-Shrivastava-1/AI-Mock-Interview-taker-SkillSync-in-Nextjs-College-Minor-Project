@@ -9,7 +9,7 @@ export async function PUT(req, res) {
         await database()
     const isNameExist = await userModel.findOne({
             _id: { $ne: userId }, // Exclude the current user's document
-            name: name.trim()
+            name: name?.trim()
         });
         if (isNameExist) {
             return NextResponse.json({

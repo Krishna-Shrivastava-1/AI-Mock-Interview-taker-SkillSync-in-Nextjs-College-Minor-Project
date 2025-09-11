@@ -22,6 +22,7 @@ import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/s
 import { AppSidebar } from '@/components/app-sidebar'
 import { useWholeApp } from '@/components/AuthContextApi'
 import GetisOpenOrNot from '@/components/GetisOpenOrNot'
+import Link from 'next/link'
 const page = () => {
     const param = useParams()
     const { fetchedUserData,sideBarOpen } = useWholeApp()

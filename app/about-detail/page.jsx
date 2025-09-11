@@ -25,6 +25,7 @@ const page = () => {
         skills: cleanedSkills,
         description: descbio
       })
+      console.log(cleanedSkills)
 
     } catch (error) {
       console.log(error.message)
