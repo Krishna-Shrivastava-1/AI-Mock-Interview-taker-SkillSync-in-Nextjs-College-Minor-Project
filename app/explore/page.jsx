@@ -36,7 +36,7 @@ const page = () => {
     useEffect(() => {
         // listen for updates
         socket.on("postLiked", (data) => {
-            console.log("Live update:", data);
+            // console.log("Live update:", data);
             if (data) {
                 setpostData(prevpost => prevpost.map(e => e?._id === data?.updatedPost?._id ? data?.updatedPost : e))
             }
