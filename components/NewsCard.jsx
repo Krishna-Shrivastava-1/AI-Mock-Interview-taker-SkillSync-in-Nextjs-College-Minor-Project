@@ -98,7 +98,7 @@ const NewsCard = () => {
       <div className='flex items-center justify-around gap-2 flex-wrap w-full'>
         {initialLoading ? (
           <div className='flex items-center justify-around gap-2 flex-wrap w-full'>
-            {Array(10).fill(null).map((_, index) => (
+            {Array(8).fill(null).map((_, index) => (
               <div key={index} className="flex flex-col space-y-3">
               <Skeleton className="h-[450px]     w-[300px] rounded-3xl" />
                 {/* <div className="space-y-2"> */}

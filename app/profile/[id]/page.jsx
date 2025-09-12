@@ -195,7 +195,7 @@ const page = () => {
                           <DialogContent className='dark text-white max-h-[450px] overflow-y-auto noside'>
                             <DialogHeader>
                               <DialogTitle className='sticky text-xl top-0 z-30 p-2 bg-neutral-800/20 backdrop-blur-lg'>Edit Profile </DialogTitle>
-                              <form onSubmit={handlesubmit} className='text-white flex flex-col items-center justify-center '>
+                              <form onSubmit={handlesubmit} className='text-white  flex flex-col items-center justify-center '>
 
 
                                 <div className='w-full'>
@@ -209,7 +209,7 @@ const page = () => {
 
                                 <div className=" w-full ">
                                   <Label htmlFor="message-3" className='text-lg font-bold m-1 '>Tell us About Yourself</Label>
-                                  <Textarea value={newBio} onChange={(e) => setnewBio(e.target.value)} required className='text-lg font-semibold my-3 whitespace-pre resize-none min-h-32' placeholder="Tell us a little bit about yourself" id="message-3" />
+                                  <Textarea value={newBio} onChange={(e) => setnewBio(e.target.value)} required className='text-lg font-semibold my-3 whitespace-pre-wrap resize-none min-h-32 ' placeholder="Tell us a little bit about yourself" id="message-3" />
 
                                 </div>
                                 <Button type='submit' className="w-full  sticky bottom-0 z-30 cursor-pointer font-bold">Save</Button>
