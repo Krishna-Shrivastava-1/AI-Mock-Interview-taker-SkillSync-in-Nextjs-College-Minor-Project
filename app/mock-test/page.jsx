@@ -87,12 +87,12 @@ const Page = () => {
                   !sideBarOpen &&
                   <Link href={'/'}>
                   
-<h1 className='text-white font-semibold cursor-pointer select-none text-xl'>SkillSync</h1>
+<h1 className='text-white font-semibold cursor-pointer select-none text-xl'>Mokai</h1>
                   </Link>
                 }
                  <Link href={'/'}>
                                   
-                <h1 className='text-white md:hidden block font-semibold cursor-pointer select-none text-xl'>SkillSync</h1>
+                <h1 className='text-white md:hidden block font-semibold cursor-pointer select-none text-xl'>Mokai</h1>
                                   </Link>
                 {/* <Button onClick={handleLogout} className='text-muted-foreground font-semibold text-md cursor-pointer select-none hover:border-zinc-700 hover:border-[0.5px] transition-all duration-150 ' variant="ghost">Logout</Button> */}
               </div>

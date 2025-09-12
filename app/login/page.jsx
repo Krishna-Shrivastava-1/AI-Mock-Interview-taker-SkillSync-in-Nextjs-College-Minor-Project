@@ -68,7 +68,7 @@ const page = () => {
             <div className='w-full flex items-start justify-center'>
 
                 <div className='mt-16 m-2  w-full border border-zinc-800 shadow-lg shadow-sky-800/30 p-2 rounded-xl max-w-sm text-white'>
-                    <h1 className='font-extrabold text-center text-3xl mb-6'>{logorsign} to <span className='text-sky-600 underline'>SkillSync</span></h1>
+                    <h1 className='font-extrabold text-center text-3xl mb-6'>{logorsign} to <span className='text-sky-600 underline'>Mokai</span></h1>
                     <form onSubmit={handsubmit}>
                         <div className='flex flex-col '>
                             {

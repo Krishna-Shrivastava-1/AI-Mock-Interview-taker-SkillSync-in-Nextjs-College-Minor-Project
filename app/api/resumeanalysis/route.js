@@ -165,7 +165,7 @@ const skillAcquisitionList = Array.isArray(aiAnalysisofResume?.future_guidance?.
    const mailOptions = {
       from: 'per550017@gmail.com',
       to: fetchUser?.email,
-      subject: "Welcome to SkillSync – Let’s Begin Your Growth Journey 🚀",
+      subject: "Welcome to Mokai – Let’s Begin Your Growth Journey 🚀",
       html: `<!DOCTYPE html>
 <html>
   <head>
@@ -270,17 +270,17 @@ const skillAcquisitionList = Array.isArray(aiAnalysisofResume?.future_guidance?.
         
       </ul>
 
-      <a href="https://skillsync-ebon.vercel.app/analyzed-resume/${resumeAnalyze?._id }" class="btn">View Full Report</a>
+      <a href="https://mokai.vercel.app/analyzed-resume/${resumeAnalyze?._id }" class="btn">View Full Report</a>
 
       <p>
         Keep improving and refining your profile — every step takes you closer to your dream career!
       </p>
 
-      <p><strong>– The SkillSync AI Team</strong></p>
+      <p><strong>– The Mokai AI Team</strong></p>
 
       <div class="footer">
-        You are receiving this email because you analyzed your resume on SkillSync.<br />
-        © 2025 SkillSync – All rights reserved.
+        You are receiving this email because you analyzed your resume on Mokai.<br />
+        © 2025 Mokai – All rights reserved.
       </div>
     </div>
   </body>

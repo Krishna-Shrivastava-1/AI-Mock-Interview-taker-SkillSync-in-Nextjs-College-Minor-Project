@@ -50,12 +50,12 @@ export async function POST(req, res) {
     const mailOptions ={
       from: 'per550017@gmail.com',
       to: email,
-      subject: "Welcome to SkillSync – Let’s Begin Your Growth Journey 🚀",
+      subject: "Welcome to Mokai – Let’s Begin Your Growth Journey 🚀",
       html: `<!DOCTYPE html>
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Welcome to SkillSync</title>
+    <title>Welcome to Mokai</title>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -94,12 +94,12 @@ export async function POST(req, res) {
   </head>
   <body>
     <div class="container">
-      <h1>Welcome to SkillSync! 👋</h1>
+      <h1>Welcome to Mokai! 👋</h1>
       <p>
         Hi ${name},
       </p>
       <p>
-        Thanks for joining <strong>SkillSync</strong> – your AI-powered career coaching and learning companion!
+        Thanks for joining <strong>Mokai</strong> – your AI-powered career coaching and learning companion!
       </p>
       <p>
         You're now part of a growing community of learners who are sharpening their skills, refining their resumes, and preparing for interviews like pros.
@@ -113,16 +113,16 @@ export async function POST(req, res) {
         <li>📈 Get performance feedback & analytics</li>
         <li>🤝 Connect with peers via the community panel</li>
       </ul>
-      <a href="https://skillsync-ebon.vercel.app/login" class="btn">Go to Dashboard</a>
+      <a href="https://mokai.vercel.app/login" class="btn">Go to Dashboard</a>
       <p style="margin-top: 30px;">
         We’re here to support you every step of the way. If you have any questions, just hit reply!
       </p>
       <p>Welcome aboard, and let’s skill up! 🚀</p>
-      <p><strong>– The SkillSync Team</strong></p>
+      <p><strong>– The Mokai Team</strong></p>
 
       <div class="footer">
-        You are receiving this email because you signed up on SkillSync.<br />
-        © 2025 SkillSync – All rights reserved.
+        You are receiving this email because you signed up on Mokai.<br />
+        © 2025 Mokai – All rights reserved.
       </div>
     </div>
   </body>

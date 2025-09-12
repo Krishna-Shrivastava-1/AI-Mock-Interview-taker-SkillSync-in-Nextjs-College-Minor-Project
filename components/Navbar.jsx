@@ -21,7 +21,7 @@ const Navbar = () => {
     <nav className=" dark:bg-gray-950 backdrop-blur-xl ">
       <div className="container mx-auto flex items-center justify-between p-4">
         <Link href="/" className="text-2xl font-bold text-sky-700">
-          SkillSync
+          Mokai
         </Link>
         {(pathname === '/' || pathname === '/login' || pathname === '/about-detail') && (
           <div>
@@ -30,7 +30,7 @@ const Navbar = () => {
             </Link>
           </div>
         )}
- <Sheet className='dark'>
+ {/* <Sheet className='dark'>
   <SheetTrigger className='dark'>Open</SheetTrigger>
   <SheetContent side='left'  className="w-[300px] dark sm:w-[180px]">
     <SheetHeader>
@@ -41,7 +41,7 @@ const Navbar = () => {
       </SheetDescription>
     </SheetHeader>
   </SheetContent>
-</Sheet>
+</Sheet> */}
         {/* {pathname !== '/' || pathname !== '/login' || pathname !== '/about-detail' && <div>
           <Link href="/login">
             <Button variant="outline" className='cursor-pointer text-md  font-bold'>Get Started</Button>
