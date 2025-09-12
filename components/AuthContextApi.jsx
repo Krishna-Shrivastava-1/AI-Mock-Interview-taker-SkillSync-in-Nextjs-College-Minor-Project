@@ -92,7 +92,10 @@ export const WholeAppProvider = ({ children }) => {
 
 
     useEffect(() => {
-        fetchpostData()
+        if(userId){
+
+            fetchpostData()
+        }
     }, [page,pathname,userId])
 
 
