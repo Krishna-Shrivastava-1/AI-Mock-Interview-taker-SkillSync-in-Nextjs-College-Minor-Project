@@ -13,8 +13,10 @@ import { io } from 'socket.io-client'
 import { Skeleton } from '@/components/ui/skeleton'
 import GetisOpenOrNot from '@/components/GetisOpenOrNot'
 const socket = io("https://ai-mock-interview-minor-project-socket.onrender.com");
+
 const page = () => {
-    const { fetchedUserData, postData, handleLoadMore, hasMore, setpostData,sideBarOpen } = useWholeApp()
+    const { fetchedUserData, postData, handleLoadMore, hasMore, setpostData, sideBarOpen, setuserQuery, nameFilter, userQuery } = useWholeApp()
+
     useEffect(() => {
         const handlescroll = () => {
             const scrollHeight = document.documentElement.scrollHeight;
@@ -31,6 +33,7 @@ const page = () => {
     }, []);
 
     // console.log(postData)
+    // console.log(fetchedUserData)
 
 
     useEffect(() => {
@@ -46,12 +49,10 @@ const page = () => {
             socket.off("postLiked");
         };
     }, []);
-    const handleLike = (id,userid) => {
+    const handleLike = (id, userid) => {
         socket.emit("likePost", { postId: id, userId: userid });
-        
-    };
-  
 
+    };
 
 
     return (
@@ -64,22 +65,22 @@ const page = () => {
                             <SidebarTrigger />
                             <Separator orientation="vertical" className="mr-2 h-4" />
                             <div className='w-full flex items-center justify-between'>
-                                 {
-                                                  !sideBarOpen &&
-                                                  <Link href={'/'}>
-                                                  
-                                <h1 className='text-white font-semibold cursor-pointer select-none text-xl'>Mokai</h1>
-                                                  </Link>
-                                                }
-                                                 <Link href={'/'}>
-                                  
-                <h1 className='text-white md:hidden block font-semibold cursor-pointer select-none text-xl'>Mokai</h1>
-                                  </Link>
+                                {
+                                    !sideBarOpen &&
+                                    <Link href={'/'}>
+
+                                        <h1 className='text-white font-semibold cursor-pointer select-none text-xl'>Mokai</h1>
+                                    </Link>
+                                }
+                                <Link href={'/'}>
+
+                                    <h1 className='text-white md:hidden block font-semibold cursor-pointer select-none text-xl'>Mokai</h1>
+                                </Link>
                                 {/* <Button className='text-muted-foreground font-semibold text-md cursor-pointer select-none hover:border-zinc-700 hover:border-[0.5px] transition-all duration-150 ' variant="ghost">Logout</Button> */}
                             </div>
                         </div>
                     </header>
-                        <GetisOpenOrNot />
+                    <GetisOpenOrNot />
                     <div className='w-full flex items-center justify-center my-8 mt-0'>
                         <div className='sm:w-[90%] w-full flex items-center justify-center p-1 '>
                             <div className='flex w-full items-start justify-center '>
@@ -87,17 +88,17 @@ const page = () => {
 
                                     <PostareOnExploreRoute />
                                     <div className='w-full '>
-                                        {postData?.length >0?
+                                        {postData?.length > 0 ?
                                             postData?.map((e, index) => (
                                                 <div className='text-white border border-t-0 p-2 w-full hover:bg-neutral-900' key={index}>
                                                     <Link href={`/profile/${e?.user?._id}`}>
-                                                    
-                                                    <div className='flex group cursor-pointer select-none items-center w-fit justify-start'>
-                                                        <div className='rounded-full font-semibold text-center text-xl m-2 px-4 p-2 bg-neutral-800'>{e?.user?.name?.[0]} </div>
 
-                                                        <h1 className='text-lg group-hover:underline font-semibold'>{e?.user?.name}</h1>
-                                                        <span className='text-sm text-neutral-500 mx-2'>{new Date(e?.createdAt).toDateString()}</span>
-                                                    </div>
+                                                        <div className='flex group cursor-pointer select-none items-center w-fit justify-start'>
+                                                            <div className='rounded-full font-semibold text-center text-xl m-2 px-4 p-2 bg-neutral-800'>{e?.user?.name?.[0]} </div>
+
+                                                            <h1 className='text-lg group-hover:underline font-semibold'>{e?.user?.name}</h1>
+                                                            <span className='text-sm text-neutral-500 mx-2'>{new Date(e?.createdAt).toDateString()}</span>
+                                                        </div>
                                                     </Link>
                                                     <Link href={`/status/${e?._id}`}>
                                                         <p className='whitespace-pre-wrap line-clamp-5 sm:pl-16'>{e?.message}</p>
@@ -138,10 +139,10 @@ const page = () => {
                                                 </div>
                                             ))
                                             :
-                                            Array(10).fill(null).map((_,ind)=>(
-                                                 <div className='text-white border border-t-0 p-2 w-full hover:bg-neutral-900' key={ind} > 
-                                                <Skeleton className="h-32 w-full" />
-                                             </div>
+                                            Array(10).fill(null).map((_, ind) => (
+                                                <div className='text-white border border-t-0 p-2 w-full hover:bg-neutral-900' key={ind} >
+                                                    <Skeleton className="h-32 w-full" />
+                                                </div>
                                             ))
 
                                         }
@@ -150,12 +151,48 @@ const page = () => {
                                         </button> */}
                                     </div>
                                 </div>
-                                <div className=' sticky top-[70px] hidden  md:block border w-[40%]' >
+                                <div className=' sticky top-[70px] hidden  md:block  w-[40%] text-white' >
                                     <div className=' sticky top-0  z-30 p-2 px-2 w-full  ' >
                                         <div className='bg-zinc-800 rounded-full p-2 w-full  flex items-center justify-center group focus-within:border border-sky-600 focus-within:bg-black' >
                                             <Search className='text-2xl text-zinc-500 group-focus-within:text-sky-600' />
-                                            <input className='border-none outline-none bg-transparent w-full placeholder:text-zinc-500 text-white px-2' placeholder='Search' type="search" />
+                                            <input onChange={(e) => setuserQuery(e.target.value)?.trim()} className='border-none outline-none bg-transparent w-full placeholder:text-zinc-500 text-white px-2' placeholder='Search' type="search" />
                                         </div>
+                                    </div>
+                                    {userQuery.length > 0 && <div className='border border-zinc-700 my-2 rounded-xl mx-3 p-2'>
+
+                                        {
+                                            userQuery.length > 0 && nameFilter.length > 0 ? nameFilter?.map((e) => (
+                                                <div key={e?.id}>
+                                                    <Link href={`/profile/${e?.id}`}>
+                                                        <div className='flex items-center justify-start hover:bg-neutral-800'>
+                                                            <div className='rounded-full font-semibold text-center text-xl m-2 px-4 p-2 bg-neutral-800 border border-neutral-600'>{e?.name?.[0]} </div>
+                                                            <h1 className='text-lg font-semibold'>{e?.name}</h1>
+
+                                                        </div>
+                                                    </Link>
+                                                </div>
+                                            ))
+                                                :
+                                                userQuery.length > 0 && nameFilter.length === 0 &&
+                                                <p>No User Found</p>
+                                        }
+                                    </div>}
+                                    <div className='border border-zinc-700 rounded-xl mx-3 p-2'>
+                                        <h2 className='font-semibold text-lg mb-2'>You Are Following</h2>
+                                        {
+                                            fetchedUserData?.user?.following?.map((e) => (
+                                                <div key={e?._id}>
+                                                    <Link href={`/profile/${e?._id}`}>
+                                                        <div className='flex justify-between items-center w-full cursor-pointer hover:bg-neutral-900 rounded-xl'>
+                                                            <div className='rounded-full font-semibold text-center text-xl m-2 px-4 p-2 bg-neutral-800'>{e?.name?.[0]} </div>
+                                                            <h1 className='font-semibold'>{e?.name}</h1>
+                                                            <Button className='rounded-full font-semibold cursor-pointer'>View</Button>
+                                                        </div>
+                                                    </Link>
+
+                                                </div>
+                                            ))
+                                        }
                                     </div>
 
                                 </div>

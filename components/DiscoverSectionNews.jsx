@@ -77,7 +77,7 @@ const {open} = useSidebar()
                                         />
                                       )}
                   <div className="absolute flex items-center justify-between gap-x-3 rounded-sm bottom-10 left-0 bg-black/40 backdrop-blur-md font-bold text-white p-2 text-sm">
-                    <Image src={e?.source_icon} width={30} height={30} className='rounded-full' alt='Source icon' />
+                 {e?.source_icon  &&   <Image src={e?.source_icon } width={30} height={30} className='rounded-full' alt='Source icon' />}
                     <span>{e?.source_name}</span>
                   </div>
                 </div>

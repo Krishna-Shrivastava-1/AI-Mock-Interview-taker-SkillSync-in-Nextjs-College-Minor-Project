@@ -12,19 +12,24 @@ const page = () => {
     const [name, setname] = useState('')
     const [email, setemail] = useState('')
     const [password, setpassword] = useState('')
+
     const router = useRouter()
-    const { fetchedUserData,setfetchedUserData } = useWholeApp()
+    
+    const { fetchedUserData, setfetchedUserData } = useWholeApp()
     const handleSignup = async (name, email, password) => {
         try {
             const resp = await axios.post('/api/auth/register', {
                 name, email, password
             })
-            console.log('register - ',resp)
-            if(!resp?.data?.success){
+            // console.log('register - ',resp)
+        
+            if (!resp?.data?.success) {
                 toast.error(resp?.data?.message)
+
             }
             if (resp?.data?.success) {
-                   toast.success(resp?.data?.message)
+                toast.success(resp?.data?.message)
+           
             }
         } catch (error) {
             console.log(error.message)
@@ -36,14 +41,16 @@ const page = () => {
             const resp = await axios.post('/api/auth/login', {
                 email, password
             })
-
-            console.log('login - ',resp?.data)
-           if(!resp?.data?.success){
-             toast.error(resp?.data?.message)
-           }
+         
+            // console.log('login - ',resp?.data)
+            if (!resp?.data?.success) {
+                toast.error(resp?.data?.message)
+             
+            }
             if (resp?.data?.success) {
-                 toast.success(resp?.data?.message)
+                toast.success(resp?.data?.message)
                 router.push('/home')
+           
                 // setfetchedUserData(resp?.data)
             }
 

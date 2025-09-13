@@ -11,16 +11,16 @@ import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 
 const page = () => {
-    const { fetchedUserData,sideBarOpen } = useWholeApp()
+    const { fetchedUserData, sideBarOpen } = useWholeApp()
     const [alluserData, setAllUserData] = useState([])
     const [loading, setLoading] = useState(true)
 
     const fetchAllUser = async () => {
         try {
-               const timestamp = Math.floor(Date.now() / 1000) // seconds
+            const timestamp = Math.floor(Date.now() / 1000) // seconds
             const clientKey = process.env.NEXT_PUBLIC_CLIENT_KEY // public part
-            const repo = await axios.get(`/api/auth/getalluser?ts=${timestamp}`,{
-                  withCredentials: true,
+            const repo = await axios.get(`/api/auth/getalluser?ts=${timestamp}`, {
+                withCredentials: true,
                 headers: {
                     Authorization: `UserId ${fetchedUserData?.user?._id}`,
                     "x-client-key": clientKey,
@@ -33,7 +33,7 @@ const page = () => {
             console.error(error)
         }
     }
-    
+
     useEffect(() => {
         setLoading(true); // Set loading to true before fetching data
         fetchAllUser()
@@ -64,7 +64,7 @@ const page = () => {
         if (alluserData.length > 0 && fetchedUserData?.user) {
             setLoading(false);
         }
-    }, [alluserData, fetchedUserData,splicedSortedScore])
+    }, [alluserData, fetchedUserData, splicedSortedScore])
 
     return (
         <div>
@@ -76,22 +76,22 @@ const page = () => {
                             <SidebarTrigger />
                             <Separator orientation="vertical" className="mr-2 h-4" />
                             <div className='w-full flex items-center justify-between'>
-                                 {
-                                                  !sideBarOpen &&
-                                                  <Link href={'/'}>
-                                                  
-                                <h1 className='text-white font-semibold cursor-pointer select-none text-xl'>Mokai</h1>
-                                                  </Link>
-                                                }
-                                                 <Link href={'/'}>
-                                  
-                <h1 className='text-white md:hidden block font-semibold cursor-pointer select-none text-xl'>Mokai</h1>
-                                  </Link>
+                                {
+                                    !sideBarOpen &&
+                                    <Link href={'/'}>
+
+                                        <h1 className='text-white font-semibold cursor-pointer select-none text-xl'>Mokai</h1>
+                                    </Link>
+                                }
+                                <Link href={'/'}>
+
+                                    <h1 className='text-white md:hidden block font-semibold cursor-pointer select-none text-xl'>Mokai</h1>
+                                </Link>
                                 {/* <Button className='text-muted-foreground font-semibold text-md cursor-pointer select-none hover:border-zinc-700 hover:border-[0.5px] transition-all duration-150 ' variant="ghost">Logout</Button> */}
                             </div>
                         </div>
                     </header>
-                        <GetisOpenOrNot />
+                    <GetisOpenOrNot />
                     <div className='w-full flex items-center justify-center my-8 '>
                         <div className='w-[90%] p-1 '>
                             {loading ? (
@@ -122,8 +122,8 @@ const page = () => {
                                                     {index === 0 ? '1st' : index === 1 ? '2nd' : index === 2 ? '3rd' : `${index + 1}.`}
                                                 </h1>
                                                 <Link href={`/profile/${e?.user?._id}`}>
-                                                
-                                                <h1 className='text-lg font-semibold'> {e?.user?.name}</h1>
+
+                                                    <h1 className='text-lg font-semibold'> {e?.user?.name}</h1>
                                                 </Link>
                                                 <h1> {e?.totalscore}</h1>
                                             </div>

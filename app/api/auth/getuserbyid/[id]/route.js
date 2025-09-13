@@ -49,9 +49,7 @@ if (clientKey !== process.env.NEXT_PUBLIC_CLIENT_KEY) {
     // }
 
     const userById = await userModel
-      .findById(id)
-      .select("-password")
-      .populate("mockAttempts posts analyzedResume following");
+      .findById(id).populate("mockAttempts posts analyzedResume following").select("-password");
 
     if (!userById) {
       return NextResponse.json({

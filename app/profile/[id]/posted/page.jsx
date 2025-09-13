@@ -10,7 +10,7 @@ import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/s
 import { Textarea } from '@/components/ui/textarea'
 import { Separator } from '@radix-ui/react-dropdown-menu'
 import axios from 'axios'
-import { LoaderCircle } from 'lucide-react'
+import { ChartColumn, Heart, LoaderCircle, MessageCircle, Share } from 'lucide-react'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
@@ -18,12 +18,16 @@ import { toast } from 'sonner'
 import { io } from 'socket.io-client'
 import GetisOpenOrNot from '@/components/GetisOpenOrNot'
 import Link from 'next/link'
+import { Skeleton } from '@/components/ui/skeleton'
+
 
 // const socket = io("http://localhost:5500");
 const socket = io("https://ai-mock-interview-minor-project-socket.onrender.com");
 const page = () => {
   const { id } = useParams()
-  const { fetchedUserData ,sideBarOpen} = useWholeApp()
+
+
+ const { fetchedUserData, setpostData,postData } = useWholeApp()
   const [loading, setloading] = useState(true)
   const [newName, setnewName] = useState('')
   const [newSkill, setnewSkill] = useState('')
@@ -32,13 +36,13 @@ const page = () => {
   const [userDatafromparam, setuserDatafromparam] = useState([])
   const fetchUserDatafromId = async () => {
     try {
-       const timestamp = Math.floor(Date.now() / 1000) // seconds
-            const clientKey = process.env.NEXT_PUBLIC_CLIENT_KEY // public part
+      const timestamp = Math.floor(Date.now() / 1000) // seconds
+      const clientKey = process.env.NEXT_PUBLIC_CLIENT_KEY // public part
       const respo = await axios.get(`/api/auth/getuserbyid/${id}?ts=${timestamp}`, {
         withCredentials: true,
         headers: {
           Authorization: `UserId ${id}`,
-           "x-client-key": clientKey,
+          "x-client-key": clientKey,
         }
       })
 
@@ -120,7 +124,7 @@ const page = () => {
   useEffect(() => {
     // listen for updates
     socket.on("userProfilesUpdated", (data) => {
-      // console.log("Live update:", data);
+      console.log("Live update:", data);
       setuserDatafromparam(prev => {
         if (!prev?.user) return data;
         return {
@@ -146,17 +150,98 @@ const page = () => {
   useEffect(() => {
 
     fetchUserDatafromId()
-  }, [id])
+  }, [id,postData])
+
+   useEffect(() => {
+        // listen for updates
+        socket.on("postLiked", (data) => {
+            // console.log("Live update:", data);
+            if (data) {
+                setpostData(prevpost => prevpost.map(e => e?._id === data?.updatedPost?._id ? data?.updatedPost : e))
+            }
+        });
+
+        return () => {
+            socket.off("postLiked");
+        };
+    }, []);
+
+  const handleLike = (id, userid) => {
+        socket.emit("likePost", { postId: id, userId: userid });
+
+    };
+
   // console.log(userDatafromparam)
 
   return (
     <div>
-    
-         <div className='w-full'>
-                          <h2 className='my-4 mb-8 text-xl font-bold'>Number of Problems Count as per Difficulty</h2>
-                          <ChartBarStacked userData={userDatafromparam} />
-                        </div>
-   
+      <div className='w-full '>
+        {/* {
+          userDatafromparam?.user?.posts?.length === 0 && <p>Nothing Posted Yet.</p>
+        } */}
+        {userDatafromparam?.user?.posts?.length > 0 ?
+          userDatafromparam?.user?.posts?.map((e, index) => (
+            <div className='text-white border border-t-0 p-2 w-full hover:bg-neutral-900' key={index}>
+              <Link href={`/profile/${e?.user?._id}`}>
+
+                <div className='flex group cursor-pointer select-none items-center w-fit justify-start'>
+                  <div className='rounded-full font-semibold text-center text-xl m-2 px-4 p-2 bg-neutral-800'>{userDatafromparam?.user?.name?.[0]} </div>
+
+                  <h1 className='text-lg group-hover:underline font-semibold'>{userDatafromparam?.user?.name}</h1>
+                  <span className='text-sm text-neutral-500 mx-2'>{new Date(e?.createdAt).toDateString()}</span>
+                </div>
+              </Link>
+              <Link href={`/status/${e?._id}`}>
+                <p className='whitespace-pre-wrap line-clamp-5 sm:pl-16'>{e?.message}</p>
+              </Link>
+
+              <div className='flex justify-around w-full mt-5'>
+                <div>
+                  <MessageCircle className='text-neutral-600' />
+                </div>
+                <div onClick={() => handleLike(e._id, fetchedUserData?.user?._id)} className='flex items-center justify-center group cursor-pointer select-none relative'>
+                  <div className='p-2 rounded-full group-hover:bg-pink-800/20  transition-all duration-150 flex items-center text-sm'>
+                    {
+                      e?.likes.includes(fetchedUserData?.user?._id) ?
+                        <Heart className=' group-hover:text-pink-700 text-pink-700 ' fill='currentColor' />
+                        :
+                        <Heart className='text-neutral-600 group-hover:text-pink-700' />
+                    }
+                  </div>
+                  {e?.likes.length > 0 && <p className={`group-hover:text-pink-600 text-neutral-600 absolute left-[35px] `}>{e?.likes.length}</p>}
+                </div>
+
+                <div className='flex items-center justify-center group cursor-pointer select-none relative'>
+                  <div className='p-2 rounded-full group-hover:bg-sky-800/20  transition-all duration-150 flex items-center text-sm'>
+                    <ChartColumn className=' group-hover:text-sky-700 text-neutral-700 ' />
+                  </div>
+                  <p className={`group-hover:text-sky-600 text-neutral-600 absolute left-[35px] `}>{e?.views}</p>
+                </div>
+                <div className='flex items-center justify-center group cursor-pointer select-none relative'>
+                  <div className='p-2 rounded-full group-hover:bg-sky-800/20  transition-all duration-150 flex items-center text-sm'>
+                    <Share className=' group-hover:text-sky-700 text-neutral-700 ' />
+                  </div>
+
+                </div>
+                {/* <div>
+                                                            <Share className='text-neutral-600' />
+                                                        </div> */}
+              </div>
+            </div>
+          ))
+          :
+           userDatafromparam?.user?.posts?.length === 0 ? <p className='text-center text-xl font-semibold my-4'>Nothing Posted Yet.</p> :
+          Array(6).fill(null).map((_, ind) => (
+            <div className='text-white border border-t-0 p-2 w-full hover:bg-neutral-900' key={ind} >
+              <Skeleton className="h-32 w-full" />
+            </div>
+          ))
+
+        }
+        {/* <button className='text-white' onClick={handleLoadMore} >
+                                            load more
+                                        </button> */}
+      </div>
     </div>
   )
 }
