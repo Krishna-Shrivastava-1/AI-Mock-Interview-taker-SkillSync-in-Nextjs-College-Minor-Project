@@ -15,7 +15,7 @@ import GetisOpenOrNot from '@/components/GetisOpenOrNot'
 const socket = io("https://ai-mock-interview-minor-project-socket.onrender.com");
 
 const page = () => {
-    const { fetchedUserData, postData, handleLoadMore, hasMore, setpostData, sideBarOpen, setuserQuery, nameFilter, userQuery } = useWholeApp()
+    const { fetchedUserData, postData, handleLoadMore, hasMore, setpostData, sideBarOpen, setuserQuery, nameFilter, userQuery, loading } = useWholeApp()
 
     useEffect(() => {
         const handlescroll = () => {
@@ -23,14 +23,14 @@ const page = () => {
             const clientHeight = window.innerHeight;
             const scrollTop = window.scrollY;
 
-            if (scrollTop + clientHeight >= scrollHeight - 200 && hasMore) {
+            if (scrollTop + clientHeight >= scrollHeight - 200 && hasMore && !loading ) {
                 handleLoadMore();
             }
         };
 
         window.addEventListener('scroll', handlescroll);
         return () => window.removeEventListener('scroll', handlescroll);
-    }, []);
+    }, [hasMore,loading]);
 
     // console.log(postData)
     // console.log(fetchedUserData)

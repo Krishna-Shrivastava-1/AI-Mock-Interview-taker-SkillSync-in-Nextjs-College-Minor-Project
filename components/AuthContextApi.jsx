@@ -93,7 +93,9 @@ export const WholeAppProvider = ({ children }) => {
         }
     };
     const handleLoadMore = () => {
-        setpage(prevPage => prevPage + 1);
+       if (!loading && hasMore) {
+    setpage((prev) => prev + 1);
+  }
     };
 
 
@@ -141,7 +143,7 @@ export const WholeAppProvider = ({ children }) => {
     // console.log(fetchedUserData?.user)
     // console.log(postData)
     return (
-        <AuthContext.Provider value={{ userId, fetchedUserData, setfetchedUserData, postData, handleLoadMore, fetchpostData, hasMore, setpostData, setjobDescriptionText, jobDescriptionText, sideBarOpen, setsideBarOpen, setuserQuery,nameFilter,userQuery }}>
+        <AuthContext.Provider value={{ userId, fetchedUserData, setfetchedUserData, postData, handleLoadMore, fetchpostData, hasMore, setpostData, setjobDescriptionText, jobDescriptionText, sideBarOpen, setsideBarOpen, setuserQuery,nameFilter,userQuery ,loading}}>
             {children}
         </AuthContext.Provider>
     )
