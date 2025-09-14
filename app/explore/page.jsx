@@ -185,7 +185,10 @@ const page = () => {
                                                     <Link href={`/profile/${e?._id}`}>
                                                         <div className='flex justify-between items-center w-full cursor-pointer hover:bg-neutral-900 rounded-xl'>
                                                             <div className='rounded-full font-semibold text-center text-xl m-2 px-4 p-2 bg-neutral-800'>{e?.name?.[0]} </div>
-                                                            <h1 className='font-semibold'>{e?.name}</h1>
+                                                            <div>
+                                                                <h1 className='font-semibold'>{e?.name}</h1>
+                                                                <p className=' line-clamp-1 text-neutral-400'>{e?.descriptionAbout}</p>
+                                                            </div>
                                                             <Button className='rounded-full font-semibold cursor-pointer'>View</Button>
                                                         </div>
                                                     </Link>

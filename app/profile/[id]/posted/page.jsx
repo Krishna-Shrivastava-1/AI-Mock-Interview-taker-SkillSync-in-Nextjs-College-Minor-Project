@@ -124,7 +124,7 @@ const page = () => {
   useEffect(() => {
     // listen for updates
     socket.on("userProfilesUpdated", (data) => {
-      console.log("Live update:", data);
+      // console.log("Live update:", data);
       setuserDatafromparam(prev => {
         if (!prev?.user) return data;
         return {
@@ -180,7 +180,7 @@ const page = () => {
           userDatafromparam?.user?.posts?.length === 0 && <p>Nothing Posted Yet.</p>
         } */}
         {userDatafromparam?.user?.posts?.length > 0 ?
-          userDatafromparam?.user?.posts?.map((e, index) => (
+          [...userDatafromparam?.user?.posts].reverse()?.map((e, index) => (
             <div className='text-white border border-t-0 p-2 w-full hover:bg-neutral-900' key={index}>
               <Link href={`/profile/${e?.user?._id}`}>
 

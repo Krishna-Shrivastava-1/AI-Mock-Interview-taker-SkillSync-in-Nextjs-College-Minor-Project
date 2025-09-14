@@ -151,6 +151,11 @@ export default function ProfileLayout({ children, params }) {
 
     fetchUserDatafromId()
   }, [id])
+const isFollowing = userDatafromparam?.user?.followers?.some(
+  f => String(f?._id || f) === String(fetchedUserData?.user?._id)
+);
+
+// console.log("Following?", isFollowing);
   return (
     <div>
   <SidebarProvider className='dark'>
@@ -247,7 +252,7 @@ export default function ProfileLayout({ children, params }) {
                             fetchedUserData?.user?._id !== id ?
                               <div className='flex items-center justify-around flex-wrap w-full'>
                                 {
-                                  userDatafromparam?.user?.followers?.includes(fetchedUserData?.user?._id) ?
+                                 isFollowing?
                                     <Button style={{ 'backgroundColor': '#038391', 'color': 'white' }} onClick={() => handlefollowandunfollow(fetchedUserData?.user?._id, id)} className='font-semibold rounded-full md:w-sm w-full cursor-pointer select-none text-white text-lg'>Following</Button>
                                     :
 
@@ -283,6 +288,16 @@ export default function ProfileLayout({ children, params }) {
 <Link href={`/profile/${id}/posted`}>
 <div className={`${pathlastname[pathlastname.length-1] === 'posted' && 'border-b-[2px]  border-sky-500'} p-2 cursor-pointer  select-none hover:bg-neutral-900`}>
   <h2 className='text-xl font-semibold'>Posts</h2>
+</div>
+</Link>
+<Link href={`/profile/${id}/following`}>
+<div className={`${pathlastname[pathlastname.length-1] === 'following' && 'border-b-[2px]  border-sky-500'} p-2 cursor-pointer  select-none hover:bg-neutral-900`}>
+  <h2 className='text-xl font-semibold'>Following</h2>
+</div>
+</Link>
+<Link href={`/profile/${id}/followers`}>
+<div className={`${pathlastname[pathlastname.length-1] === 'followers' && 'border-b-[2px]  border-sky-500'} p-2 cursor-pointer  select-none hover:bg-neutral-900`}>
+  <h2 className='text-xl font-semibold'>Followers</h2>
 </div>
 </Link>
 
@@ -328,5 +343,3 @@ export default function ProfileLayout({ children, params }) {
     </div>
   );
 }
-
-

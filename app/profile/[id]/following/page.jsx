@@ -10,7 +10,7 @@ import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/s
 import { Textarea } from '@/components/ui/textarea'
 import { Separator } from '@radix-ui/react-dropdown-menu'
 import axios from 'axios'
-import { LoaderCircle } from 'lucide-react'
+import { ChartColumn, Heart, LoaderCircle, MessageCircle, Share } from 'lucide-react'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
@@ -18,12 +18,16 @@ import { toast } from 'sonner'
 import { io } from 'socket.io-client'
 import GetisOpenOrNot from '@/components/GetisOpenOrNot'
 import Link from 'next/link'
+import { Skeleton } from '@/components/ui/skeleton'
+
 
 // const socket = io("http://localhost:5500");
 const socket = io("https://ai-mock-interview-minor-project-socket.onrender.com");
 const page = () => {
   const { id } = useParams()
-  const { fetchedUserData ,sideBarOpen} = useWholeApp()
+
+
+ const { fetchedUserData, setpostData,postData } = useWholeApp()
   const [loading, setloading] = useState(true)
   const [newName, setnewName] = useState('')
   const [newSkill, setnewSkill] = useState('')
@@ -32,13 +36,13 @@ const page = () => {
   const [userDatafromparam, setuserDatafromparam] = useState([])
   const fetchUserDatafromId = async () => {
     try {
-       const timestamp = Math.floor(Date.now() / 1000) // seconds
-            const clientKey = process.env.NEXT_PUBLIC_CLIENT_KEY // public part
+      const timestamp = Math.floor(Date.now() / 1000) // seconds
+      const clientKey = process.env.NEXT_PUBLIC_CLIENT_KEY // public part
       const respo = await axios.get(`/api/auth/getuserbyid/${id}?ts=${timestamp}`, {
         withCredentials: true,
         headers: {
           Authorization: `UserId ${id}`,
-           "x-client-key": clientKey,
+          "x-client-key": clientKey,
         }
       })
 
@@ -146,17 +150,65 @@ const page = () => {
   useEffect(() => {
 
     fetchUserDatafromId()
-  }, [id])
+  }, [id,postData])
+
+   useEffect(() => {
+        // listen for updates
+        socket.on("postLiked", (data) => {
+            // console.log("Live update:", data);
+            if (data) {
+                setpostData(prevpost => prevpost.map(e => e?._id === data?.updatedPost?._id ? data?.updatedPost : e))
+            }
+        });
+
+        return () => {
+            socket.off("postLiked");
+        };
+    }, []);
+
+  const handleLike = (id, userid) => {
+        socket.emit("likePost", { postId: id, userId: userid });
+
+    };
+
   // console.log(userDatafromparam)
 
   return (
     <div>
-    
-         <div className='w-full'>
-                          <h2 className='my-4 mb-8 text-xl font-bold'>Number of Problems Count as per Difficulty</h2>
-                          <ChartBarStacked userData={userDatafromparam} />
-                        </div>
-   
+      <div className='w-full '>
+        {/* {
+          userDatafromparam?.user?.posts?.length === 0 && <p>Nothing Posted Yet.</p>
+        } */}
+        {userDatafromparam?.user?.following?.length > 0 ?
+           userDatafromparam?.user?.following?.map((e) => (
+                                                <div key={e?._id}>
+                                                    <Link href={`/profile/${e?._id}`}>
+                                                        <div className='flex justify-between items-center w-full cursor-pointer hover:bg-neutral-900 rounded-xl'>
+                                                            <div className='rounded-full font-semibold text-center text-xl m-2 px-4 p-2 bg-neutral-800'>{e?.name?.[0]} </div>
+                                                            <div>
+                                                                <h1 className='font-semibold'>{e?.name}</h1>
+                                                                <p className=' line-clamp-1 text-neutral-400'>{e?.descriptionAbout}</p>
+                                                            </div>
+                                                            <Button className='rounded-full font-semibold cursor-pointer'>View</Button>
+                                                        </div>
+                                                    </Link>
+
+                                                </div>
+                                            ))
+          
+          :
+           userDatafromparam?.user?.following?.length === 0 ? <p className='text-center text-xl font-semibold my-4'>Not Followed Anyone.</p> :
+          Array(6).fill(null).map((_, ind) => (
+            <div className='text-white border border-t-0 p-2 w-full hover:bg-neutral-900' key={ind} >
+              <Skeleton className="h-32 w-full" />
+            </div>
+          ))
+
+        }
+        {/* <button className='text-white' onClick={handleLoadMore} >
+                                            load more
+                                        </button> */}
+      </div>
     </div>
   )
 }
