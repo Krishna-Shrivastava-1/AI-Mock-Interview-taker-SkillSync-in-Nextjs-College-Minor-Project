@@ -104,7 +104,7 @@ export const WholeAppProvider = ({ children }) => {
 
             fetchpostData()
         }
-    }, [page, pathname, userId])
+    }, [page, userId])
 
 
      const fetchAllUser = async () => {

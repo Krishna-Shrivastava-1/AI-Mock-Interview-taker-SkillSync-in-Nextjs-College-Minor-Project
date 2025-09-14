@@ -18,7 +18,8 @@ const Navbar = () => {
   const pathname = usePathname()
 
   return (
-    <nav className=" dark:bg-gray-950 backdrop-blur-xl ">
+    <div className='w-full flex items-center justify-center fixed top-0 z-40'>
+    <nav className=" dark:bg-gray-950 backdrop-blur-xl bg-[#1e1e21]/30 w-3xl  border-neutral-500 rounded-full">
       <div className="container mx-auto flex items-center justify-between p-4">
         <Link href="/" className="text-2xl font-bold text-sky-700">
           Mokai
@@ -26,7 +27,7 @@ const Navbar = () => {
         {(pathname === '/' || pathname === '/login' || pathname === '/about-detail') && (
           <div>
             <Link href="/login">
-              <Button variant="outline" className="cursor-pointer text-md font-bold">Get Started</Button>
+              <Button variant="secondary" className="cursor-pointer rounded-full text-md font-bold">Get Started</Button>
             </Link>
           </div>
         )}
@@ -49,6 +50,7 @@ const Navbar = () => {
         </div>} */}
       </div>
     </nav>
+    </div>
   )
 }
 
